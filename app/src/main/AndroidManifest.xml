@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.evolve.mitchell.evolvefitnessprogramtracker">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activities.StartPage"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="start_page"
+                    android:scheme="evolve" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.StartRoutine"
+            android:label="@string/title_activity_start_routine" />
+        <activity
+            android:name=".activities.MyRoutines"
+            android:label="@string/title_activity_my_routines" />
+        <activity
+            android:name=".activities.ActiveRoutineSession"
+            android:label="@string/title_activity_active_routine_session" />
+
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".activities.CreateRoutine"
+            android:label="@string/title_activity_create_routine">
+        </activity>
+
+    </application>
+
+</manifest>

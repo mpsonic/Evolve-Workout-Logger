@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.RoutineSessionExercisesFragment">
+
+    <TextView
+        android:id="@+id/text_active_exercise_sessions_title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/text_active_exercise_sessions_title"
+        android:layout_gravity="top"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/background_and_border_1"
+        android:textStyle="bold" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recycler_view_active_routine_session"
+        android:divider="@color/light_shade_3"
+        android:layout_marginTop="5dp"
+        android:dividerHeight="1dp"
+        android:headerDividersEnabled="true"
+        android:layout_below="@+id/text_active_exercise_sessions_title"
+        android:background="@drawable/background_and_border_2">
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/empty_view_active_exercise_sessions"
+        android:text="@string/text_no_saved_routines"
+        android:layout_below="@+id/text_active_exercise_sessions_title"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:background="@drawable/background_and_border_2"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textIsSelectable="false"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:visibility="gone"/>
+
+</RelativeLayout>

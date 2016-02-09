@@ -1,0 +1,34 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="AppTheme.Base">
+    </style>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimaryDark">@color/dark_orange</item>
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorAccent">@color/accent_green</item>
+        <item name="android:textColorPrimary">@color/textPrimary</item>
+        <item name="android:textColorSecondary">@color/textSecondary</item>
+    </style>
+
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.ExpandedAppBar" parent="AppTheme.Base">
+        <item name="actionBarSize">@dimen/app_bar_height</item>
+    </style>
+
+    <style name="LargeDisplayText" parent="TextAppearance.AppCompat.Display1">
+    </style>
+
+    <style name="AppTheme.HintTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/accent_green</item>
+    </style>
+
+</resources>

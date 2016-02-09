@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Oranges -->
+    <color name="light_orange">#ffe0b2</color>
+    <color name="orange">#ff9800</color>
+    <color name="dark_orange">#ef6c00</color>
+
+    <!-- Greens -->
+    <color name="accent_light_green">#b2ff59</color>
+    <color name="accent_green">#76ff03</color>
+    <color name="accent_dark_green">#64dd17</color>
+
+    <!-- Greys -->
+    <color name="white">#ffffff</color>
+    <color name="light_shade_1">#fafafa</color>
+    <color name="light_shade_2">#f5f5f5</color>
+    <color name="light_shade_3">#e0e0e0</color>
+    <color name="dark_tint_3">#424242</color>
+    <color name="dark_tint_2">#303030</color>
+    <color name="dark_tint_1">#212121</color>
+    <color name="black">#000000</color>
+
+    <!-- Text Colors -->
+    <color name="textPrimary">#df000000</color>
+    <color name="textSecondary">#8a000000</color>
+    <color name="textDisabled">#61000000</color>
+    <color name="textDivider">#1d000000</color>
+
+</resources>
