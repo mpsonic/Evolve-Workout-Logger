@@ -1,0 +1,18 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.RoutineExercisesFragment">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_routine_exercises"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="@color/light_shade_3"
+        android:layout_marginTop="5dp"
+        android:dividerHeight="1dp"
+        android:headerDividersEnabled="true"
+        android:background="@drawable/background_and_border_2" />
+
+</FrameLayout>

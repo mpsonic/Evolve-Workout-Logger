@@ -66,17 +66,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowId;
     }
 
-    public int updateExercise(Exercise exercise){
+    public long updateExercise(Exercise exercise){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, exercise.getName());
         values.put(KEY_JSON, toJson(exercise));
-        int result = db.update(TABLE_EXERCISES, values, KEY_ID + "=?", new String[]{String.valueOf(exercise.getId())});
+        long result = db.update(TABLE_EXERCISES, values, KEY_ID + "=?", new String[]{String.valueOf(exercise.getId())});
         db.close();
         return result;
     }
 
-    public Exercise getExercise(int id){
+    public Exercise getExercise(long id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_EXERCISES, new String[]{KEY_JSON}, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
@@ -143,18 +143,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowId;
     }
 
-    public int updateRoutine(Routine routine){
+    public long updateRoutine(Routine routine){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, routine.getName());
         values.put(KEY_JSON, toJson(routine));
-        int result = db.update(TABLE_ROUTINES, values, KEY_ID + "=?", new String[]{String.valueOf(routine.getId())});
+        long result = db.update(TABLE_ROUTINES, values, KEY_ID + "=?", new String[]{String.valueOf(routine.getId())});
         db.close();
         return result;
     }
 
     // Can return null if id is not in the database
-    public Routine getRoutine(int id){
+    public Routine getRoutine(long id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_ROUTINES, new String[]{KEY_JSON}, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);

@@ -43,7 +43,7 @@ public class Exercise {
     }
 
 
-    public void setId(int newId){
+    public void setId(long newId){
         mId = newId;
     }
 

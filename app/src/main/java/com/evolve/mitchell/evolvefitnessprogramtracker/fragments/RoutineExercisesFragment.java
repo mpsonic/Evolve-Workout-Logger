@@ -9,45 +9,49 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.RoutineSession;
+import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Routine;
 import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewItemClickListener;
-import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewRoutineSessionAdapter;
+import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewRoutineAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RoutineSessionExercisesFragment.OnFragmentInteractionListener} interface
+ * {@link RoutineExercisesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link RoutineSessionExercisesFragment#newInstance} factory method to
+ * Use the {@link RoutineExercisesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RoutineSessionExercisesFragment extends Fragment {
+public class RoutineExercisesFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private Routine mRoutine;
+    private OnFragmentInteractionListener mListener;
 
-    private OnFragmentInteractionListener mFragmentInteractionListener;
-    private RoutineSession mRoutineSession;
+    public static final String ROUTINE_ID = "RoutineId";
+    public static final String EXERCISE_ID = "ExerciseId";
 
-    public RoutineSessionExercisesFragment() {
+    public RoutineExercisesFragment() {
         // Required empty public constructor
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment RoutineSessionExercisesFragment.
+
+     * @return A new instance of fragment RoutineExercisesFragment.
      */
-    public static RoutineSessionExercisesFragment newInstance() {
-        return new RoutineSessionExercisesFragment();
+    public static RoutineExercisesFragment newInstance() {
+        return new RoutineExercisesFragment();
     }
 
+    public void setRoutine(Routine routine){
+        mRoutine = routine;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,57 +62,49 @@ public class RoutineSessionExercisesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_routine_session_exercises, container, false);
+        return inflater.inflate(R.layout.fragment_routine_exercises, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_active_routine_session);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(false);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_routine_exercises);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter
-        mAdapter = new RecyclerViewRoutineSessionAdapter(mRoutineSession);
-        mRecyclerView.setAdapter(mAdapter);
-
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewItemClickListener(getActivity(),
                         new RecyclerViewItemClickListener.OnItemClickListener(){
                             @Override
-                            public void onItemClick(View view, int position) {
+                            public void onItemClick(View view, int position){
                                 onItemSelected(position);
                             }
                         })
         );
+    }
 
-        // Display the empty view if there are no exercises in the Routine Session
-        TextView emptyView = (TextView) view.findViewById(R.id.empty_view_active_exercise_sessions);
-        if (mRoutineSession.getExerciseCount() == 0){
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // specify an adapter
+        mAdapter = new RecyclerViewRoutineAdapter(mRoutine);
+        mRecyclerView.setAdapter(mAdapter);
+
+        // Make recyclerView invisible if there are no exercises in the routine
+        if(mRoutine.getNumExercises() == 0){
             mRecyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        }
-        else{
-            mRecyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
         }
     }
 
-
-    // Ensure that the activity is listening to the fragment according to the
-    // OnFragmentInteractionListener interface
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mFragmentInteractionListener = (OnFragmentInteractionListener) context;
+            mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -118,16 +114,11 @@ public class RoutineSessionExercisesFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mFragmentInteractionListener = null;
+        mListener = null;
     }
-
 
     public void onItemSelected(int position){
-        mFragmentInteractionListener.exerciseSessionSelected(position);
-    }
-
-    public void setRoutineSession(RoutineSession routineSession){
-        mRoutineSession = routineSession;
+        mListener.exerciseSelected(position);
     }
 
     /**
@@ -135,13 +126,8 @@ public class RoutineSessionExercisesFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void exerciseSessionSelected(int position);
-        void setFragmentRoutineSession(RoutineSession routineSession);
+        void exerciseSelected(int position);
     }
 }
