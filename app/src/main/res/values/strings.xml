@@ -26,5 +26,31 @@
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_create_routine">CreateRoutine</string>
     <string name="text_button_add_exercise">Add Exercise</string>
+    <string name="title_activity_create_exercise">CreateExercise</string>
+
+    <!-- Create Exercise Activity Strings -->
+    <string name="units_layout_title">Unit System</string>
+    <string name="imperial_toggle_button_text">Imperial</string>
+    <string name="metric_toggle_button_text">Metric</string>
+    <string name="tracked_measurements_layout_title">Tracked Measurements</string>
+    <string name="reps_toggle_button_text">Reps</string>
+    <string name="weight_toggle_button_text">Weight</string>
+    <string name="distance_toggle_button_text">Distance</string>
+    <string name="time_toggle_button_text">Time</string>
+    <string name="starting_measurements_layout_title">Starting Measurements</string>
+    <string name="reps_layout_title">Reps</string>
+    <string name="weight_layout_title">Weight</string>
+    <string name="distance_layout_title">Distance</string>
+    <string name="time_layout_title">Time</string>
+    <string name="target_increase_layout_title">Target for Increase</string>
+    <string name="increse_per_session_layout_title">Increase per Session</string>
+    <string name="category_layout_title">Category</string>
+    <string name="weight_imperial_unit">lbs</string>
+    <string name="weight_metric_unit">kgs</string>
+    <string name="reps_unit">reps</string>
+    <string name="hours_edittext_hint">hh</string>
+    <string name="minutes_edittext_hint">mm</string>
+    <string name="seconds_edittext_hint">ss</string>
+    <string name="title_edittext_hint">Title</string>
 
 </resources>

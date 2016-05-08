@@ -29,6 +29,7 @@
         android:layout_below="@+id/fragment_create_routine"
         android:layout_margin="16dp"
         android:gravity="center_horizontal"
-        android:text="@string/text_button_add_exercise" />
+        android:text="@string/text_button_add_exercise"
+        android:onClick="handleButtonClick" />
 
 </RelativeLayout>

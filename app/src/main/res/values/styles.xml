@@ -1,8 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme.Base">
-    </style>
+    <style name="AppTheme" parent="AppTheme.Base"></style>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -24,8 +23,7 @@
         <item name="actionBarSize">@dimen/app_bar_height</item>
     </style>
 
-    <style name="LargeDisplayText" parent="TextAppearance.AppCompat.Display1">
-    </style>
+    <style name="LargeDisplayText" parent="TextAppearance.AppCompat.Display1"></style>
 
     <style name="AppTheme.HintTextAppearance" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textColor">@color/accent_green</item>

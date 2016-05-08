@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.DatabaseHelper;
@@ -82,4 +83,19 @@ public class CreateRoutine extends AppCompatActivity
     public void exerciseSelected(int position) {
         //TODO: do something when exercise selected
     }
+
+    public void addNewExercise() {
+        Intent createExercise = new Intent(this, CreateExercise.class);
+        createExercise.putExtra(ROUTINE_ID, mRoutineId);
+        startActivity(createExercise);
+    }
+
+    public void handleButtonClick(View view) {
+        Button button = (Button) view;
+        switch (button.getId()) {
+            case R.id.button_add_exercise_to_routine:
+                addNewExercise();
+        }
+    }
+
 }

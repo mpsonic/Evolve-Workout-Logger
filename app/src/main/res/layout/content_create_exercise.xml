@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.CreateExercise"
+    tools:showIn="@layout/activity_create_exercise"
+    android:id="@+id/contentLayout">
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/unitsLayout"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/units_layout_title"
+                    android:id="@+id/unitSystemTextView"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:id="@+id/unitButtonLayout"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/unitSystemTextView">
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imperialToggleButton"
+                        android:textOn="@string/imperial_toggle_button_text"
+                        android:textOff="@string/imperial_toggle_button_text"
+                        android:onClick="handleButtonClick"
+                        android:checked="true" />
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/metric_toggle_button_text"
+                        android:id="@+id/metricToggleButton"
+                        android:textOff="@string/metric_toggle_button_text"
+                        android:textOn="@string/metric_toggle_button_text"
+                        android:onClick="handleButtonClick" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/trackedMeasurementsLayout"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/tracked_measurements_layout_title"
+                    android:id="@+id/trackedMeasurementsText"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/trackedMeasurementsButtonLayout"
+                    android:layout_below="@+id/trackedMeasurementsText"
+                    android:layout_centerHorizontal="true">
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/repsToggleButton"
+                        android:textOff="@string/reps_toggle_button_text"
+                        android:textOn="@string/reps_toggle_button_text"
+                        android:onClick="handleButtonClick" />
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weightToggleButton"
+                        android:textOn="@string/weight_toggle_button_text"
+                        android:textOff="@string/weight_toggle_button_text"
+                        android:onClick="handleButtonClick" />
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/distanceToggleButton"
+                        android:textOff="@string/distance_toggle_button_text"
+                        android:textOn="@string/distance_toggle_button_text"
+                        android:onClick="handleButtonClick" />
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/timeToggleButton"
+                        android:textOff="@string/time_toggle_button_text"
+                        android:textOn="@string/time_toggle_button_text"
+                        android:onClick="handleButtonClick" />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/startingMeasurementsLayout"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/starting_measurements_layout_title"
+                    android:id="@+id/startingMeasurementsText"
+                    android:layout_marginBottom="8dp" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchColumns="*"
+                    android:shrinkColumns="*"
+                    android:id="@+id/startingMeasurementsTable">
+
+                    <TableRow
+                        android:id="@+id/repsRow">
+                        <TextView
+                            android:layout_width="0px"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/reps_layout_title"
+                            android:id="@+id/repsText"
+                            android:layout_weight="1" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+                            <EditText
+                                android:layout_width="@dimen/number_edittext_width"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:inputType="numberDecimal"
+                                android:ems="3"
+                                android:id="@+id/repsEditStartingMeasurement"
+                                android:digits="0123456789"
+                                android:paddingEnd="@dimen/edittext_padding"
+                                android:paddingStart="@dimen/edittext_padding"
+                                android:textSize="@dimen/abc_text_size_medium_material"
+                                android:textAlignment="center" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/weightRow">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/weight_layout_title"
+                            android:id="@+id/weightText"
+                            android:layout_weight="1" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2">
+                            <EditText
+                                android:layout_width="@dimen/number_edittext_width"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="numberDecimal"
+                                android:ems="3"
+                                android:id="@+id/weightEditStartingMeasurement"
+                                android:digits="0123456789."
+                                android:paddingEnd="@dimen/edittext_padding"
+                                android:paddingStart="@dimen/edittext_padding"
+                                android:layout_marginRight="8dp"
+                                android:textSize="@dimen/abc_text_size_medium_material"
+                                android:textAlignment="center" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:id="@+id/weightUnitText"
+                                android:text="@string/weight_imperial_unit"
+                                />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/distanceRow">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/distance_layout_title"
+                            android:id="@+id/distanceText"
+                            android:layout_weight="1" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2">
+                            <EditText
+                                android:layout_width="@dimen/number_edittext_width"
+                                android:layout_height="wrap_content"
+                                android:ems="3"
+                                android:id="@+id/distanceEditStartingMeasurement"
+                                android:inputType="numberDecimal"
+                                android:paddingEnd="@dimen/edittext_padding"
+                                android:paddingStart="@dimen/edittext_padding"
+                                android:layout_marginRight="8dp"
+                                android:textSize="@dimen/abc_text_size_medium_material"
+                                android:layout_gravity="center_horizontal"
+                                android:textAlignment="center"
+                                android:gravity="center" />
+                            <Spinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:id="@+id/distanceUnitSpinner"
+                                />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/timeRow">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/time_layout_title"
+                            android:id="@+id/timeText"
+                            android:layout_weight="1" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2">
+                            <EditText
+                                android:layout_width="@dimen/number_edittext_width"
+                                android:layout_height="wrap_content"
+                                android:ems="3"
+                                android:id="@+id/timeHourEdittext"
+                                android:inputType="number"
+                                android:paddingEnd="@dimen/edittext_padding"
+                                android:paddingStart="@dimen/edittext_padding"
+                                android:textSize="@dimen/abc_text_size_medium_material"
+                                android:hint="@string/hours_edittext_hint"
+                                android:layout_gravity="center_horizontal"
+                                android:textAlignment="center"
+                                android:gravity="center" />
+                            <EditText
+                                android:layout_width="@dimen/number_edittext_width"
+                                android:layout_height="wrap_content"
+                                android:ems="3"
+                                android:id="@+id/timeMinuteEdittext"
+                                android:inputType="number"
+                                android:paddingEnd="@dimen/edittext_padding"
+                                android:paddingStart="@dimen/edittext_padding"
+                                android:textSize="@dimen/abc_text_size_medium_material"
+                                android:hint="@string/minutes_edittext_hint"
+                                android:layout_gravity="center_horizontal"
+                                android:textAlignment="center"
+                                android:gravity="center" />
+                            <EditText
+                                android:layout_width="@dimen/number_edittext_width"
+                                android:layout_height="wrap_content"
+                                android:ems="3"
+                                android:id="@+id/timeSecondEdittext"
+                                android:inputType="number"
+                                android:paddingEnd="@dimen/edittext_padding"
+                                android:paddingStart="@dimen/edittext_padding"
+                                android:textSize="@dimen/abc_text_size_medium_material"
+                                android:hint="@string/seconds_edittext_hint"
+                                android:layout_gravity="center_horizontal"
+                                android:textAlignment="center"
+                                android:gravity="center" />
+                        </LinearLayout>
+                    </TableRow>
+
+                </TableLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/targetIncreaseLayout"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/target_increase_layout_title"
+                    android:id="@+id/targetForIncreaseText"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/targetIncreaseButtonLayout"
+                    android:layout_below="@+id/targetForIncreaseText">
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/repsTargetToggleButton"
+                        android:textOff="@string/reps_toggle_button_text"
+                        android:textOn="@string/reps_toggle_button_text"
+                        android:onClick="handleButtonClick" />
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weightTargetToggleButton"
+                        android:textOff="@string/weight_toggle_button_text"
+                        android:textOn="@string/weight_toggle_button_text"
+                        android:onClick="handleButtonClick" />
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/distanceTargetToggleButton"
+                        android:textOff="@string/distance_toggle_button_text"
+                        android:textOn="@string/distance_toggle_button_text"
+                        android:onClick="handleButtonClick" />
+
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/timeTargetToggleButton"
+                        android:textOff="@string/time_toggle_button_text"
+                        android:textOn="@string/time_toggle_button_text"
+                        android:onClick="handleButtonClick" />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/increasePerSessionLayout"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/increse_per_session_layout_title"
+                    android:id="@+id/increasePerSessionText"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@+id/increasePerSessionText"
+                    android:layout_centerHorizontal="true">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/repsIncreaseLayout"
+                        android:gravity="center_horizontal">
+                        <EditText
+                            android:layout_width="@dimen/number_edittext_width"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:ems="10"
+                            android:id="@+id/editRepsIncreasePerSession" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/reps_unit">
+                        </TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/weightIncreaseLayout">
+                        <EditText
+                            android:layout_width="@dimen/number_edittext_width"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:ems="10"
+                            android:id="@+id/editWeightIncreasePerSession" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/weight_imperial_unit"
+                            android:id="@+id/weightIncreaseUnitText" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/distanceIncreaseLayout">
+                        <EditText
+                            android:layout_width="@dimen/number_edittext_width"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:ems="10"
+                            android:id="@+id/editDistanceIncreasePerSession" />
+                        <Spinner
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/distanceIncreaseUnitSpinner"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/timeIncreaseLayout">
+                        <EditText
+                            android:layout_width="@dimen/number_edittext_width"
+                            android:layout_height="wrap_content"
+                            android:ems="3"
+                            android:id="@+id/timeIncreaseMinuteEdittext"
+                            android:inputType="number"
+                            android:paddingEnd="@dimen/edittext_padding"
+                            android:paddingStart="@dimen/edittext_padding"
+                            android:textSize="@dimen/abc_text_size_medium_material"
+                            android:hint="@string/minutes_edittext_hint"
+                            android:layout_gravity="center_horizontal"
+                            android:textAlignment="center"
+                            android:gravity="center" />
+                        <EditText
+                            android:layout_width="@dimen/number_edittext_width"
+                            android:layout_height="wrap_content"
+                            android:ems="3"
+                            android:id="@+id/timeIncreaseSecondEdittext"
+                            android:inputType="number"
+                            android:paddingEnd="@dimen/edittext_padding"
+                            android:paddingStart="@dimen/edittext_padding"
+                            android:textSize="@dimen/abc_text_size_medium_material"
+                            android:hint="@string/seconds_edittext_hint"
+                            android:layout_gravity="center_horizontal"
+                            android:textAlignment="center"
+                            android:gravity="center" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/categoryLayout"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/category_layout_title"
+                    android:id="@+id/categoryText"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="8dp" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/categorySpinner"
+                    android:layout_below="@+id/categoryText"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+
+

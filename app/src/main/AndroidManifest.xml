@@ -42,9 +42,11 @@
 
         <activity
             android:name=".activities.CreateRoutine"
-            android:label="@string/title_activity_create_routine">
-        </activity>
-
+            android:label="@string/title_activity_create_routine"/>
+        <activity
+            android:name=".activities.CreateExercise"
+            android:label="@string/title_activity_create_exercise"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
