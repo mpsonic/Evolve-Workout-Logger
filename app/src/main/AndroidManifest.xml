@@ -7,9 +7,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
+        <!--Start Page-->
         <activity
             android:name=".activities.StartPage"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -22,15 +25,59 @@
                     android:scheme="evolve" />
             </intent-filter>
         </activity>
+
+        <!--Start Routine-->
         <activity
             android:name=".activities.StartRoutine"
-            android:label="@string/title_activity_start_routine" />
+            android:label="@string/title_activity_start_routine"
+            android:launchMode="singleTop" />
+
+        <!--My Routines-->
         <activity
             android:name=".activities.MyRoutines"
             android:label="@string/title_activity_my_routines" />
+
+        <!--Active Routine Session-->
         <activity
             android:name=".activities.ActiveRoutineSession"
-            android:label="@string/title_activity_active_routine_session" />
+            android:label="@string/title_activity_active_routine_session"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.ActiveRoutineSession">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.evolve.mitchell.evolvefitnessprogramtracker.activities.ActiveRoutineSession">
+            </meta-data>
+        </activity>
+
+        <!--Create Routine-->
+        <activity
+            android:name=".activities.CreateRoutine"
+            android:label="@string/title_activity_create_routine"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.StartRoutine">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.StartRoutine">
+            </meta-data>
+        </activity>
+
+        <!--Add Exercise-->
+        <activity android:name=".activities.AddExercise"
+            android:label="@string/title_activity_add_exercise"
+            android:launchMode="singleTop">
+        </activity>
+
+        <!--Create Exercise-->
+        <activity
+            android:name=".activities.CreateExercise"
+            android:label="@string/title_activity_create_exercise"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".activities.AddExercise">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.AddExercise">
+            </meta-data>
+        </activity>
 
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -39,14 +86,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <activity
-            android:name=".activities.CreateRoutine"
-            android:label="@string/title_activity_create_routine"/>
-        <activity
-            android:name=".activities.CreateExercise"
-            android:label="@string/title_activity_create_exercise"
-            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

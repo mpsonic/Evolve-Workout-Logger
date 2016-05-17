@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +27,13 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerVi
 public class RoutineExercisesFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerViewRoutineAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private Routine mRoutine;
     private OnFragmentInteractionListener mListener;
+    private static final String TAG = "CreateRoutine-F";
 
-    public static final String ROUTINE_ID = "RoutineId";
-    public static final String EXERCISE_ID = "ExerciseId";
 
     public RoutineExercisesFragment() {
         // Required empty public constructor
@@ -46,30 +46,44 @@ public class RoutineExercisesFragment extends Fragment {
      * @return A new instance of fragment RoutineExercisesFragment.
      */
     public static RoutineExercisesFragment newInstance() {
+        Log.d(TAG, "newInstance()");
         return new RoutineExercisesFragment();
     }
 
-    public void setRoutine(Routine routine){
-        mRoutine = routine;
+    @Override
+    public void onAttach(Context context) {
+        Log.d(TAG, "onAttach()");
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView()");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_routine_exercises, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated()");
         super.onViewCreated(view, savedInstanceState);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_routine_exercises);
+        mRecyclerView.setHasFixedSize(false);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -86,8 +100,14 @@ public class RoutineExercisesFragment extends Fragment {
         );
     }
 
+    public void setRoutine(Routine routine){
+        Log.d(TAG, "setRoutine()");
+        mRoutine = routine;
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated()");
         super.onActivityCreated(savedInstanceState);
 
         // specify an adapter
@@ -100,25 +120,28 @@ public class RoutineExercisesFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    public void refresh() {
+        Log.d(TAG, "refresh()");
+        //int exerciseCount = mRoutine.getNumExercises();
+        mAdapter.notifyDataSetChanged();
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onDetach() {
+        Log.d(TAG, "onDetach()");
         super.onDetach();
         mListener = null;
     }
 
     public void onItemSelected(int position){
+        Log.d(TAG, "onItemSelected("+ position +")");
         mListener.exerciseSelected(position);
+    }
+
+    public boolean isEmpty () {
+        Log.d(TAG, "isEmpty()");
+        return mAdapter.getItemCount() == 0;
     }
 
     /**

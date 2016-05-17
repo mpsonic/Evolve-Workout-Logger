@@ -22,6 +22,8 @@ import java.util.List;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    // TODO: Implement way to store and sort exercises by category
+
     // Public
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,12 +35,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 KEY_ID + " INTEGER PRIMARY KEY," +
                 KEY_NAME + " TEXT," +
                 KEY_DESCRIPTION + " TEXT," +
-                KEY_JSON + " TEXT)";
+                KEY_JSON + " TEXT," +
+                KEY_PERMANENT + " BIT)";
         String CREATE_ROUTINES_TABLE = "CREATE TABLE " + TABLE_ROUTINES + "(" +
                 KEY_ID + " INTEGER PRIMARY KEY," +
                 KEY_NAME + " TEXT," +
                 KEY_DESCRIPTION + " TEXT," +
-                KEY_JSON + " TEXT)";
+                KEY_JSON + " TEXT," +
+                KEY_PERMANENT + " BIT)";
         db.execSQL(CREATE_EXERCISES_TABLE);
         db.execSQL(CREATE_ROUTINES_TABLE);
     }
@@ -51,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Exercise Table Methods
-    public long addExercise(Exercise exercise){
+    public long addExercise(Exercise exercise, boolean permanent){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -61,6 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, exercise.getName());
         values.put(KEY_JSON, toJson(exercise));
+        values.put(KEY_PERMANENT, permanent);
         long rowId = db.insert(TABLE_EXERCISES, null, values);
         db.close();
         return rowId;
@@ -89,6 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 exercise.setId(id);
         }
 
+        cursor.close();
         db.close();
         return exercise;
     }
@@ -105,6 +111,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 names.add(cursor.getString(0));
             }while(!cursor.isLast());
         }
+
+        cursor.close();
         db.close();
         return names;
     }
@@ -117,7 +125,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getExercisesCursor(){
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_EXERCISES;
+        String query = "SELECT * FROM " + TABLE_EXERCISES + " Where "
+                + KEY_PERMANENT + "<>'TRUE'" ;
         return db.rawQuery(query, null);
     }
 
@@ -129,15 +138,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Routine Table Methods
-    public long addRoutine(Routine routine){
+    public long addRoutine(Routine routine, boolean permanent){
         SQLiteDatabase db = this.getWritableDatabase();
-
-        // Check to see whether exercise is already in the database?
 
         // Enter values into database
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, routine.getName());
+        values.put(KEY_DESCRIPTION, routine.getDescription());
         values.put(KEY_JSON, toJson(routine));
+        values.put(KEY_PERMANENT, permanent);
         long rowId = db.insert(TABLE_ROUTINES, null, values);
         db.close();
         return rowId;
@@ -204,7 +213,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getRoutinesCursor(){
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_ROUTINES;
+        String query = "SELECT * FROM " + TABLE_ROUTINES + " Where " +
+                KEY_PERMANENT + "='1' AND " +
+                KEY_NAME + "<>''";
         return db.rawQuery(query, null);
     }
 
@@ -213,6 +224,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int count = cursor.getCount();
         cursor.close();
         return count;
+    }
+
+    public void cleanDatabases() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_EXERCISES, KEY_PERMANENT + "=?", new String[]{"0"});
+        db.delete(TABLE_ROUTINES, KEY_PERMANENT + "=?", new String[]{"0"});
     }
 
 
@@ -232,7 +249,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Static Variables
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 8;
 
     // Database Name
     private static final String DATABASE_NAME = "fitnessDatabase";
@@ -246,9 +263,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_NAME = "Name";
     private static final String KEY_DESCRIPTION = "Description";
     private static final String KEY_JSON = "Json";
+    private static final String KEY_PERMANENT = "Permanent";
 
     public static final int COLUMN_ID = 0;
     public static final int COLUMN_NAME = 1;
     public static final int COLUMN_DESCRIPTION = 2;
     public static final int COLUMN_JSON = 3;
+    public static final int COLUMN_PERMANENT = 4;
+
+    public static final String ROUTINE_ID_NAME = "RoutineId";
+    public static final String EXERCISE_ID_NAME = "ExerciseId";
 }

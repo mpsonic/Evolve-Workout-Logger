@@ -1,5 +1,6 @@
 package com.evolve.mitchell.evolvefitnessprogramtracker.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,12 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
+import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.DatabaseHelper;
 import com.evolve.mitchell.evolvefitnessprogramtracker.fragments.SavedRoutinesFragment;
 
 public class StartRoutine extends AppCompatActivity implements
         SavedRoutinesFragment.OnFragmentInteractionListener {
 
-    public static final String ROUTINE_ID_NAME = "RoutineId";
+    private SavedRoutinesFragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +24,11 @@ public class StartRoutine extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Get floating action button
-        // Set functionality inside of onClick method
+        mFragment = (SavedRoutinesFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_saved_routines);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_start_routine);
+
+        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,12 +45,25 @@ public class StartRoutine extends AppCompatActivity implements
         toast.show();*/
 
         Intent i = new Intent(this, ActiveRoutineSession.class);
-        i.putExtra(ROUTINE_ID_NAME, id);
+        i.putExtra(DatabaseHelper.ROUTINE_ID_NAME, id);
+        i.putExtra(ActivityEnum.SENDER, ActivityEnum.START_ROUTINE);
         startActivity(i);
+        finish();
     }
 
     private void launchCreateRoutineActivity(){
         Intent i = new Intent(this, CreateRoutine.class);
-        startActivity(i);
+        startActivityForResult(i, ResponseCodes.NEW_ROUTINE.getValue());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ResponseCodes.NEW_ROUTINE.getValue()) {
+            if (resultCode == Activity.RESULT_OK) {
+                mFragment.refresh();
+            }
+        }
     }
 }

@@ -135,8 +135,8 @@ public class Exercise {
     }
 
     // Set the unit for a tracked measurement
-    public void setTrackedMeasurementUnit(MeasurementCategory type, Unit unit) throws Exception {
-        MeasurementData data = getTrackedMeasurementData(type);
+    public void setTrackedMeasurementUnit(MeasurementCategory category, Unit unit) throws Exception {
+        MeasurementData data = getTrackedMeasurementData(category);
         if (data != null){
             data.setUnit(unit);
         }
@@ -145,9 +145,16 @@ public class Exercise {
         }
     }
 
-
-    public void setTrackedMeasurementValue(MeasurementCategory type, double value) throws Exception{
-        MeasurementData data = getTrackedMeasurementData(type);
+    /**
+     * Sets the current tracked value of a measurement category (reps, weight, distance, or time).
+     * When setting the time value, input the amount of time in seconds
+     *
+     * @param category The measurement category whose tracked value will be updated
+     * @param value The new value
+     * @throws Exception when the type is not being tracked
+     */
+    public void setTrackedMeasurementValue(MeasurementCategory category, double value) throws Exception{
+        MeasurementData data = getTrackedMeasurementData(category);
         if (data != null){
             data.setMeasurement(value);
         }

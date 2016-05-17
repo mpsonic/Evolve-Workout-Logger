@@ -37,6 +37,10 @@ public class RecyclerViewCursorAdapter
 
     // Constructor sets the adapter data
     public RecyclerViewCursorAdapter(Cursor cursor){
+        setCursor(cursor);
+    }
+
+    public void setCursor(Cursor cursor) {
         mCursor = cursor;
     }
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.MyRoutines">
+
+    <include layout="@layout/appbar"/>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.AddExercise">
+
+        <!--<Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_create_new_exercise_text"
+            android:id="@+id/button_create_new_exercise"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="15dp"
+            android:textStyle="bold"
+            android:textSize="@dimen/abc_text_size_medium_material" />-->
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.SavedExercisesFragment"
+            android:id="@+id/fragment_saved_exercises"
+            android:layout_centerHorizontal="true"
+            tools:layout="@layout/fragment_saved_exercises" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_add_white_36dp" />
+
+</android.support.design.widget.CoordinatorLayout>

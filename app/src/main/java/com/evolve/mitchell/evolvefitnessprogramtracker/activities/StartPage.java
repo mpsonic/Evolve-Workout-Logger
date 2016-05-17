@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
+import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.DatabaseHelper;
 
 
 public class StartPage extends AppCompatActivity {
@@ -23,9 +24,16 @@ public class StartPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_page);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        Runnable cleanDatabases = new Runnable() {
+            @Override
+            public void run() {
+                DatabaseHelper db = new DatabaseHelper(getBaseContext());
+                db.cleanDatabases();
+                db.close();
+            }
+        };
+        cleanDatabases.run();
     }
 
     @Override
@@ -66,41 +74,12 @@ public class StartPage extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        /*// ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Start Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                // Uri.parse(null),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                // android-app://<package_name>/<scheme>/[host_path]
-                //Uri.parse("android-app://")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);*/
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        /*Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "StartPage Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.evolve.mitchell.evolvefitnessprogramtracker.activities/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();*/
     }
 
     public void handleButtonClick(View view) {

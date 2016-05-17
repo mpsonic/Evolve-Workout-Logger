@@ -1,11 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.SavedRoutinesFragment">
+    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.SavedExercisesFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_saved_routines"
+        android:id="@+id/recycler_view_saved_exercises"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@color/light_shade_3"
@@ -17,8 +17,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:id="@+id/empty_view_saved_routines"
-        android:text="@string/text_no_saved_routines"
+        android:id="@+id/empty_view_saved_exercises"
+        android:text="@string/text_no_saved_exercises"
         android:gravity="center_vertical"
         android:textStyle="bold"
         android:background="@drawable/background_and_border_2"
@@ -28,4 +28,4 @@
         android:textAppearance="@android:style/TextAppearance.Medium"
         android:visibility="gone"/>
 
-</RelativeLayout>
+</FrameLayout>

@@ -1,6 +1,7 @@
 package com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class RecyclerViewRoutineAdapter
         extends RecyclerView.Adapter<RecyclerViewRoutineAdapter.ViewHolder> {
 
     private Routine mRoutine;
+    private static final String TAG = "CreateRoutine-A";
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView mExerciseName;
@@ -41,6 +43,7 @@ public class RecyclerViewRoutineAdapter
     // Create new views (Invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder()");
         // Create a new two-line-list-item view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.two_line_list_item, parent, false);
@@ -52,6 +55,7 @@ public class RecyclerViewRoutineAdapter
     // Replace the contents of a view (Invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder(" + position + ")");
         Exercise exercise = mRoutine.getExercise(position);
         TextView nameText = holder.mExerciseName;
         TextView descriptionText = holder.mExerciseDescription;
@@ -63,6 +67,8 @@ public class RecyclerViewRoutineAdapter
     // Return the size of your data set
     @Override
     public int getItemCount() {
+        Log.d(TAG, "getItemCount()");
         return mRoutine.getNumExercises();
     }
+
 }

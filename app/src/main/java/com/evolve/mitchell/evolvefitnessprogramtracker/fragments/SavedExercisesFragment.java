@@ -20,12 +20,12 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerVi
 /**
  * A {@link ListFragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SavedRoutinesFragment.OnFragmentInteractionListener} interface
+ * {@link SavedExercisesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SavedRoutinesFragment#newInstance} factory method to
+ * Use the {@link SavedExercisesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SavedRoutinesFragment extends Fragment {
+public class SavedExercisesFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -37,7 +37,7 @@ public class SavedRoutinesFragment extends Fragment {
     private OnFragmentInteractionListener mFragmentInteractionListener;
     private Cursor mCursor;
 
-    public SavedRoutinesFragment() {
+    public SavedExercisesFragment() {
         // Required empty public constructor
     }
 
@@ -45,10 +45,10 @@ public class SavedRoutinesFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment SavedRoutinesFragment.
+     * @return A new instance of fragment SavedExercisesFragment.
      */
-    public static SavedRoutinesFragment newInstance() {
-        return new SavedRoutinesFragment();
+    public static SavedExercisesFragment newInstance() {
+        return new SavedExercisesFragment();
     }
 
     // Get saved routines from the database
@@ -56,21 +56,21 @@ public class SavedRoutinesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DatabaseHelper db = new DatabaseHelper(getActivity());
-        mCursor = db.getRoutinesCursor();
+        mCursor = db.getExercisesCursor();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_saved_routines, container, false);
+        return inflater.inflate(R.layout.fragment_saved_exercises, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_saved_routines);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_saved_exercises);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -89,13 +89,13 @@ public class SavedRoutinesFragment extends Fragment {
                         new RecyclerViewItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                onRoutineSelected(position);
+                                onExerciseSelected(position);
                             }
                         })
         );
 
         // Display the empty view if there is nothing in the database
-        TextView emptyView = (TextView) view.findViewById(R.id.empty_view_saved_routines);
+        TextView emptyView = (TextView) view.findViewById(R.id.empty_view_saved_exercises);
         if (mCursor.getCount() == 0){
             mRecyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
@@ -137,25 +137,25 @@ public class SavedRoutinesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
 
-    // Runs when a Routine is selected from the list view
-    public void onRoutineSelected(int position) {
+    // Runs when an Exercise is selected from the list view
+    public void onExerciseSelected(int position) {
         if (mFragmentInteractionListener != null) {
-            // Get the Routine Id based on the position selected
+            // Get the Exercise Id based on the position selected
             mCursor.moveToPosition(position);
-            long routineId = mCursor.getLong(0);
-            mFragmentInteractionListener.routineSelected(routineId);
+            long exerciseId = mCursor.getLong(0);
+            mFragmentInteractionListener.exerciseSelected(exerciseId);
         }
     }
 
     public void refresh() {
         DatabaseHelper db = new DatabaseHelper(getActivity());
         mCursor.close();
-        mCursor = db.getRoutinesCursor();
+        mCursor = db.getExercisesCursor();
         mAdapter.setCursor(mCursor);
         mAdapter.notifyDataSetChanged();
     }
 
     public interface OnFragmentInteractionListener {
-        void routineSelected(long id);
+        void exerciseSelected(long id);
     }
 }

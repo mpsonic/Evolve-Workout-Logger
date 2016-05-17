@@ -16,7 +16,7 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.fragments.RoutineSessionE
 public class ActiveRoutineSession extends AppCompatActivity
         implements RoutineSessionExercisesFragment.OnFragmentInteractionListener{
 
-    private int mRoutineId;
+    private long mRoutineId;
     private Routine mRoutine;
     private RoutineSession mRoutineSession;
 
@@ -29,7 +29,7 @@ public class ActiveRoutineSession extends AppCompatActivity
 
         // Store the routine id so that it can be retrieved from the database
         Intent intent = getIntent();
-        mRoutineId = intent.getIntExtra(StartRoutine.ROUTINE_ID_NAME, -1);
+        mRoutineId = intent.getLongExtra(DatabaseHelper.ROUTINE_ID_NAME, -1);
 
         // Get the routine and create a new routine session
         DatabaseHelper db = new DatabaseHelper(this);
@@ -40,7 +40,7 @@ public class ActiveRoutineSession extends AppCompatActivity
 
     // Called by RoutineSessionExercisesFragment in its onAttach method
     @Override
-    public void setFragmentRoutineSession(RoutineSession routineSession) {
+    public void setFragmentRoutineSession() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         RoutineSessionExercisesFragment fragment = (RoutineSessionExercisesFragment)
                 fragmentManager.findFragmentById(R.id.fragment_routine_session_exercises);

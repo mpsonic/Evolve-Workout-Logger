@@ -1,0 +1,42 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:activated="false"
+        app:increment="1">
+
+        <ImageButton
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:contentDescription="@string/minus"
+            android:src="@drawable/ic_keyboard_arrow_left_black_36dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:onClick="handleButtonClick"
+            android:id="@+id/button_less">
+        </ImageButton>
+
+        <EditText
+            android:layout_height="36dp"
+            android:layout_width="54dp"
+            android:inputType="numberDecimal"
+            android:id="@+id/number_edit_text">
+        </EditText>
+
+        <ImageButton
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:contentDescription="@string/plus"
+            android:src="@drawable/ic_keyboard_arrow_right_black_36dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:onClick="handleButtonClick"
+            android:id="@+id/button_more">
+        </ImageButton>
+
+    </com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText>
+
+</FrameLayout>

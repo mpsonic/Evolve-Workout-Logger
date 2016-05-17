@@ -1,5 +1,6 @@
 package com.evolve.mitchell.evolvefitnessprogramtracker.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -15,20 +17,15 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
+import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.DatabaseHelper;
+import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Exercise;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.MeasurementCategory;
 
 import java.util.ArrayList;
 
 public class CreateExercise extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String item = parent.getItemAtPosition(position).toString();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
+    ActivityEnum mPreviousActivity;
 
     RelativeLayout contentLayout;
     RelativeLayout unitsLayout;
@@ -48,6 +45,15 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
 
     FloatingActionButton fab;
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_exercise);
@@ -56,6 +62,8 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
 
         // Get content layouts
         contentLayout = (RelativeLayout) findViewById(R.id.createExerciseContent);
+
+        assert contentLayout != null;
         unitsLayout = (RelativeLayout) contentLayout.findViewById(R.id.unitsLayout);
         trackedMeasurementsLayout = (RelativeLayout) contentLayout.findViewById(R.id.trackedMeasurementsLayout);
         startingMeasurementsLayout = (LinearLayout) contentLayout.findViewById(R.id.startingMeasurementsLayout);
@@ -97,6 +105,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         metricToggle = (ToggleButton) unitsLayout.findViewById(R.id.metricToggleButton);
 
         // Set up spinners
+        // TODO: Set up a unit arrayAdapter
         distanceImperialUnits = new ArrayList<>(2);
         distanceImperialUnits.add("feet");
         distanceImperialUnits.add("miles");
@@ -105,6 +114,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         distanceMetricUnits.add("meters");
         distanceMetricUnits.add("kilometers");
 
+        // TODO: Set up a category arrayAdapter
         exerciseCategories = new ArrayList<>();
         exerciseCategories.add("Arms");
         exerciseCategories.add("Abs");
@@ -116,6 +126,10 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         Spinner dSpinner = (Spinner) findViewById(R.id.distanceUnitSpinner);
         Spinner dIncreaseSpinner = (Spinner) findViewById(R.id.distanceIncreaseUnitSpinner);
         Spinner categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
+        assert dSpinner != null;
+        assert dIncreaseSpinner != null;
+        assert categorySpinner != null;
+
         dSpinner.setOnItemSelectedListener(this);
         dIncreaseSpinner.setOnItemSelectedListener(this);
         categorySpinner.setOnItemSelectedListener(this);
@@ -147,7 +161,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                persistExerciseAndFinish();
             }
         });
         fab.hide();
@@ -235,6 +249,11 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         Spinner dSpinner = (Spinner) findViewById(R.id.distanceUnitSpinner);
         TextView weightIncreaseUnit = (TextView) findViewById(R.id.weightIncreaseUnitText);
         Spinner dIncreaseSpinner = (Spinner) findViewById(R.id.distanceIncreaseUnitSpinner);
+        assert weightUnit != null;
+        assert dSpinner != null;
+        assert weightIncreaseUnit != null;
+        assert dIncreaseSpinner != null;
+
         if (imperial) {
             weightUnit.setText(R.string.weight_imperial_unit);
             weightIncreaseUnit.setText(R.string.weight_imperial_unit);
@@ -297,7 +316,144 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         }
     }
 
-    public void finish() {
+    private long persistExercise() {
+        Exercise exercise = new Exercise();
 
+        EditText titleEdit = (EditText) findViewById(R.id.edit_title);
+        assert titleEdit != null;
+        exercise.setName(titleEdit.getText().toString());
+
+        if (imperialToggle.isChecked()) {
+            exercise.setImperialUnits();
+        }
+        else {
+            exercise.setMetricUnits();
+        }
+
+        for (MeasurementCategory unitCategory: MeasurementCategory.values()) {
+            ToggleButton trackedToggle = (ToggleButton) unitViews.get(unitCategory.value()).get(0);
+            if (trackedToggle.isChecked()) {
+                exercise.trackNewMeasurementCategory(unitCategory);
+                switch (unitCategory) {
+                    case REPS:
+                        EditText startingRepsText = (EditText) findViewById(R.id.repsEditStartingMeasurement);
+                        assert startingRepsText != null;
+                        int startingReps = Integer.valueOf(startingRepsText.getText().toString());
+                        try {
+                            exercise.setTrackedMeasurementValue(MeasurementCategory.REPS, startingReps);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case WEIGHT:
+                        EditText startingWeightText = (EditText) findViewById(R.id.weightEditStartingMeasurement);
+                        assert startingWeightText != null;
+                        float startingWeight = Float.valueOf(startingWeightText.getText().toString());
+                        try {
+                            exercise.setTrackedMeasurementValue(MeasurementCategory.WEIGHT, startingWeight);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case DISTANCE:
+                        EditText startingDistanceText = (EditText) findViewById(R.id.distanceEditStartingMeasurement);
+                        assert startingDistanceText != null;
+                        float startingDistance = Float.valueOf(startingDistanceText.getText().toString());
+                        try {
+                            exercise.setTrackedMeasurementValue(MeasurementCategory.DISTANCE, startingDistance);
+                            //exercise.setTrackedMeasurementUnit(MeasurementCategory.DISTANCE, Unit.KILOMETERS);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case TIME:
+                        EditText hoursText = (EditText) findViewById(R.id.timeHourEdittext);
+                        EditText minutesText = (EditText) findViewById(R.id.timeMinuteEdittext);
+                        EditText secondsText = (EditText) findViewById(R.id.timeSecondEdittext);
+                        assert hoursText != null;
+                        assert minutesText != null;
+                        assert secondsText != null;
+                        float hours = Float.valueOf(hoursText.getText().toString());
+                        float minutes = Float.valueOf(minutesText.getText().toString());
+                        float seconds = Float.valueOf(secondsText.getText().toString());
+                        float timeInSeconds = 3600*hours + 60*minutes + seconds;
+                        try {
+                            exercise.setTrackedMeasurementValue(MeasurementCategory.TIME, timeInSeconds);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+            }
+        }
+
+        for (MeasurementCategory unitCategory: MeasurementCategory.values()) {
+            ToggleButton targetToggle = (ToggleButton) unitViews.get(unitCategory.value()).get(2);
+            if (targetToggle.isChecked()) {
+                switch (unitCategory) {
+                    case REPS:
+                        EditText repsIncreaseText = (EditText) findViewById(R.id.editRepsIncreasePerSession);
+                        assert repsIncreaseText != null;
+                        int increaseReps = Integer.valueOf(repsIncreaseText.getText().toString());
+                        try {
+                            exercise.setGoalIncrease(MeasurementCategory.REPS, increaseReps);
+                            exercise.setCategoryToIncrement(MeasurementCategory.REPS);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case WEIGHT:
+                        EditText weightIncreaseText = (EditText) findViewById(R.id.editWeightIncreasePerSession);
+                        assert weightIncreaseText != null;
+                        float increaseWeight = Float.valueOf(weightIncreaseText.getText().toString());
+                        try {
+                            exercise.setGoalIncrease(MeasurementCategory.WEIGHT, increaseWeight);
+                            exercise.setCategoryToIncrement(MeasurementCategory.WEIGHT);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case DISTANCE:
+                        EditText distanceIncreaseText = (EditText) findViewById(R.id.editDistanceIncreasePerSession);
+                        assert distanceIncreaseText != null;
+                        float increaseDistance = Float.valueOf(distanceIncreaseText.getText().toString());
+                        try {
+                            exercise.setGoalIncrease(MeasurementCategory.DISTANCE, increaseDistance);
+                            exercise.setCategoryToIncrement(MeasurementCategory.DISTANCE);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case TIME:
+                        EditText minutesText = (EditText) findViewById(R.id.timeIncreaseMinuteEdittext);
+                        EditText secondsText = (EditText) findViewById(R.id.timeIncreaseSecondEdittext);
+                        assert minutesText != null;
+                        assert secondsText != null;
+                        float minutes = Float.valueOf(minutesText.getText().toString());
+                        float seconds = Float.valueOf(secondsText.getText().toString());
+                        float timeInSeconds = 60*minutes + seconds;
+                        try {
+                            exercise.setGoalIncrease(MeasurementCategory.TIME, timeInSeconds);
+                            exercise.setCategoryToIncrement(MeasurementCategory.TIME);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+            }
+        }
+
+        DatabaseHelper db = new DatabaseHelper(this);
+        long exerciseId = db.addExercise(exercise, true);
+        db.close();
+        return exerciseId;
+    }
+
+    public void persistExerciseAndFinish() {
+        long newExerciseId = persistExercise();
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(DatabaseHelper.EXERCISE_ID_NAME, newExerciseId);
+        setResult(RESULT_OK, returnIntent);
+        finish();
     }
 }

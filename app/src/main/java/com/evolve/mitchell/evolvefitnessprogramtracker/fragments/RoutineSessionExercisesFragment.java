@@ -91,7 +91,7 @@ public class RoutineSessionExercisesFragment extends Fragment {
 
         // Display the empty view if there are no exercises in the Routine Session
         TextView emptyView = (TextView) view.findViewById(R.id.empty_view_active_exercise_sessions);
-        if (mRoutineSession.getExerciseCount() == 0){
+        if (mRoutineSession == null || mRoutineSession.getExerciseCount() == 0){
             mRecyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         }
@@ -109,6 +109,7 @@ public class RoutineSessionExercisesFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mFragmentInteractionListener = (OnFragmentInteractionListener) context;
+            mFragmentInteractionListener.setFragmentRoutineSession();
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -142,6 +143,6 @@ public class RoutineSessionExercisesFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void exerciseSessionSelected(int position);
-        void setFragmentRoutineSession(RoutineSession routineSession);
+        void setFragmentRoutineSession();
     }
 }

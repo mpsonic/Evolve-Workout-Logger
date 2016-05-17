@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="ButtonEditText">
+        <attr name="activated" format="boolean"/>
+        <attr name="increment" format="float"/>
+    </declare-styleable>
+</resources>

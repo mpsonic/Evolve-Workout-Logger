@@ -408,7 +408,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="number"
                             android:ems="10"
-                            android:id="@+id/editRepsIncreasePerSession" />
+                            android:id="@+id/editRepsIncreasePerSession"
+                            android:layout_gravity="center_horizontal" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -426,7 +427,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="number"
                             android:ems="10"
-                            android:id="@+id/editWeightIncreasePerSession" />
+                            android:id="@+id/editWeightIncreasePerSession"
+                            android:layout_gravity="center_horizontal" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -444,7 +446,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="number"
                             android:ems="10"
-                            android:id="@+id/editDistanceIncreasePerSession" />
+                            android:id="@+id/editDistanceIncreasePerSession"
+                            android:layout_gravity="center_horizontal" />
                         <Spinner
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

@@ -11,6 +11,9 @@
     <string name="title_activity_start_routine">Start Routine</string>
     <string name="title_activity_my_routines">My Routines</string>
     <string name="title_activity_active_routine_session">Active Routine Session</string>
+    <string name="title_activity_add_exercise">Add Exercise</string>
+    <string name="title_activity_create_routine">CreateRoutine</string>
+    <string name="title_activity_create_exercise">CreateExercise</string>
 
     <string name="button_start_new_routine">Start New Routine</string>
     <string name="button_add_new_routine">Add New Routine</string>
@@ -22,11 +25,8 @@
     <string name="active_routine_session_date">1/1/1</string>
     <string name="active_routine_session_notes_title">Notes</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_test">TestActivity</string>
-    <string name="title_activity_create_routine">CreateRoutine</string>
     <string name="text_button_add_exercise">Add Exercise</string>
-    <string name="title_activity_create_exercise">CreateExercise</string>
+
 
     <!-- Create Exercise Activity Strings -->
     <string name="units_layout_title">Unit System</string>
@@ -52,5 +52,10 @@
     <string name="minutes_edittext_hint">mm</string>
     <string name="seconds_edittext_hint">ss</string>
     <string name="title_edittext_hint">Title</string>
+
+    <string name="button_create_new_exercise_text">Create New Exercise</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="text_no_saved_exercises">No Saved Exercises</string>
 
 </resources>

@@ -20,6 +20,4 @@
 
     <include layout="@layout/content_create_routine" />
 
-
-
 </android.support.design.widget.CoordinatorLayout>

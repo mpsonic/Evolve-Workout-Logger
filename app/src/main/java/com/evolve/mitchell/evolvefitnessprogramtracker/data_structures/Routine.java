@@ -35,6 +35,10 @@ public class Routine {
         return mName;
     }
 
+    public String getDescription() {
+        return mDescription;
+    }
+
 
     public void setId(long id) {
         mId = id;
@@ -42,7 +46,12 @@ public class Routine {
 
 
     public void setName(String name) {
-        this.mName = name;
+        mName = name;
+    }
+
+
+    public void setDescription(String description) {
+        mDescription = description;
     }
 
 
@@ -89,6 +98,7 @@ public class Routine {
 
     // Private
     private String mName;
+    private String mDescription;
     private long mId;
     private boolean mPercentageMode;
     private ArrayList<Exercise> mExerciseList;
