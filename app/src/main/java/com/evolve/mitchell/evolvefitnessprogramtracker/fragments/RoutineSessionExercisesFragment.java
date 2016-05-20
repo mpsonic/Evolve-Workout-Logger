@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,9 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerVi
 public class RoutineSessionExercisesFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerViewRoutineSessionAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private static final String TAG = RoutineSessionExercisesFragment.class.getSimpleName();
 
 
     private OnFragmentInteractionListener mFragmentInteractionListener;
@@ -51,18 +53,21 @@ public class RoutineSessionExercisesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_routine_session_exercises, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_active_routine_session);
@@ -106,6 +111,7 @@ public class RoutineSessionExercisesFragment extends Fragment {
     // OnFragmentInteractionListener interface
     @Override
     public void onAttach(Context context) {
+        Log.d(TAG, "onAttach");
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mFragmentInteractionListener = (OnFragmentInteractionListener) context;
@@ -118,16 +124,19 @@ public class RoutineSessionExercisesFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        Log.d(TAG, "onDetach");
         super.onDetach();
         mFragmentInteractionListener = null;
     }
 
 
     public void onItemSelected(int position){
+        Log.d(TAG, "onItemSelected("+ position +")");
         mFragmentInteractionListener.exerciseSessionSelected(position);
     }
 
     public void setRoutineSession(RoutineSession routineSession){
+        Log.d(TAG, "setRoutineSession");
         mRoutineSession = routineSession;
     }
 

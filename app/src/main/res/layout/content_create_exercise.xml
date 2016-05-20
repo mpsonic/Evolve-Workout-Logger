@@ -166,6 +166,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:orientation="horizontal">
+
                             <EditText
                                 android:layout_width="@dimen/number_edittext_width"
                                 android:layout_height="match_parent"
@@ -409,7 +410,8 @@
                             android:inputType="number"
                             android:ems="10"
                             android:id="@+id/editRepsIncreasePerSession"
-                            android:layout_gravity="center_horizontal" />
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -428,7 +430,8 @@
                             android:inputType="number"
                             android:ems="10"
                             android:id="@+id/editWeightIncreasePerSession"
-                            android:layout_gravity="center_horizontal" />
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -447,7 +450,8 @@
                             android:inputType="number"
                             android:ems="10"
                             android:id="@+id/editDistanceIncreasePerSession"
-                            android:layout_gravity="center_horizontal" />
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center" />
                         <Spinner
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

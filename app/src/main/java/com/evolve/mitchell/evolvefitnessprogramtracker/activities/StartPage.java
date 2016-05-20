@@ -11,14 +11,8 @@ import android.widget.Button;
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.DatabaseHelper;
 
-
 public class StartPage extends AppCompatActivity {
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    //private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +78,11 @@ public class StartPage extends AppCompatActivity {
 
     public void handleButtonClick(View view) {
         Button button = (Button) view;
+        Intent intent;
         switch (button.getId()) {
             case R.id.button_start_routine:
                 // Switch to the start routine activity
-                Intent intent = new Intent(this, StartRoutine.class);
+                intent = new Intent(this, StartRoutine.class);
                 startActivity(intent);
                 break;
         }

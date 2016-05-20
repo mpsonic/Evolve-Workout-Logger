@@ -5,6 +5,9 @@ import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,25 +23,28 @@ public class ButtonEditText extends LinearLayout {
     private boolean mActivated = false;
     private float mIncrement = 1;
     private float mNumber = 0;
+    private boolean mIsInteger;
 
     private EditText mEditText;
+    private ImageButton mMoreButton;
+    private ImageButton mLessButton;
 
     public ButtonEditText(Context context) {
         super(context);
-        init(null, 0);
+        init(context, null, 0);
     }
 
     public ButtonEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs, 0);
+        init(context, attrs, 0);
     }
 
     public ButtonEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(attrs, defStyle);
+        init(context, attrs, defStyle);
     }
 
-    private void init(AttributeSet attrs, int defStyle) {
+    private void init(Context context, AttributeSet attrs, int defStyle) {
         // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.ButtonEditText, defStyle, 0);
@@ -49,10 +55,37 @@ public class ButtonEditText extends LinearLayout {
         mIncrement = a.getFloat(
                 R.styleable.ButtonEditText_increment,
                 mIncrement);
+        mNumber = a.getFloat(
+                R.styleable.ButtonEditText_default_number,
+                mNumber);
+        int mode = a.getInteger(R.styleable.ButtonEditText_mode, 1);
+        mIsInteger = (mode == 0);
 
         a.recycle();
 
-        mEditText = (EditText) findViewById(R.id.number_edit_text);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.component_button_edit_text, this, true);
+
+        mEditText = (EditText) this.findViewById(R.id.number_edit_text);
+        mMoreButton = (ImageButton) this.findViewById(R.id.button_more);
+        mLessButton = (ImageButton) this.findViewById(R.id.button_less);
+        assert mEditText != null;
+        assert mMoreButton != null;
+        assert mLessButton != null;
+
+        LayoutParams params = new LinearLayout.LayoutParams(context, attrs);
+        int pixelHeight = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                R.dimen.clickable_target_dim,
+                getResources().getDisplayMetrics());
+        params.height = pixelHeight;
+        setLayoutParams(params);
+        setGravity(Gravity.CENTER_VERTICAL);
+
+        if (mIsInteger) {
+            mNumber = Math.round(mNumber);
+        }
+        mEditText.setText(getNumberString());
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -63,22 +96,43 @@ public class ButtonEditText extends LinearLayout {
                 mNumber = Float.valueOf(mEditText.getText().toString());
             }
         });
+
+        mMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleButtonClick(v);
+            }
+        });
+
+        mLessButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleButtonClick(v);
+            }
+        });
     }
 
     private void handleButtonClick(View view) {
         ImageButton button = (ImageButton) view;
         EditText editText = (EditText) findViewById(R.id.number_edit_text);
-        float edittextNum = Float.valueOf(editText.getText().toString());
         switch (button.getId()) {
             case R.id.button_less:
-                edittextNum = edittextNum - mIncrement;
-                editText.setText(String.valueOf(edittextNum));
+                mNumber -= mIncrement;
+                editText.setText(getNumberString());
                 break;
             case R.id.button_more:
-                edittextNum = edittextNum + mIncrement;
-                editText.setText(String.valueOf(edittextNum));
+                mNumber += mIncrement;
+                editText.setText(getNumberString());
                 break;
         }
+    }
+
+    public String getNumberString() {
+        if (mIsInteger) {
+            int intNum = (int) mNumber;
+            return String.valueOf(intNum);
+        }
+        return String.valueOf(mNumber);
     }
 
     /**

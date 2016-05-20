@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <!--Start Page-->
+        <!-- Start Page -->
         <activity
             android:name=".activities.StartPage"
             android:label="@string/app_name"
@@ -26,57 +26,57 @@
             </intent-filter>
         </activity>
 
-        <!--Start Routine-->
+        <!-- Start Routine -->
         <activity
             android:name=".activities.StartRoutine"
             android:label="@string/title_activity_start_routine"
             android:launchMode="singleTop" />
 
-        <!--My Routines-->
+        <!-- My Routines -->
         <activity
             android:name=".activities.MyRoutines"
             android:label="@string/title_activity_my_routines" />
 
-        <!--Active Routine Session-->
+        <!-- Active Routine Session -->
         <activity
             android:name=".activities.ActiveRoutineSession"
             android:label="@string/title_activity_active_routine_session"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:parentActivityName=".activities.ActiveRoutineSession">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.evolve.mitchell.evolvefitnessprogramtracker.activities.ActiveRoutineSession">
-            </meta-data>
+                android:value="com.evolve.mitchell.evolvefitnessprogramtracker.activities.ActiveRoutineSession"/>
         </activity>
 
-        <!--Create Routine-->
+        <!-- Create Routine -->
         <activity
             android:name=".activities.CreateRoutine"
             android:label="@string/title_activity_create_routine"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:parentActivityName=".activities.StartRoutine">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.StartRoutine">
-            </meta-data>
+                android:value=".activities.StartRoutine"/>
         </activity>
 
-        <!--Add Exercise-->
-        <activity android:name=".activities.AddExercise"
+        <!-- Add Exercise -->
+        <activity
+            android:name=".activities.AddExercise"
             android:label="@string/title_activity_add_exercise"
-            android:launchMode="singleTop">
-        </activity>
+            android:launchMode="singleTop"/>
 
-        <!--Create Exercise-->
+        <!-- Create Exercise -->
         <activity
             android:name=".activities.CreateExercise"
             android:label="@string/title_activity_create_exercise"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".activities.AddExercise">
+            android:parentActivityName=".activities.AddExercise"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.AddExercise">
-            </meta-data>
+                android:value=".activities.AddExercise"/>
         </activity>
 
         <!--
@@ -86,6 +86,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

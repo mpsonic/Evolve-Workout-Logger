@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent">
+
+        <EditText
+            android:id="@+id/edit_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginEnd="@dimen/text_margin"
+            android:layout_marginBottom="16dp"
+            android:gravity="top"
+            android:hint="@string/hint_notes"
+            android:textSize="@dimen/font_size_description"
+            android:inputType="textCapSentences|textMultiLine|textAutoComplete"
+            android:minLines="5"/>
+</merge>

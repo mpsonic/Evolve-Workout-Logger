@@ -15,39 +15,8 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_height="80dp"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="72dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
-        app:hintTextAppearance="@style/AppTheme.HintTextAppearance">
+    <include layout="@layout/component_title_edittext"/>
 
-        <EditText
-            android:id="@+id/edit_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textSize="32sp" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_marginLeft="72dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        app:hintTextAppearance="@style/AppTheme.HintTextAppearance">
-
-        <EditText
-            android:id="@+id/edit_description"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Description"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-    </android.support.design.widget.TextInputLayout>
+    <include layout="@layout/component_description_edittext"/>
 
 </android.support.design.widget.AppBarLayout>

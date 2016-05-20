@@ -2,5 +2,10 @@
     <declare-styleable name="ButtonEditText">
         <attr name="activated" format="boolean"/>
         <attr name="increment" format="float"/>
+        <attr name="default_number" format="float"/>
+        <attr name="mode" format="enum">
+            <enum name="integer" value="0"/>
+            <enum name="decimal" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>

@@ -1,6 +1,7 @@
 package com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class RecyclerViewRoutineSessionAdapter
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder");
         // Create a new exercise-session view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_exercise_session_display, parent, false);
@@ -54,6 +56,7 @@ public class RecyclerViewRoutineSessionAdapter
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder");
         ExerciseSession exerciseSession = mRoutineSession.getExerciseSession(position);
         TextView nameText = holder.mExerciseName;
         ImageView checkmark = holder.mCompletedCheckmark;
@@ -76,6 +79,7 @@ public class RecyclerViewRoutineSessionAdapter
 
     @Override
     public int getItemCount() {
+        Log.d(TAG, "getItemCount");
         return mRoutineSession.getExerciseCount();
     }
 }

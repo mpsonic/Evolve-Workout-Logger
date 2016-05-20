@@ -77,7 +77,10 @@ public class ExerciseSession {
     public int getSetProgress(){
         int numSets = mSetList.size();
         int numSetsCompleted = mCompletedSets;
-        return 100*(numSetsCompleted/numSets);
+        if (numSets != 0) {
+            return 100*(numSetsCompleted/numSets);
+        }
+        return 0;
     }
 
 

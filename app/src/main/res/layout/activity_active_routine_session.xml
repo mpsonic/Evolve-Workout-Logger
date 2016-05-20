@@ -1,84 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.ActiveRoutineSession">
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.ActiveRoutineSession"
-        android:id="@+id/active_routine_session_coordinatorLayout">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/appbar" />
+        <include layout="@layout/appbar"
+            android:id="@+id/app_bar_layout"/>
 
-    </android.support.design.widget.CoordinatorLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/active_routine_session_coordinatorLayout">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <include layout="@layout/content_active_routine_session"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/active_routine_session_date_layout">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/LargeDisplayText"
-                android:text="@string/active_routine_session_date_title"
-                android:id="@+id/active_routine_session_date_title"
-                android:layout_margin="10dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/LargeDisplayText"
-                android:text="@string/active_routine_session_date"
-                android:id="@+id/active_routine_session_date"
-                android:layout_margin="10dp"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentRight="true" />
-
-        </RelativeLayout>
+            android:layout_below="@+id/app_bar_layout"/>
+    </RelativeLayout>
 
 
-        <fragment
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.RoutineSessionExercisesFragment"
-            android:id="@+id/fragment_routine_session_exercises"
-            android:layout_gravity="center_horizontal"
-            tools:layout="@layout/fragment_routine_session_exercises" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/LargeDisplayText"
-            android:text="@string/active_routine_session_notes_title"
-            android:id="@+id/active_routine_session_notes_title"
-            android:paddingTop="30dp"
-            android:layout_margin="10dp" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:id="@+id/active_routine_session_notes"
-            android:layout_margin="10dp" />
-
-        <!-- TODO: Add a "finish routine" button to the bottom of the activity -->
-    </LinearLayout>
-
-
-
-
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
 
 

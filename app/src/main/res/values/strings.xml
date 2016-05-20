@@ -57,5 +57,8 @@
     <string name="minus">-</string>
     <string name="plus">+</string>
     <string name="text_no_saved_exercises">No Saved Exercises</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_notes">My workout notes</string>
 
 </resources>

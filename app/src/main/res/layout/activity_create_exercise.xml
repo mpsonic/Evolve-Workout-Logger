@@ -31,14 +31,7 @@
             android:layout_marginBottom="8dp"
             app:hintTextAppearance="@style/AppTheme.HintTextAppearance">
 
-            <!-- TODO: Resize edittext based on title length -->
-            <EditText
-                android:id="@+id/edit_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/title_edittext_hint"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="32sp" />
+            <include layout="@layout/component_title_edittext"/>
 
         </android.support.design.widget.TextInputLayout>
 

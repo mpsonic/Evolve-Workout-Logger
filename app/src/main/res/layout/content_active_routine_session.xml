@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/active_routine_session_date_layout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/LargeDisplayText"
+                android:text="@string/active_routine_session_date_title"
+                android:id="@+id/active_routine_session_date_title"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/LargeDisplayText"
+                android:text="@string/active_routine_session_date"
+                android:id="@+id/active_routine_session_date"
+                android:layout_margin="10dp"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.RoutineSessionExercisesFragment"
+            android:id="@+id/fragment_routine_session_exercises"
+            android:layout_gravity="center_horizontal"
+            tools:layout="@layout/fragment_routine_session_exercises" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LargeDisplayText"
+            android:text="@string/active_routine_session_notes_title"
+            android:id="@+id/active_routine_session_notes_title"
+            android:paddingTop="30dp"
+            android:layout_marginStart="@dimen/text_margin" />
+
+        <include layout="@layout/component_notes_edittext" />
+
+        <!-- TODO: Add a "finish routine" button to the bottom of the activity -->
+
+    </LinearLayout>
+</ScrollView>
