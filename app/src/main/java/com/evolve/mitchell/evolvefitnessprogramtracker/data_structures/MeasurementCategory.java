@@ -7,13 +7,14 @@ package com.evolve.mitchell.evolvefitnessprogramtracker.data_structures;
  *
  */
 public enum MeasurementCategory {
-    REPS(0),
-    WEIGHT(1),
-    DISTANCE(2),
-    TIME(3);
+    REPS(0, 5),
+    WEIGHT(1, 0),
+    DISTANCE(2, 0),
+    TIME(3, 300);
 
-    MeasurementCategory(int value){
+    MeasurementCategory(int value, float defaultMeasurement){
         mValue = value;
+        mDefaultMeasurement = defaultMeasurement;
     }
 
     public int value(){
@@ -47,6 +48,11 @@ public enum MeasurementCategory {
         return result;
     }
 
+    public float getDefaultMeasurement() {
+        return mDefaultMeasurement;
+    }
+
     // Private
     private final int mValue;
+    private final float mDefaultMeasurement;
 }

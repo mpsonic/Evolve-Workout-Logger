@@ -1,4 +1,15 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
 apply plugin: 'com.android.application'
+
+repositories {
+    maven { url "https://jitpack.io" }
+    mavenCentral()
+}
 
 android {
     compileSdkVersion 23
@@ -33,4 +44,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1@aar'
 }

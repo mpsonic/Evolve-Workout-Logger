@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.DatabaseHelper;
@@ -56,7 +55,7 @@ public class ActiveRoutineSession extends AppCompatActivity
     @Override
     public void exerciseSessionSelected(int position) {
         Log.d(TAG, "exerciseSessionSelected");
-        String message = "Selected Routine " + position;
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Intent i = new Intent(this, ActiveExerciseSession.class);
+        startActivity(i);
     }
 }

@@ -100,6 +100,14 @@ public class Exercise {
         }
     }
 
+    public List<MeasurementCategory> getTrackedMeasurementCategories() {
+        ArrayList<MeasurementCategory> categories = new ArrayList<>(mTrackedMeasurements.size());
+        for (MeasurementData data: mTrackedMeasurements) {
+            categories.add(data.getCategory());
+        }
+        return categories;
+    }
+
 
     // Keep tracked measurements list sorted as measurements are added (max size 4)
     public void trackNewMeasurementCategory(MeasurementCategory measurementCategory){
@@ -153,7 +161,7 @@ public class Exercise {
      * @param value The new value
      * @throws Exception when the type is not being tracked
      */
-    public void setTrackedMeasurementValue(MeasurementCategory category, double value) throws Exception{
+    public void setTrackedMeasurementValue(MeasurementCategory category, float value) throws Exception{
         MeasurementData data = getTrackedMeasurementData(category);
         if (data != null){
             data.setMeasurement(value);
@@ -164,8 +172,8 @@ public class Exercise {
     }
 
 
-    public double getGoalIncrease(MeasurementCategory goalCategory){
-        Pair<MeasurementCategory, Double> categoryIncreasePair;
+    public float getGoalIncrease(MeasurementCategory goalCategory){
+        Pair<MeasurementCategory, Float> categoryIncreasePair;
         for (int i = 0; i < mGoalIncreasesPerSession.size(); i++){
             categoryIncreasePair = mGoalIncreasesPerSession.get(i);
             if (categoryIncreasePair.first == goalCategory){
@@ -176,10 +184,10 @@ public class Exercise {
     }
 
 
-    public void setGoalIncrease(MeasurementCategory goalCategory, double goalIncrease){
+    public void setGoalIncrease(MeasurementCategory goalCategory, float goalIncrease){
         int numGoals = mGoalIncreasesPerSession.size();
-        Pair<MeasurementCategory, Double> oldGoal;
-        Pair<MeasurementCategory, Double> newGoal =
+        Pair<MeasurementCategory, Float> oldGoal;
+        Pair<MeasurementCategory, Float> newGoal =
                 new Pair<>(goalCategory, goalIncrease);
         for (int i = 0; i < numGoals; i++){
             oldGoal = mGoalIncreasesPerSession.get(i);
@@ -195,7 +203,7 @@ public class Exercise {
 
     public double getMeasurementMaximum(MeasurementCategory basisCategory){
         double max = 0;
-        Pair<MeasurementCategory, Double> categoryMaxPair;
+        Pair<MeasurementCategory, Float> categoryMaxPair;
         for (int i = 0; i < mMeasurementMaximums.size(); i++){
             categoryMaxPair = mMeasurementMaximums.get(i);
             if(categoryMaxPair.first == basisCategory){
@@ -206,9 +214,9 @@ public class Exercise {
     }
 
 
-    public void setMeasurementMaximum(MeasurementCategory basisCategory, double newMeasurement){
-        Pair<MeasurementCategory, Double> categoryDoublePair;
-        Pair<MeasurementCategory, Double> newMeasurementBasis =
+    public void setMeasurementMaximum(MeasurementCategory basisCategory, float newMeasurement){
+        Pair<MeasurementCategory, Float> categoryDoublePair;
+        Pair<MeasurementCategory, Float> newMeasurementBasis =
                 new Pair<>(basisCategory, newMeasurement);
         for (int i = 0; i < mMeasurementMaximums.size(); i++){
             categoryDoublePair = mMeasurementMaximums.get(i);
@@ -237,7 +245,7 @@ public class Exercise {
             // Choose to either increment values from last session or not
             if (increment){
                 MeasurementCategory incrementCategory;
-                double increase = getGoalIncrease(mCategoryToIncrement);
+                float increase = getGoalIncrease(mCategoryToIncrement);
                 if (mCategoryToIncrement == null)
                     incrementCategory = mTrackedMeasurements.get(0).getCategory();
                 else
@@ -262,8 +270,8 @@ public class Exercise {
     private List<ExerciseSession> mPreviousExerciseSessions;
 
     // How much the measurement should increase by for each completed session
-    private List<Pair<MeasurementCategory, Double>> mGoalIncreasesPerSession;
+    private List<Pair<MeasurementCategory, Float>> mGoalIncreasesPerSession;
 
     // Use to keep track of highest recorded measurements
-    private List<Pair<MeasurementCategory, Double>> mMeasurementMaximums;
+    private List<Pair<MeasurementCategory, Float>> mMeasurementMaximums;
 }

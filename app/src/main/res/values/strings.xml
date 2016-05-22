@@ -60,5 +60,9 @@
     <string name="hint_description">Description</string>
     <string name="hint_title">Title</string>
     <string name="hint_notes">My workout notes</string>
+    <string name="set_title">Set</string>
+    <string name="start_page_banner">Evolve</string>
+    <string name="component_testing_button_text">Component Testing</string>
+    <string name="start_a_routine_button_text">Start A Routine</string>
 
 </resources>

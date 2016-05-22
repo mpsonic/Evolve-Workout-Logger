@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android" >
-
     <ImageButton
-        android:layout_width="@dimen/clickable_target_dim"
+        android:layout_width="0dp"
         android:layout_height="@dimen/clickable_target_dim"
+        android:layout_weight="0.2"
         android:contentDescription="@string/minus"
+        android:maxWidth="@dimen/clickable_target_dim"
         android:src="@drawable/ic_keyboard_arrow_left_black_36dp"
         style="?android:attr/borderlessButtonStyle"
         android:id="@+id/button_less">
     </ImageButton>
 
     <EditText
+        android:layout_width="0dp"
         android:layout_height="@dimen/number_edittext_height"
-        android:layout_width="@dimen/number_edittext_width"
+        android:layout_weight="0.6"
         android:inputType="numberDecimal"
         android:id="@+id/number_edit_text"
         android:gravity="center_horizontal">
     </EditText>
 
     <ImageButton
-        android:layout_width="@dimen/clickable_target_dim"
+        android:layout_width="0dp"
         android:layout_height="@dimen/clickable_target_dim"
+        android:layout_weight="0.2"
+        android:maxWidth="@dimen/clickable_target_dim"
         android:contentDescription="@string/plus"
         android:src="@drawable/ic_keyboard_arrow_right_black_36dp"
         style="?android:attr/borderlessButtonStyle"

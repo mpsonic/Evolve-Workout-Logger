@@ -28,7 +28,7 @@ public class MeasurementData{
     }
 
 
-    public double getMeasurement(){
+    public float getMeasurement(){
         return mMeasurement;
     }
 
@@ -43,7 +43,7 @@ public class MeasurementData{
     }
 
 
-    public void setMeasurement(double m){
+    public void setMeasurement(float m){
         mMeasurement = m;
     }
 
@@ -73,5 +73,5 @@ public class MeasurementData{
     // Private
     private Unit mUnit;
     private MeasurementCategory mCategory;
-    private double mMeasurement;
+    private float mMeasurement;
 }

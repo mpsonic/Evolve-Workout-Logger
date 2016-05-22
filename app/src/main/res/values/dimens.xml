@@ -5,13 +5,13 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="number_edittext_width">54dp</dimen>
+    <dimen name="number_edittext_width">72dp</dimen>
     <dimen name="number_edittext_height">40dp</dimen>
     <dimen name="edittext_padding">10dp</dimen>
     <dimen name="clickable_target_dim">36dp</dimen>
     <dimen name="font_size_title">32sp</dimen>
     <dimen name="font_size_description">24sp</dimen>
     <dimen name="font_size_notes">24sp</dimen>
-    
+
 
 </resources>

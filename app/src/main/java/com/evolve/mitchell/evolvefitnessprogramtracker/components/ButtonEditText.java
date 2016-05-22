@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,8 +43,10 @@ public class ButtonEditText extends LinearLayout {
         init(context, attrs, defStyle);
     }
 
+
     private void init(Context context, AttributeSet attrs, int defStyle) {
-        // Load attributes
+
+        // Load custom attributes
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.ButtonEditText, defStyle, 0);
 
@@ -66,6 +67,17 @@ public class ButtonEditText extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.component_button_edit_text, this, true);
 
+        LayoutParams params = new LinearLayout.LayoutParams(context, attrs);
+        /*int pixelHeight = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                R.dimen.clickable_target_dim,
+                getResources().getDisplayMetrics());
+        params.height = pixelHeight;
+
+        setLayoutParams(params);*/
+        setGravity(Gravity.CENTER);
+
+        // Get the views
         mEditText = (EditText) this.findViewById(R.id.number_edit_text);
         mMoreButton = (ImageButton) this.findViewById(R.id.button_more);
         mLessButton = (ImageButton) this.findViewById(R.id.button_less);
@@ -73,27 +85,28 @@ public class ButtonEditText extends LinearLayout {
         assert mMoreButton != null;
         assert mLessButton != null;
 
-        LayoutParams params = new LinearLayout.LayoutParams(context, attrs);
-        int pixelHeight = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                R.dimen.clickable_target_dim,
-                getResources().getDisplayMetrics());
-        params.height = pixelHeight;
-        setLayoutParams(params);
-        setGravity(Gravity.CENTER_VERTICAL);
-
         if (mIsInteger) {
             mNumber = Math.round(mNumber);
         }
+
         mEditText.setText(getNumberString());
+
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
                 mNumber = Float.valueOf(mEditText.getText().toString());
+            }
+        });
+
+        mEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                setActivated(hasFocus);
             }
         });
 
@@ -110,6 +123,11 @@ public class ButtonEditText extends LinearLayout {
                 handleButtonClick(v);
             }
         });
+
+        if (!mActivated) {
+            mMoreButton.setVisibility(View.GONE);
+            mLessButton.setVisibility(View.GONE);
+        }
     }
 
     private void handleButtonClick(View view) {
@@ -153,7 +171,14 @@ public class ButtonEditText extends LinearLayout {
     public void setActivated(boolean activated) {
         if (mActivated != activated) {
             mActivated = activated;
-            requestLayout();
+            if (mActivated) {
+                mLessButton.setVisibility(View.VISIBLE);
+                mMoreButton.setVisibility(View.VISIBLE);
+            }
+            else {
+                mLessButton.setVisibility(View.GONE);
+                mMoreButton.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -174,5 +199,13 @@ public class ButtonEditText extends LinearLayout {
      */
     public void setIncrement(float increment) {
         mIncrement = increment;
+    }
+
+    public float getNumber() {
+        return mNumber;
+    }
+
+    public void setNumber(float number) {
+        mNumber = number;
     }
 }

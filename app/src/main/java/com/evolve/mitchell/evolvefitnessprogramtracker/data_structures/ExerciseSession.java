@@ -3,6 +3,7 @@ package com.evolve.mitchell.evolvefitnessprogramtracker.data_structures;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Mitchell on 12/16/2015.
@@ -25,6 +26,7 @@ public class ExerciseSession {
         mDate = Calendar.getInstance().getTime();
         // Fill mSetList based on template from e
         mSetList = new ArrayList<>();
+        mTrackedCategories = e.getTrackedMeasurementCategories();
         mCompleted = false;
         mCurrentSetIndex = 0;
         mCompletedSets = 0;
@@ -71,6 +73,11 @@ public class ExerciseSession {
 
     public int getNumCompletedSets(){
         return mCompletedSets;
+    }
+
+
+    public boolean hasCategory(MeasurementCategory category) {
+        return mTrackedCategories.contains(category);
     }
 
 
@@ -144,7 +151,7 @@ public class ExerciseSession {
 
 
     // Copy info from an old exercise session into this one and increment the appropriate measurement
-    public void copySetInfoAndIncrement(ExerciseSession template, MeasurementCategory incrementCategory, double increment){
+    public void copySetInfoAndIncrement(ExerciseSession template, MeasurementCategory incrementCategory, float increment){
         int numSets = template.getNumSets();
         Set oldSet;
         for (int i = 0; i < numSets; i++){
@@ -187,6 +194,7 @@ public class ExerciseSession {
     private long mExerciseId;
     private Date mDate;
     private ArrayList<Set> mSetList;
+    private List<MeasurementCategory> mTrackedCategories;
     private int mCurrentSetIndex;
     private int mCompletedSets;
     private Boolean mCompleted;

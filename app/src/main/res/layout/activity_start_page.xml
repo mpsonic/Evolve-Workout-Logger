@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Evolve"
+        android:text="@string/start_page_banner"
         android:id="@+id/Evolve_logo_text"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -18,7 +18,17 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start A Routine"
+        android:text="@string/component_testing_button_text"
+        android:id="@+id/button_test_components"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/button_start_routine"
+        android:onClick="handleButtonClick" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_a_routine_button_text"
         android:id="@+id/button_start_routine"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

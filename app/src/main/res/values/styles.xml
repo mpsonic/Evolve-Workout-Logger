@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme.Base"></style>
+    <style name="AppTheme" parent="AppTheme.Base"/>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -23,10 +23,28 @@
         <item name="actionBarSize">@dimen/app_bar_height</item>
     </style>
 
-    <style name="LargeDisplayText" parent="TextAppearance.AppCompat.Display1"></style>
+    <style name="LargeDisplayText" parent="TextAppearance.AppCompat.Display1"/>
+    <style name="MediumDisplayText">
+        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
 
     <style name="AppTheme.HintTextAppearance" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textColor">@color/accent_green</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:background">@color/light_shade_3</item>
+    </style>
+
+    <style name="Divider.Horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
+    <style name="Divider.Vertical">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">1dp</item>
     </style>
 
 </resources>

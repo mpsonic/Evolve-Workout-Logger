@@ -18,8 +18,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/app_bar_layout"/>
     </RelativeLayout>
-
-
 </android.support.design.widget.CoordinatorLayout>
 
 

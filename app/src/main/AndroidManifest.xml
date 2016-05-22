@@ -42,11 +42,11 @@
             android:name=".activities.ActiveRoutineSession"
             android:label="@string/title_activity_active_routine_session"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:parentActivityName=".activities.ActiveRoutineSession">
+            android:parentActivityName=".activities.ActiveRoutineSession"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.evolve.mitchell.evolvefitnessprogramtracker.activities.ActiveRoutineSession"/>
+                android:value="com.evolve.mitchell.evolvefitnessprogramtracker.activities.ActiveRoutineSession" />
         </activity>
 
         <!-- Create Routine -->
@@ -54,29 +54,29 @@
             android:name=".activities.CreateRoutine"
             android:label="@string/title_activity_create_routine"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:parentActivityName=".activities.StartRoutine">
+            android:parentActivityName=".activities.StartRoutine"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.StartRoutine"/>
+                android:value=".activities.StartRoutine" />
         </activity>
 
         <!-- Add Exercise -->
         <activity
             android:name=".activities.AddExercise"
             android:label="@string/title_activity_add_exercise"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
         <!-- Create Exercise -->
         <activity
             android:name=".activities.CreateExercise"
             android:label="@string/title_activity_create_exercise"
             android:parentActivityName=".activities.AddExercise"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.AddExercise"/>
+                android:value=".activities.AddExercise" />
         </activity>
 
         <!--
@@ -87,6 +87,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity android:name=".activities.ComponentTesting" />
+        <activity android:name=".activities.ActiveExerciseSession"/>
     </application>
 
 </manifest>

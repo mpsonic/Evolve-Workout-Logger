@@ -85,6 +85,10 @@ public class StartPage extends AppCompatActivity {
                 intent = new Intent(this, StartRoutine.class);
                 startActivity(intent);
                 break;
+            case R.id.button_test_components:
+                intent = new Intent(this, ComponentTesting.class);
+                startActivity(intent);
+                break;
         }
     }
 }
