@@ -45,7 +45,7 @@ public class StartRoutine extends AppCompatActivity implements
         toast.show();*/
 
         Intent i = new Intent(this, ActiveRoutineSession.class);
-        i.putExtra(DatabaseHelper.ROUTINE_ID_NAME, id);
+        i.putExtra(DatabaseHelper.KEY_ROUTINE_NAME, id);
         i.putExtra(ActivityEnum.SENDER, ActivityEnum.START_ROUTINE);
         startActivity(i);
         finish();

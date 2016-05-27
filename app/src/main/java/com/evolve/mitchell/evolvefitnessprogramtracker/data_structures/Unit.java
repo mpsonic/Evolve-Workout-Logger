@@ -39,6 +39,46 @@ public enum Unit {
         return mImperial;
     }
 
+    public static Unit getFromName(String name) {
+        Unit result = null;
+        switch (name) {
+            case "REPS":
+                result = REPS;
+                break;
+            case "KILOGRAMS":
+                result = KILOGRAMS;
+                break;
+            case "METERS":
+                result = METERS;
+                break;
+            case "KILOMETERS":
+                result = KILOMETERS;
+                break;
+            case "POUNDS":
+                result = POUNDS;
+                break;
+            case "FEET":
+                result = FEET;
+                break;
+            case "MILES":
+                result = MILES;
+                break;
+            case "TIME":
+                result = TIME;
+                break;
+            case "SECONDS":
+                result = SECONDS;
+                break;
+            case "MINUTES":
+                result = MINUTES;
+                break;
+            case "HOURS":
+                result = HOURS;
+                break;
+        }
+        return result;
+    }
+
     // Private
     private final boolean mUniversal;
     private final boolean mImperial;

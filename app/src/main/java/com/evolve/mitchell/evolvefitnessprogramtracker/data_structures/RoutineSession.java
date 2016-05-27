@@ -1,8 +1,8 @@
 package com.evolve.mitchell.evolvefitnessprogramtracker.data_structures;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Mitchell on 12/16/2015.
@@ -12,32 +12,56 @@ import java.util.Date;
  */
 public class RoutineSession {
 
+    // Private
+    private Routine mRoutine;
+    private long mId;
+    private Date mDate;
+    private boolean mCompleted;
+    private ArrayList<ExerciseSession> mExerciseSessions;
+
     // Public
-    public RoutineSession(Routine routine){
-        mParentRoutine = routine;
-        mDate = Calendar.getInstance().getTime();
+    public RoutineSession(Routine routine, boolean createExerciseSessions){
+        mRoutine = routine;
+        mId = -1;
+        mDate = new Date(Calendar.getInstance().getTimeInMillis());
         mCompleted = false;
         int numExercises = routine.getNumExercises();
         mExerciseSessions = new ArrayList<>(numExercises);
         boolean increment;
 
-        // Decide whether to increment appropriate values for each exercise session created
-        increment = true;
-        for(int i = 0; i < numExercises; i++){
-            Exercise exercise = routine.getExercise(i);
-            exercise.createNewExerciseSession(increment);
-            mExerciseSessions.add(exercise.getCurrentExerciseSession());
+        if (createExerciseSessions) {
+            Exercise exercise;
+            ExerciseSession exerciseSession;
+            for(int i = 0; i < numExercises; i++){
+                exercise = routine.getExercise(i);
+                exerciseSession = exercise.createNewExerciseSession();
+                mExerciseSessions.add(exerciseSession);
+            }
         }
     }
 
-    public void addExerciseSession(Exercise exercise, boolean addToRoutine){
-        boolean increment = true;
-        exercise.createNewExerciseSession(increment);
-        mExerciseSessions.add(exercise.getCurrentExerciseSession());
-        if(addToRoutine)
-            mParentRoutine.addExercise(exercise);
+    public void setId(long id) {
+        mId = id;
     }
 
+    public long getId() {
+        return mId;
+    }
+
+    public Routine getRoutine() {
+        return mRoutine;
+    }
+
+    public void addNewExerciseSessionFromExercise(Exercise exercise, boolean addToRoutine){
+        ExerciseSession exerciseSession = exercise.createNewExerciseSession();
+        mExerciseSessions.add(exerciseSession);
+        if(addToRoutine)
+            mRoutine.addExercise(exercise);
+    }
+
+    public void addExerciseSession(ExerciseSession session) {
+        mExerciseSessions.add(session);
+    }
 
     public void removeExerciseSession(int index){
         mExerciseSessions.remove(index);
@@ -73,9 +97,26 @@ public class RoutineSession {
         mCompleted = true;
     }
 
-    // Private
-    private Routine mParentRoutine;
-    private Date mDate;
-    private boolean mCompleted;
-    private ArrayList<ExerciseSession> mExerciseSessions;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        // Objects of the same class?
+        if (!(obj instanceof RoutineSession)) {return false;}
+        RoutineSession other = (RoutineSession) obj;
+        // Do the routine sessions have the same exercise sessions?
+        if (mExerciseSessions.size() != other.mExerciseSessions.size()){
+            return false;
+        }
+        if (this.isCompleted() != other.isCompleted()) {
+            return false;
+        }
+        for(int i = 0; i < mExerciseSessions.size(); i++){
+            if (!mExerciseSessions.get(i).equals(other.mExerciseSessions.get(i)))
+                return false;
+        }
+        return true;
+    }
 }

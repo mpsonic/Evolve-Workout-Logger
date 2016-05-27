@@ -9,6 +9,11 @@ import java.util.LinkedList;
  */
 public class Set {
 
+    // Private
+    private LinkedList<MeasurementData> mMeasurementList;
+    private float mPercentage;
+    private boolean mCompleted;
+
     // Public
     public Set(){
         mMeasurementList = new LinkedList<>();
@@ -17,13 +22,14 @@ public class Set {
 
 
     // add a new measurement to track in this set
-    public void add_measurement(MeasurementData measurementData){
-        mMeasurementList.add(measurementData);
+    public void addMeasurement(MeasurementData data){
+        deleteMeasurement(data.getCategory());
+        mMeasurementList.add(data);
     }
 
 
     // remove one of the measurements from the set
-    public void delete_measurement(MeasurementCategory category){
+    public void deleteMeasurement(MeasurementCategory category){
         for (MeasurementData data: mMeasurementList) {
             if (data.getCategory() == category) {
                 mMeasurementList.remove(data);
@@ -42,8 +48,8 @@ public class Set {
     }
 
 
-    // take one of the set measurements and increase it by num
-    public void increment_measurement(MeasurementCategory category, float num){
+    // take one of the set measurements and add num to it
+    public void incrementMeasurement(MeasurementCategory category, float num){
         for (MeasurementData data: mMeasurementList) {
             if (data.getCategory() == category) {
                 float measurement = data.getMeasurement();
@@ -53,22 +59,9 @@ public class Set {
         }
     }
 
-    // take one of the set measurements and decrease it by num
-    public void decrement_measurement(MeasurementCategory category, float num){
-        for (MeasurementData data: mMeasurementList) {
-            if (data.getCategory() == category) {
-                float measurement = data.getMeasurement();
-                measurement -= num;
-                data.setMeasurement(measurement);
-            }
-        }
-    }
-
-
     public int getNumMeasurements(){
         return mMeasurementList.size();
     }
-
 
     // get the percentage value
     public float getPercentage(){
@@ -97,11 +90,11 @@ public class Set {
     public void copyMeasurementInfo(Set oldSet){
         final int size = getNumMeasurements();
         for (MeasurementData oldData: oldSet.mMeasurementList) {
-            MeasurementData newData = new MeasurementData();
-            newData.setCategory(oldData.getCategory());
-            newData.setUnit(oldData.getUnit());
-            newData.setMeasurement(oldData.getMeasurement());
-            add_measurement(newData);
+            MeasurementData newData = new MeasurementData(
+                    oldData.getCategory(),
+                    oldData.getMeasurement()
+            );
+            addMeasurement(newData);
         }
     }
 
@@ -110,12 +103,11 @@ public class Set {
         for (MeasurementData oldData: oldSet.mMeasurementList) {
             MeasurementData newData = new MeasurementData();
             newData.setCategory(oldData.getCategory());
-            newData.setUnit(oldData.getUnit());
             if (incrementCategory == oldData.getCategory())
                 newData.setMeasurement(oldData.getMeasurement() + increment);
             else
                 newData.setMeasurement(oldData.getMeasurement());
-            add_measurement(newData);
+            addMeasurement(newData);
         }
     }
 
@@ -140,6 +132,9 @@ public class Set {
         if  (mySize != otherSize)
             return false;
 
+        if (this.isCompleted() != other.isCompleted()) {
+            return false;
+        }
         // is the measurement data identical?
         MeasurementData otherData;
         for (MeasurementData myData: mMeasurementList) {
@@ -149,9 +144,4 @@ public class Set {
         }
         return true;
     }
-
-    // Private
-    private LinkedList<MeasurementData> mMeasurementList;
-    private float mPercentage;
-    private boolean mCompleted;
 }

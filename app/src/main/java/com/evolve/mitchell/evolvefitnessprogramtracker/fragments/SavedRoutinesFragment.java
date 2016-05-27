@@ -55,7 +55,7 @@ public class SavedRoutinesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DatabaseHelper db = new DatabaseHelper(getActivity());
+        DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
         mCursor = db.getRoutinesCursor();
     }
 
@@ -148,7 +148,7 @@ public class SavedRoutinesFragment extends Fragment {
     }
 
     public void refresh() {
-        DatabaseHelper db = new DatabaseHelper(getActivity());
+        DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
         mCursor.close();
         mCursor = db.getRoutinesCursor();
         mAdapter.setCursor(mCursor);

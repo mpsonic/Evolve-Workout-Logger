@@ -21,6 +21,25 @@ public enum MeasurementCategory {
         return mValue;
     }
 
+    public static MeasurementCategory getFromName(String name) {
+        MeasurementCategory category = null;
+        switch (name) {
+            case "REPS":
+                category = REPS;
+                break;
+            case "WEIGHT":
+                category = WEIGHT;
+            break;
+            case "DISTANCE":
+                category = DISTANCE;
+            break;
+            case "TIME":
+                category = TIME;
+            break;
+        }
+        return category;
+    }
+
     public Unit getDefaultUnit(boolean imperial){
         Unit result;
         switch (mValue){

@@ -22,7 +22,7 @@ public class StartPage extends AppCompatActivity {
         Runnable cleanDatabases = new Runnable() {
             @Override
             public void run() {
-                DatabaseHelper db = new DatabaseHelper(getBaseContext());
+                DatabaseHelper db = DatabaseHelper.getInstance(getBaseContext());
                 db.cleanDatabases();
                 db.close();
             }

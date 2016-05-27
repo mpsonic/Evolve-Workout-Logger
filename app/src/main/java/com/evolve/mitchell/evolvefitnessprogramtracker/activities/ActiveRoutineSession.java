@@ -16,7 +16,6 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.fragments.RoutineSessionE
 public class ActiveRoutineSession extends AppCompatActivity
         implements RoutineSessionExercisesFragment.OnFragmentInteractionListener{
 
-    private long mRoutineId;
     private Routine mRoutine;
     private RoutineSession mRoutineSession;
     private static final String TAG = ActiveRoutineSession.class.getSimpleName();
@@ -28,13 +27,14 @@ public class ActiveRoutineSession extends AppCompatActivity
 
         // Store the routine id so that it can be retrieved from the database
         Intent intent = getIntent();
-        mRoutineId = intent.getLongExtra(DatabaseHelper.ROUTINE_ID_NAME, -1);
+        String routineName = intent.getStringExtra(DatabaseHelper.KEY_ROUTINE_NAME);
 
         // Get the routine and create a new routine session
-        DatabaseHelper db = new DatabaseHelper(this);
-        mRoutine = db.getRoutine(mRoutineId);
-        mRoutine.createNewRoutineSession();
-        mRoutineSession = mRoutine.getCurrentRoutineSession();
+        DatabaseHelper db = DatabaseHelper.getInstance(this);
+        mRoutine = db.getRoutine(routineName);
+        mRoutineSession = mRoutine.createNewRoutineSession();
+
+        db.insertRoutineSession(mRoutineSession);
 
         setContentView(R.layout.activity_active_routine_session);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

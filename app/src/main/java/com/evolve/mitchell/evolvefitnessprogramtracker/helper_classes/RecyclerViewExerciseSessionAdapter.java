@@ -31,10 +31,6 @@ public class RecyclerViewExerciseSessionAdapter extends RecyclerView.Adapter<Rec
         public TextView mSetNumber;
         public List<FrameLayout> mMeasurementLayouts;
         public List<ButtonEditText> mButtonEditTexts;
-        public ButtonEditText mRepsEdit;
-        public ButtonEditText mWeightEdit;
-        public ButtonEditText mDistanceEdit;
-        public ButtonEditText mTimeEdit;
 
         public ViewHolder(View v){
             super(v);

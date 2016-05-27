@@ -12,19 +12,13 @@ public class MeasurementData{
 
     // Public
     public MeasurementData(){}
-    public MeasurementData(MeasurementCategory category, Unit unit, int measurement){
+    public MeasurementData(MeasurementCategory category, float measurement){
         mCategory = category;
-        mUnit = unit;
         mMeasurement = measurement;
     }
 
     public MeasurementCategory getCategory(){
         return mCategory;
-    }
-
-
-    public Unit getUnit(){
-        return mUnit;
     }
 
 
@@ -38,18 +32,12 @@ public class MeasurementData{
     }
 
 
-    public void setUnit(Unit u){
-        mUnit = u;
-    }
-
-
     public void setMeasurement(float m){
         mMeasurement = m;
     }
 
 
     public void copyData(MeasurementData other){
-        mUnit = other.mUnit;
         mCategory = other.mCategory;
         mMeasurement = other.mMeasurement;
     }
@@ -65,13 +53,10 @@ public class MeasurementData{
         if (getClass() != obj.getClass())
             return false;
         MeasurementData other = (MeasurementData) obj;
-        if (mUnit != other.getUnit())
-            return false;
         return mCategory == other.mCategory && mMeasurement == other.mMeasurement;
     }
 
     // Private
-    private Unit mUnit;
     private MeasurementCategory mCategory;
     private float mMeasurement;
 }

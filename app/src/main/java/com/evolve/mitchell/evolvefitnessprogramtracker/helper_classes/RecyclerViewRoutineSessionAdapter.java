@@ -61,7 +61,7 @@ public class RecyclerViewRoutineSessionAdapter
         TextView nameText = holder.mExerciseName;
         ImageView checkmark = holder.mCompletedCheckmark;
         ProgressBar progressBar = holder.mProgressBar;
-        String exerciseName = exerciseSession.getName();
+        String exerciseName = exerciseSession.getExerciseName();
         int progress = exerciseSession.getSetProgress();
 
         nameText.setText(exerciseName);

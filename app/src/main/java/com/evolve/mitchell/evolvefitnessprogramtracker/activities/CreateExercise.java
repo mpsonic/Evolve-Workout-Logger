@@ -316,7 +316,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         }
     }
 
-    private long persistExercise() {
+    private String persistExercise() {
         Exercise exercise = new Exercise();
 
         EditText titleEdit = (EditText) findViewById(R.id.edit_title);
@@ -340,7 +340,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         assert startingRepsText != null;
                         int startingReps = Integer.valueOf(startingRepsText.getText().toString());
                         try {
-                            exercise.setTrackedMeasurementValue(MeasurementCategory.REPS, startingReps);
+                            exercise.setInitialMeasurementValue(MeasurementCategory.REPS, startingReps);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -350,7 +350,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         assert startingWeightText != null;
                         float startingWeight = Float.valueOf(startingWeightText.getText().toString());
                         try {
-                            exercise.setTrackedMeasurementValue(MeasurementCategory.WEIGHT, startingWeight);
+                            exercise.setInitialMeasurementValue(MeasurementCategory.WEIGHT, startingWeight);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -360,7 +360,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         assert startingDistanceText != null;
                         float startingDistance = Float.valueOf(startingDistanceText.getText().toString());
                         try {
-                            exercise.setTrackedMeasurementValue(MeasurementCategory.DISTANCE, startingDistance);
+                            exercise.setInitialMeasurementValue(MeasurementCategory.DISTANCE, startingDistance);
                             //exercise.setTrackedMeasurementUnit(MeasurementCategory.DISTANCE, Unit.KILOMETERS);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -378,7 +378,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         float seconds = Float.valueOf(secondsText.getText().toString());
                         float timeInSeconds = 3600*hours + 60*minutes + seconds;
                         try {
-                            exercise.setTrackedMeasurementValue(MeasurementCategory.TIME, timeInSeconds);
+                            exercise.setInitialMeasurementValue(MeasurementCategory.TIME, timeInSeconds);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -386,7 +386,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                 }
             }
         }
-
+        float increment = 0;
         for (MeasurementCategory unitCategory: MeasurementCategory.values()) {
             ToggleButton targetToggle = (ToggleButton) unitViews.get(unitCategory.value()).get(2);
             if (targetToggle.isChecked()) {
@@ -394,35 +394,17 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                     case REPS:
                         EditText repsIncreaseText = (EditText) findViewById(R.id.editRepsIncreasePerSession);
                         assert repsIncreaseText != null;
-                        int increaseReps = Integer.valueOf(repsIncreaseText.getText().toString());
-                        try {
-                            exercise.setGoalIncrease(MeasurementCategory.REPS, increaseReps);
-                            exercise.setCategoryToIncrement(MeasurementCategory.REPS);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        increment = Integer.valueOf(repsIncreaseText.getText().toString());
                         break;
                     case WEIGHT:
                         EditText weightIncreaseText = (EditText) findViewById(R.id.editWeightIncreasePerSession);
                         assert weightIncreaseText != null;
-                        float increaseWeight = Float.valueOf(weightIncreaseText.getText().toString());
-                        try {
-                            exercise.setGoalIncrease(MeasurementCategory.WEIGHT, increaseWeight);
-                            exercise.setCategoryToIncrement(MeasurementCategory.WEIGHT);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        increment = Float.valueOf(weightIncreaseText.getText().toString());
                         break;
                     case DISTANCE:
                         EditText distanceIncreaseText = (EditText) findViewById(R.id.editDistanceIncreasePerSession);
                         assert distanceIncreaseText != null;
-                        float increaseDistance = Float.valueOf(distanceIncreaseText.getText().toString());
-                        try {
-                            exercise.setGoalIncrease(MeasurementCategory.DISTANCE, increaseDistance);
-                            exercise.setCategoryToIncrement(MeasurementCategory.DISTANCE);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        increment = Float.valueOf(distanceIncreaseText.getText().toString());
                         break;
                     case TIME:
                         EditText minutesText = (EditText) findViewById(R.id.timeIncreaseMinuteEdittext);
@@ -431,28 +413,23 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         assert secondsText != null;
                         float minutes = Float.valueOf(minutesText.getText().toString());
                         float seconds = Float.valueOf(secondsText.getText().toString());
-                        float timeInSeconds = 60*minutes + seconds;
-                        try {
-                            exercise.setGoalIncrease(MeasurementCategory.TIME, timeInSeconds);
-                            exercise.setCategoryToIncrement(MeasurementCategory.TIME);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        increment = 60*minutes + seconds;
                         break;
                 }
+                exercise.setIncrement(increment);
             }
         }
 
-        DatabaseHelper db = new DatabaseHelper(this);
-        long exerciseId = db.addExercise(exercise, true);
+        DatabaseHelper db = DatabaseHelper.getInstance(this);
+        String exerciseName = db.updateExercise(exercise);
         db.close();
-        return exerciseId;
+        return exerciseName;
     }
 
     public void persistExerciseAndFinish() {
-        long newExerciseId = persistExercise();
+        String exerciseName = persistExercise();
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(DatabaseHelper.EXERCISE_ID_NAME, newExerciseId);
+        returnIntent.putExtra(DatabaseHelper.KEY_EXERCISE_NAME, exerciseName);
         setResult(RESULT_OK, returnIntent);
         finish();
     }

@@ -11,23 +11,19 @@ import java.util.ArrayList;
  */
 public class Routine {
 
+    // Private
+    private String mName;
+    private String mDescription;
+    private ArrayList<Exercise> mExerciseList;
+
     // Public
     public Routine(){
         this.mName = "";
-        this.mPercentageMode = false;
         mExerciseList = new ArrayList<>();
-        mPreviousRoutineSessions = new ArrayList<>();
     }
-    public Routine(String name, boolean percentageMode){
+    public Routine(String name){
         this.mName = name;
-        this.mPercentageMode = percentageMode;
         mExerciseList = new ArrayList<>();
-        mPreviousRoutineSessions = new ArrayList<>();
-    }
-
-
-    public long getId() {
-        return mId;
     }
 
 
@@ -37,11 +33,6 @@ public class Routine {
 
     public String getDescription() {
         return mDescription;
-    }
-
-
-    public void setId(long id) {
-        mId = id;
     }
 
 
@@ -75,33 +66,7 @@ public class Routine {
     }
 
 
-    public boolean isPercentageMode() {
-        return mPercentageMode;
+    public RoutineSession createNewRoutineSession(){
+        return new RoutineSession(this, true);
     }
-
-
-    public void setPercentageMode(boolean mode){
-        mPercentageMode = mode;
-    }
-
-    public RoutineSession getCurrentRoutineSession(){
-        return mCurrentRoutineSession;
-    }
-
-    public void createNewRoutineSession(){
-        if(mCurrentRoutineSession != null) {
-            mPreviousRoutineSessions.add(mCurrentRoutineSession);
-        }
-        mCurrentRoutineSession = new RoutineSession(this);
-    }
-
-
-    // Private
-    private String mName;
-    private String mDescription;
-    private long mId;
-    private boolean mPercentageMode;
-    private ArrayList<Exercise> mExerciseList;
-    private ArrayList<RoutineSession> mPreviousRoutineSessions;
-    private RoutineSession mCurrentRoutineSession;
 }

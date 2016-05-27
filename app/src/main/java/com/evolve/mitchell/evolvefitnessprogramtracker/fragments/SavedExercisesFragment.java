@@ -55,8 +55,8 @@ public class SavedExercisesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DatabaseHelper db = new DatabaseHelper(getActivity());
-        mCursor = db.getExercisesCursor();
+        DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
+        mCursor = db.getExercisesCursor(null);
     }
 
     @Override
@@ -142,20 +142,20 @@ public class SavedExercisesFragment extends Fragment {
         if (mFragmentInteractionListener != null) {
             // Get the Exercise Id based on the position selected
             mCursor.moveToPosition(position);
-            long exerciseId = mCursor.getLong(0);
-            mFragmentInteractionListener.exerciseSelected(exerciseId);
+            String exerciseName = mCursor.getString(0);
+            mFragmentInteractionListener.exerciseSelected(exerciseName);
         }
     }
 
     public void refresh() {
-        DatabaseHelper db = new DatabaseHelper(getActivity());
+        DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
         mCursor.close();
-        mCursor = db.getExercisesCursor();
+        mCursor = db.getExercisesCursor(null);
         mAdapter.setCursor(mCursor);
         mAdapter.notifyDataSetChanged();
     }
 
     public interface OnFragmentInteractionListener {
-        void exerciseSelected(long id);
+        void exerciseSelected(String exerciseName);
     }
 }

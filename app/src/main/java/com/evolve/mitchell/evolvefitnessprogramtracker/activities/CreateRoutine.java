@@ -22,7 +22,6 @@ public class CreateRoutine extends AppCompatActivity
         implements RoutineExercisesFragment.OnFragmentInteractionListener {
 
     private Routine mRoutine;
-    private long mRoutineId;
     private String mTitle;
     private String mDescription;
     private EditText mEditTitle;
@@ -53,13 +52,14 @@ public class CreateRoutine extends AppCompatActivity
 
         mEditTitle = (EditText) findViewById(R.id.edit_title);
         mEditDescription = (EditText) findViewById(R.id.edit_description);
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
 
         // Load the routine that is currently being created
         if (savedInstanceState != null) {
-            mRoutineId = savedInstanceState.getLong(DatabaseHelper.ROUTINE_ID_NAME, -1);
-            if (mRoutineId != -1) {
-                mRoutine = databaseHelper.getRoutine(mRoutineId);
+            char[] temp = savedInstanceState.getCharArray(DatabaseHelper.KEY_ROUTINE_NAME);
+            if (temp != null) {
+                String routineName = String.valueOf(temp);
+                mRoutine = databaseHelper.getRoutine(routineName);
                 mTitle = savedInstanceState.getString(TITLE_STRING);
                 mDescription = savedInstanceState.getString(DESCRIPTION_STRING);
                 mEditTitle.setText(mTitle);
@@ -69,15 +69,6 @@ public class CreateRoutine extends AppCompatActivity
             mRoutine = new Routine();
             //mRoutineId = databaseHelper.addRoutine(mRoutine, false);
         }
-
-        /*// Add an exercise to the routine if another activity specifies it
-        Intent intent = getIntent();
-        long exerciseId = intent.getLongExtra(DatabaseHelper.EXERCISE_ID_NAME, -1);
-        if (exerciseId != -1) {
-            Exercise exercise = databaseHelper.getExercise(exerciseId);
-            mRoutine.addExercise(exercise);
-            databaseHelper.updateRoutine(mRoutine);
-        }*/
 
         FragmentManager fm = getSupportFragmentManager();
         mFragment = (RoutineExercisesFragment) fm.findFragmentById(R.id.fragment_create_routine);
@@ -92,10 +83,10 @@ public class CreateRoutine extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         Log.d(TAG, "onSaveInstanceState()");
-        DatabaseHelper db = new DatabaseHelper(this);
+        DatabaseHelper db = DatabaseHelper.getInstance(this);
         db.updateRoutine(mRoutine);
         db.close();
-        outState.putLong(DatabaseHelper.ROUTINE_ID_NAME, mRoutineId);
+        outState.putString(DatabaseHelper.KEY_ROUTINE_NAME, mRoutine.getName());
         outState.putString(TITLE_STRING, mEditTitle.getText().toString());
         outState.putString(DESCRIPTION_STRING, mEditDescription.getText().toString());
         super.onSaveInstanceState(outState);
@@ -127,13 +118,15 @@ public class CreateRoutine extends AppCompatActivity
     private void persistRoutineAndFinish() {
         Log.d(TAG, "persistRoutineAndFinish()");
         Intent returnIntent = new Intent();
-        long routineId = persistRoutine();
-        returnIntent.putExtra(DatabaseHelper.ROUTINE_ID_NAME, routineId);
-        setResult(Activity.RESULT_OK, returnIntent);
+        boolean routineSaved = persistRoutine();
+        if (routineSaved){
+            returnIntent.putExtra(DatabaseHelper.KEY_ROUTINE_NAME, mRoutine.getName());
+            setResult(Activity.RESULT_OK, returnIntent);
+        }
         finish();
     }
 
-    private long persistRoutine() {
+    private boolean persistRoutine() {
         Log.d(TAG, "persistRoutine");
 
         EditText titleEdit = (EditText) findViewById(R.id.edit_title);
@@ -146,10 +139,10 @@ public class CreateRoutine extends AppCompatActivity
         mRoutine.setName(title);
         mRoutine.setDescription(description);
 
-        DatabaseHelper db = new DatabaseHelper(this);
-        long id = db.addRoutine(mRoutine, true);
+        DatabaseHelper db = DatabaseHelper.getInstance(this);
+        String routineName = db.insertRoutine(mRoutine, true);
         db.close();
-        return id;
+        return routineName.equals(mRoutine.getName());
     }
 
     @Override
@@ -160,15 +153,14 @@ public class CreateRoutine extends AppCompatActivity
         if (requestCode == ResponseCodes.NEW_EXERCISE.getValue()) {
             if (resultCode == Activity.RESULT_OK) {
                 // Add selected exercise to routine
-                long exerciseId = data.getLongExtra(DatabaseHelper.EXERCISE_ID_NAME, -1);
-                DatabaseHelper db = new DatabaseHelper(this);
-                Exercise exercise = db.getExercise(exerciseId);
+                String exerciseName = data.getStringExtra(DatabaseHelper.KEY_EXERCISE_NAME);
+                DatabaseHelper db = DatabaseHelper.getInstance(this);
+                Exercise exercise = db.getExercise(exerciseName);
                 db.close();
                 mRoutine.addExercise(exercise);
                 mFragment.refresh();
                 fab.show();
             }
         }
-
     }
 }

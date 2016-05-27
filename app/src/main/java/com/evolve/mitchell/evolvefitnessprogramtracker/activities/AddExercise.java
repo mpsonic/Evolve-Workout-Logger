@@ -42,9 +42,9 @@ public class AddExercise extends AppCompatActivity
     }
 
     @Override
-    public void exerciseSelected(long id) {
+    public void exerciseSelected(String exerciseName) {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(DatabaseHelper.EXERCISE_ID_NAME, id);
+        returnIntent.putExtra(DatabaseHelper.KEY_EXERCISE_NAME, exerciseName);
         setResult(RESULT_OK, returnIntent);
         finish();
     }

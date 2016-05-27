@@ -1,9 +1,8 @@
 package com.evolve.mitchell.evolvefitnessprogramtracker.data_structures;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Mitchell on 12/16/2015.
@@ -13,49 +12,72 @@ import java.util.List;
  */
 public class ExerciseSession {
 
+    // Private
+    private Exercise mExercise;
+    private int mId;
+    private Date mDate;
+    private ArrayList<Set> mSetList;
+    private int mCurrentSetIndex;
+    private int mCompletedSets;
+    private Boolean mCompleted;
+
+
     // Public
-    public ExerciseSession(){
-        mDate = Calendar.getInstance().getTime();
+    public ExerciseSession(Exercise exercise, boolean createSets){
+        mExercise = exercise;
+        mId = -1;
+        mDate = new Date(Calendar.getInstance().getTimeInMillis());
         mSetList = new ArrayList<>();
-        mBaseSetMeasurements = new ArrayList<>();
-        mCompleted = false;
-    }
-    public ExerciseSession(Exercise e){
-        mExerciseName = e.getName();
-        mExerciseId = e.getId();
-        mDate = Calendar.getInstance().getTime();
-        // Fill mSetList based on template from e
-        mSetList = new ArrayList<>();
-        mTrackedCategories = e.getTrackedMeasurementCategories();
         mCompleted = false;
         mCurrentSetIndex = 0;
         mCompletedSets = 0;
-        mBaseSetMeasurements = new ArrayList<>(4);
-        MeasurementData trackedData;
-        for (int i = 0; i < e.getNumTrackedMeasurements(); i++){
-            try{
-                trackedData = e.getTrackedMeasurementData(i);
-                mBaseSetMeasurements.add(trackedData);
+        if (createSets) {
+            ExerciseSession template = exercise.getMostRecentExerciseSession();
+            if (template != null) {
+                MeasurementCategory incrementCategory = exercise.getCategoryToIncrement();
+                if (incrementCategory != null) {
+                    float increment = exercise.getIncrement();
+                    this.copySetInfoAndIncrement(template, incrementCategory, increment);
+                }
+                else {
+                    this.copySetInfo(template);
+                }
             }
-            catch (Exception exception){}
+            else {
+                Set firstSet = exercise.generateInitialSet();
+                mSetList.add(firstSet);
+            }
         }
     }
 
 
-    public String getName(){
-        return mExerciseName;
+    public String getExerciseName(){
+        return mExercise.getName();
     }
 
 
-    public Date getDate(){
+    public Unit getUnit(MeasurementCategory category) {
+        return mExercise.getUnit(category);
+    }
+
+
+    public Date getDate() {
         return mDate;
     }
 
 
-    public long getExerciseId(){
-        return mExerciseId;
+    public void setDate(Date date) {
+        mDate = date;
     }
 
+
+    public void setId(int id) {
+        mId = id;
+    }
+
+    public int getId(){
+        return mId;
+    }
 
     public boolean isCompleted(){
         return mCompleted;
@@ -77,7 +99,7 @@ public class ExerciseSession {
 
 
     public boolean hasCategory(MeasurementCategory category) {
-        return mTrackedCategories.contains(category);
+        return mExercise.isTracked(category);
     }
 
 
@@ -85,7 +107,7 @@ public class ExerciseSession {
         int numSets = mSetList.size();
         int numSetsCompleted = mCompletedSets;
         if (numSets != 0) {
-            return 100*(numSetsCompleted/numSets);
+            return (int)(100*((float)numSetsCompleted/numSets));
         }
         return 0;
     }
@@ -96,16 +118,29 @@ public class ExerciseSession {
         Set newSet = new Set();
         int size = mSetList.size();
         if (size == 0){
-            for (MeasurementData data: mBaseSetMeasurements){
-                MeasurementData newData = new MeasurementData();
-                newData.copyData(data);
-                newSet.add_measurement(newData);
+            for (MeasurementCategory category: MeasurementCategory.values()){
+                if (mExercise.isTracked(category)) {
+                    MeasurementData newData = new MeasurementData(
+                            category,
+                            category.getDefaultMeasurement()
+                    );
+                    newSet.addMeasurement(newData);
+                }
             }
         }
         else{
             newSet.copyMeasurementInfo(mSetList.get(size - 1));
         }
         mSetList.add(newSet);
+        if (mCompleted) {
+            mCompleted = false;
+            mCurrentSetIndex = this.getNumSets() - 1;
+        }
+    }
+
+
+    public void addSet(Set set) {
+        mSetList.add(set);
     }
 
 
@@ -125,20 +160,26 @@ public class ExerciseSession {
 
 
     // finish the current set and move pointer to the next set
-    public void completeCurrentSet(){
-        Set currentSet = getSet(mCurrentSetIndex);
-        if (!currentSet.isCompleted()){
-            currentSet.finish();
-            mCompletedSets++;
-        }
-        if (mCurrentSetIndex != getNumSets() - 1){
-            mCurrentSetIndex++;
+    public void completeCurrentSetAndMoveToNext(){
+        if (!this.isCompleted() && this.getNumSets() > 0) {
+            Set currentSet = this.getSet(mCurrentSetIndex);
+            if (!currentSet.isCompleted()){
+                currentSet.finish();
+                mCompletedSets++;
+            }
+            if (mCurrentSetIndex != getNumSets() - 1){
+                mCurrentSetIndex++;
+            }
+            if (this.getSetProgress() == 100) {
+                mCompleted = true;
+            }
         }
     }
 
 
     // Copy info from an old exercise session into this one
     public void copySetInfo(ExerciseSession template){
+        mSetList.clear();
         int numSets = template.getNumSets();
         Set oldSet;
         for (int i = 0; i < numSets; i++){
@@ -152,6 +193,7 @@ public class ExerciseSession {
 
     // Copy info from an old exercise session into this one and increment the appropriate measurement
     public void copySetInfoAndIncrement(ExerciseSession template, MeasurementCategory incrementCategory, float increment){
+        mSetList.clear();
         int numSets = template.getNumSets();
         Set oldSet;
         for (int i = 0; i < numSets; i++){
@@ -173,12 +215,11 @@ public class ExerciseSession {
         if (getClass() != obj.getClass())
             return false;
         ExerciseSession other = (ExerciseSession) obj;
-        // Do sessions have the same parent exercise?
-        if (mExerciseId != other.mExerciseId){
-            return false;
-        }
         // Do the sessions have the same sets?
         if (mSetList.size() != other.mSetList.size()){
+            return false;
+        }
+        if (this.isCompleted() != other.isCompleted()){
             return false;
         }
         for(int i = 0; i < mSetList.size(); i++){
@@ -187,19 +228,4 @@ public class ExerciseSession {
         }
         return true;
     }
-
-
-    // Private
-    private String mExerciseName;
-    private long mExerciseId;
-    private Date mDate;
-    private ArrayList<Set> mSetList;
-    private List<MeasurementCategory> mTrackedCategories;
-    private int mCurrentSetIndex;
-    private int mCompletedSets;
-    private Boolean mCompleted;
-
-    // Measurements tracked (weight, reps, time, distance) and starting numbers
-    private ArrayList<MeasurementData> mBaseSetMeasurements;
-
 }

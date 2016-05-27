@@ -1,9 +1,8 @@
 package com.evolve.mitchell.evolvefitnessprogramtracker.data_structures;
 
-import android.support.v4.util.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by Mitchell on 12/16/2015.
@@ -13,18 +12,40 @@ import java.util.List;
  */
 public class Exercise {
 
+    // Private
+    private String mName;
+    private String mDescription;
+    private boolean mIsImperialUnits;
+    private String mExerciseCategory;
+    private MeasurementCategory mCategoryToIncrement;
+    private float mIncrement;
+    private int mIncrementPeriod;
+    private List<Unit> mUnits;
+    private List<MeasurementCategory> mTrackedMeasurementCategories;
+    private List<Float> mInitialMeasurementValues;
+    private ExerciseSession mMostRecentExerciseSession;
 
     // Constructors
     public Exercise(){
         mName = "";
-        mId = -1;
+        mDescription = "";
         mIsImperialUnits = true;
+        mExerciseCategory = "";
         mCategoryToIncrement = null;
-        mTrackedMeasurements = new ArrayList<>(4);
-        mCurrentExerciseSession = null;
-        mPreviousExerciseSessions = new ArrayList<>(4);
-        mMeasurementMaximums = new ArrayList<>(4);
-        mGoalIncreasesPerSession = new ArrayList<>(4);
+        mIncrement = 0;
+        mIncrementPeriod = 1;
+        mUnits = new ArrayList<>(4);
+        mUnits.add(MeasurementCategory.REPS.getDefaultUnit(true));
+        mUnits.add(MeasurementCategory.WEIGHT.getDefaultUnit(true));
+        mUnits.add(MeasurementCategory.DISTANCE.getDefaultUnit(true));
+        mUnits.add(MeasurementCategory.TIME.getDefaultUnit(true));
+        mTrackedMeasurementCategories = new ArrayList<>(4);
+        mInitialMeasurementValues = new ArrayList<>(4);
+        mInitialMeasurementValues.add(MeasurementCategory.REPS.value(), MeasurementCategory.REPS.getDefaultMeasurement());
+        mInitialMeasurementValues.add(MeasurementCategory.WEIGHT.value(), MeasurementCategory.WEIGHT.getDefaultMeasurement());
+        mInitialMeasurementValues.add(MeasurementCategory.DISTANCE.value(), MeasurementCategory.DISTANCE.getDefaultMeasurement());
+        mInitialMeasurementValues.add(MeasurementCategory.TIME.value(), MeasurementCategory.TIME.getDefaultMeasurement());
+        mMostRecentExerciseSession = null;
     }
 
 
@@ -38,13 +59,13 @@ public class Exercise {
     }
 
 
-    public long getId(){
-        return mId;
+    public String getDescription() {
+        return mDescription;
     }
 
 
-    public void setId(long newId){
-        mId = newId;
+    public void setDescription(String description) {
+        mDescription = description;
     }
 
 
@@ -63,8 +84,48 @@ public class Exercise {
     }
 
 
-    public void setCategoryToIncrement(MeasurementCategory type){
-        mCategoryToIncrement = type;
+    public void setExerciseCategory(String category) {
+        mExerciseCategory = category;
+    }
+
+
+    public String getExerciseCategory() {
+        return mExerciseCategory;
+    }
+
+
+    public void setMeasurementCategoryToIncrement(MeasurementCategory category){
+        mCategoryToIncrement = category;
+    }
+
+
+    public void setIncrement (float increment) {
+        mIncrement = increment;
+    }
+
+
+    public float getIncrement() {
+        return mIncrement;
+    }
+
+
+    public int getIncrementPeriod() {
+        return mIncrementPeriod;
+    }
+
+
+    public void setIncrementPeriod(int period) {
+        mIncrementPeriod = period;
+    }
+
+
+    public void setUnit(MeasurementCategory category, Unit unit) {
+        mUnits.set(category.value(), unit);
+    }
+
+
+    public Unit getUnit(MeasurementCategory category) {
+        return mUnits.get(category.value());
     }
 
 
@@ -74,204 +135,80 @@ public class Exercise {
 
 
     public int getNumTrackedMeasurements(){
-        return mTrackedMeasurements.size();
+        return mTrackedMeasurementCategories.size();
+    }
+
+
+    public boolean isTracked(MeasurementCategory category) {
+        return mTrackedMeasurementCategories.contains(category);
     }
 
 
     // Gets the tracked measurement data by the measurement type (can return null)
-    public MeasurementData getTrackedMeasurementData(MeasurementCategory measurementCategory){
-        MeasurementData data;
-        for(int i = 0; i < mTrackedMeasurements.size(); i++){
-            data = mTrackedMeasurements.get(i);
-            if (data.getCategory() == measurementCategory)
-                return data;
-        }
-        return null;
-    }
-
-    public MeasurementData getTrackedMeasurementData(int index) throws Exception{
-        int numTrackedMeasurements = mTrackedMeasurements.size();
-        if (index >= 0 && index < numTrackedMeasurements ){
-            return mTrackedMeasurements.get(index);
-        }
-        else{
-            throw new Exception("Tracked measurement index " +
-                    index + " out of range: 0 - " + (numTrackedMeasurements-1));
-        }
-    }
-
-    public List<MeasurementCategory> getTrackedMeasurementCategories() {
-        ArrayList<MeasurementCategory> categories = new ArrayList<>(mTrackedMeasurements.size());
-        for (MeasurementData data: mTrackedMeasurements) {
-            categories.add(data.getCategory());
-        }
-        return categories;
+    public float getInitialMeasurementValue(MeasurementCategory category){
+        return mInitialMeasurementValues.get(category.value());
     }
 
 
-    // Keep tracked measurements list sorted as measurements are added (max size 4)
-    public void trackNewMeasurementCategory(MeasurementCategory measurementCategory){
-        MeasurementData newData = new MeasurementData(
-                measurementCategory, measurementCategory.getDefaultUnit(mIsImperialUnits), 0);
-        if (mTrackedMeasurements.size() == 0)
-            mTrackedMeasurements.add(newData);
+    // Keep tracked measurement category list sorted as categories are added (max size 4)
+    public void trackNewMeasurementCategory(MeasurementCategory category){
+        if (mTrackedMeasurementCategories.size() == 0)
+            mTrackedMeasurementCategories.add(category);
         else {
-
-            for (MeasurementData data: mTrackedMeasurements){
-                if (data.getCategory() == measurementCategory)
+            for (MeasurementCategory trackedCategory: mTrackedMeasurementCategories){
+                if (trackedCategory == category)
                     return;
             }
             int i = 0;
-            while ((i < mTrackedMeasurements.size()) && (mTrackedMeasurements.get(i).getCategory().value() < measurementCategory.value()))
+            while ((i < mTrackedMeasurementCategories.size()) &&
+                    (mTrackedMeasurementCategories.get(i).value() < category.value()))
                 i++;
-            mTrackedMeasurements.add(i, newData);
+            mTrackedMeasurementCategories.add(i, category);
         }
     }
 
 
     // Remove a measurement from the tracked measurements list
     public void unTrackMeasurementCategory(MeasurementCategory deleteCategory){
-        MeasurementData deleteData = null;
-        MeasurementData data;
-        for(int i = 0; i < mTrackedMeasurements.size(); i++){
-            data = mTrackedMeasurements.get(i);
-            if (data.getCategory() == deleteCategory) {
-                mTrackedMeasurements.remove(i);
-                return;
-            }
-        }
-    }
-
-    // Set the unit for a tracked measurement
-    public void setTrackedMeasurementUnit(MeasurementCategory category, Unit unit) throws Exception {
-        MeasurementData data = getTrackedMeasurementData(category);
-        if (data != null){
-            data.setUnit(unit);
-        }
-        else{
-            throw new Exception("Measurement category not currently being tracked");
-        }
+        mTrackedMeasurementCategories.remove(deleteCategory);
     }
 
     /**
-     * Sets the current tracked value of a measurement category (reps, weight, distance, or time).
-     * When setting the time value, input the amount of time in seconds
+     * Sets the initial value of a measurement category for this exercise (reps, weight, distance, or time).
+     * When the first Session of this exercise is created, the first set will have these initial values
+     * When setting the time value, input the amount of time in seconds.
      *
      * @param category The measurement category whose tracked value will be updated
-     * @param value The new value
-     * @throws Exception when the type is not being tracked
+     * @param initialMeasurement The new value
      */
-    public void setTrackedMeasurementValue(MeasurementCategory category, float value) throws Exception{
-        MeasurementData data = getTrackedMeasurementData(category);
-        if (data != null){
-            data.setMeasurement(value);
-        }
-        else{
-            throw new Exception("Measurement category not currently being tracked");
-        }
+    public void setInitialMeasurementValue(MeasurementCategory category, float initialMeasurement) {
+        mInitialMeasurementValues.set(category.value(), initialMeasurement);
     }
 
+    public void setMostRecentExerciseSession(ExerciseSession session) {
+        mMostRecentExerciseSession = session;
+    }
 
-    public float getGoalIncrease(MeasurementCategory goalCategory){
-        Pair<MeasurementCategory, Float> categoryIncreasePair;
-        for (int i = 0; i < mGoalIncreasesPerSession.size(); i++){
-            categoryIncreasePair = mGoalIncreasesPerSession.get(i);
-            if (categoryIncreasePair.first == goalCategory){
-                return categoryIncreasePair.second;
-            }
+    public ExerciseSession getMostRecentExerciseSession(){
+        return mMostRecentExerciseSession;
+    }
+
+    public Set generateInitialSet() {
+        Set set = new Set();
+        for (MeasurementCategory category: mTrackedMeasurementCategories) {
+            MeasurementData data = new MeasurementData(
+                    category,
+                    mInitialMeasurementValues.get(category.value())
+            );
+            set.addMeasurement(data);
         }
-        return 0;
+        return set;
     }
-
-
-    public void setGoalIncrease(MeasurementCategory goalCategory, float goalIncrease){
-        int numGoals = mGoalIncreasesPerSession.size();
-        Pair<MeasurementCategory, Float> oldGoal;
-        Pair<MeasurementCategory, Float> newGoal =
-                new Pair<>(goalCategory, goalIncrease);
-        for (int i = 0; i < numGoals; i++){
-            oldGoal = mGoalIncreasesPerSession.get(i);
-            if (oldGoal.first == goalCategory){
-                mGoalIncreasesPerSession.remove(i);
-                mGoalIncreasesPerSession.add(newGoal);
-                return;
-            }
-        }
-        mGoalIncreasesPerSession.add(newGoal);
-    }
-
-
-    public double getMeasurementMaximum(MeasurementCategory basisCategory){
-        double max = 0;
-        Pair<MeasurementCategory, Float> categoryMaxPair;
-        for (int i = 0; i < mMeasurementMaximums.size(); i++){
-            categoryMaxPair = mMeasurementMaximums.get(i);
-            if(categoryMaxPair.first == basisCategory){
-                max = categoryMaxPair.second;
-            }
-        }
-        return max;
-    }
-
-
-    public void setMeasurementMaximum(MeasurementCategory basisCategory, float newMeasurement){
-        Pair<MeasurementCategory, Float> categoryDoublePair;
-        Pair<MeasurementCategory, Float> newMeasurementBasis =
-                new Pair<>(basisCategory, newMeasurement);
-        for (int i = 0; i < mMeasurementMaximums.size(); i++){
-            categoryDoublePair = mMeasurementMaximums.get(i);
-            if (categoryDoublePair.first == basisCategory){
-                mMeasurementMaximums.remove(i);
-                mMeasurementMaximums.add(newMeasurementBasis);
-                return;
-            }
-        }
-        mMeasurementMaximums.add(newMeasurementBasis);
-    }
-
-
-    public ExerciseSession getCurrentExerciseSession(){
-        return mCurrentExerciseSession;
-    }
-
 
     // Make a new Exercise Session based off of previous exercise session
-    public void createNewExerciseSession(boolean increment){
-        if (mCurrentExerciseSession != null){
-            mPreviousExerciseSessions.add(mCurrentExerciseSession);
-            ExerciseSession template = mCurrentExerciseSession;
-            mCurrentExerciseSession = new ExerciseSession(this);
-
-            // Choose to either increment values from last session or not
-            if (increment){
-                MeasurementCategory incrementCategory;
-                float increase = getGoalIncrease(mCategoryToIncrement);
-                if (mCategoryToIncrement == null)
-                    incrementCategory = mTrackedMeasurements.get(0).getCategory();
-                else
-                    incrementCategory = mCategoryToIncrement;
-                mCurrentExerciseSession.copySetInfoAndIncrement(template, incrementCategory, increase);
-            }
-            else
-                mCurrentExerciseSession.copySetInfo(template);
-        }
-        else{
-            mCurrentExerciseSession = new ExerciseSession(this);
-        }
+    public ExerciseSession createNewExerciseSession(){
+        ExerciseSession newSession = new ExerciseSession(this, true);
+        mMostRecentExerciseSession = newSession;
+        return newSession;
     }
-
-    // Private
-    private String mName;
-    private long mId;
-    private boolean mIsImperialUnits;
-    private MeasurementCategory mCategoryToIncrement;
-    private List<MeasurementData> mTrackedMeasurements;
-    private ExerciseSession mCurrentExerciseSession;
-    private List<ExerciseSession> mPreviousExerciseSessions;
-
-    // How much the measurement should increase by for each completed session
-    private List<Pair<MeasurementCategory, Float>> mGoalIncreasesPerSession;
-
-    // Use to keep track of highest recorded measurements
-    private List<Pair<MeasurementCategory, Float>> mMeasurementMaximums;
 }

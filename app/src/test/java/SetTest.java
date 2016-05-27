@@ -1,11 +1,13 @@
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.MeasurementCategory;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.MeasurementData;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Set;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Unit;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -16,40 +18,77 @@ import static org.junit.Assert.assertTrue;
  */
 public class SetTest {
 
+    private Set set;
+    private MeasurementData repsData;
+    private MeasurementData weightData;
+    private MeasurementData distanceData;
+    private MeasurementData timeData;
+
+    @Before
+    public void setUp() {
+        set = new Set();
+        repsData = new MeasurementData(MeasurementCategory.REPS, 8);
+        weightData = new MeasurementData(MeasurementCategory.WEIGHT, 50);
+        distanceData = new MeasurementData(MeasurementCategory.DISTANCE, (float)5.5);
+        timeData = new MeasurementData(MeasurementCategory.TIME, 300);
+        set.addMeasurement(repsData);
+        set.addMeasurement(weightData);
+    }
+
+    @After
+    public void tearDown() throws Exception {}
+
     @Test
-    public void testSetfunctions(){
-        Set test = new Set();
-        test.add_measurement(new MeasurementData(MeasurementCategory.TIME, Unit.HOURS, 10));
-        test.add_measurement(new MeasurementData(MeasurementCategory.DISTANCE, Unit.MILES, 1));
-        test.add_measurement(new MeasurementData(MeasurementCategory.WEIGHT, Unit.POUNDS, 100));
-        test.add_measurement(new MeasurementData(MeasurementCategory.REPS, Unit.REPS, 8));
+    public void testGetNumMeasurements() {
+        assertEquals(2, set.getNumMeasurements());
+    }
 
-        double values[] = {10, 1, 100, 8};
+    @Test
+    public void testAddMeasurement() {
+        set.addMeasurement(distanceData);
+        assertEquals(3, set.getNumMeasurements());
+    }
 
-        // Testing increment_measurement
-        for(int i = 0; i<4; i++){
-            test.increment_measurement(i, 2.5);
-            values[i] += 2.5;
-            assertEquals(test.getMeasurementData(i).getMeasurement(), values[i]);
-        }
+    @Test
+    public void testDeleteMeasurement() throws Exception {
+        set.deleteMeasurement(MeasurementCategory.REPS);
+        assertEquals(1, set.getNumMeasurements());
+    }
 
-        // Testing decrement_measurement
-        for(int i = 0; i<4; i++){
-            test.decrement_measurement(i, 2.5);
-            values[i] -= 2.5;
-            assertEquals(test.getMeasurementData(i).getMeasurement(), values[i]);
-        }
+    @Test
+    public void testGetMeasurementData() throws Exception {
+        MeasurementData getRepsData = set.getMeasurementData(MeasurementCategory.REPS);
+        MeasurementData getWeightData = set.getMeasurementData(MeasurementCategory.WEIGHT);
+        MeasurementData getTimeData = set.getMeasurementData(MeasurementCategory.TIME);
+        assertTrue(repsData.equals(getRepsData));
+        assertTrue(weightData.equals(getWeightData));
+        assertTrue(getTimeData == null);
+    }
 
-        // Testing copyMeasurementInfo function
-        Set Set1 = new Set();
-        Set1.copyMeasurementInfo(test);
-        assertTrue(Set1.equals(test));
+    @Test
+    public void testEquals() throws Exception {
+        Set equalSet = new Set();
+        equalSet.addMeasurement(repsData);
+        equalSet.addMeasurement(weightData);
 
-        // Testing copyMeasurementInfoAndIncrement function
-        Set Set2 = new Set();
-        Set2.copyMeasurementInfoAndIncrement(test, MeasurementCategory.REPS, 1);
-        test.increment_measurement(3, 1);
-        assertTrue(Set2.equals(test));
+        Set differentSet = new Set();
 
+        assertTrue(equalSet.equals(set));
+        assertFalse(differentSet.equals(set));
+    }
+
+    @Test
+    public void testCopyMeasurementInfo() throws Exception {
+        Set equalSet = new Set();
+        equalSet.copyMeasurementInfo(set);
+        assertTrue(equalSet.equals(set));
+    }
+
+    @Test
+    public void testCopyMeasurementInfoAndIncrement() throws Exception {
+        Set incrementSet = new Set();
+        incrementSet.copyMeasurementInfoAndIncrement(set, MeasurementCategory.REPS, 2);
+        set.incrementMeasurement(MeasurementCategory.REPS, 2);
+        assertTrue(incrementSet.equals(set));
     }
 }
