@@ -33,6 +33,28 @@
         <item name="android:textColor">@color/accent_green</item>
     </style>
 
+    <style name="SingleLineListText">
+        <item name="android:textSize">@dimen/single_line_list_text_size</item>
+        <item name="android:paddingRight">@dimen/single_line_list_lr_padding</item>
+        <item name="android:paddingLeft">@dimen/single_line_list_lr_padding</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+    </style>
+
+    <style name="TwoLineListPrimaryText" parent="SingleLineListText"/>
+
+    <style name="TwoLineListSecondaryText">
+        <item name="android:textSize">@dimen/two_line_list_secondary_text_size</item>
+        <item name="android:paddingLeft">@dimen/two_line_list_lr_padding</item>
+        <item name="android:paddingRight">@dimen/two_line_list_lr_padding</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="Button">
+        <item name="android:layout_marginLeft">@dimen/button_lr_margin</item>
+        <item name="android:layout_marginRight">@dimen/button_lr_margin</item>
+        <item name="android:layout_marginTop">@dimen/button_top_margin</item>
+    </style>
+
     <style name="Divider">
         <item name="android:background">@color/light_shade_3</item>
     </style>

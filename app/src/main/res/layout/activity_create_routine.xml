@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.CreateRoutine">
 
-    <include layout="@layout/appbar_with_input_text" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include layout="@layout/appbar_with_input_text" />
+        <include layout="@layout/content_create_routine" />
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -17,7 +24,5 @@
         android:src="@drawable/ic_done_white_36dp"/>
         <!--app:layout_anchor="@+id/app_bar_layout"
         app:layout_anchorGravity="bottom|left|start" -->
-
-    <include layout="@layout/content_create_routine" />
 
 </android.support.design.widget.CoordinatorLayout>

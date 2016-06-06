@@ -10,18 +10,28 @@ android:layout_width="match_parent">
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:baselineAligned="false"
+    android:focusableInTouchMode="true"
     android:id="@+id/set_layout">
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical|center_horizontal">
+        <ImageView
+            android:src="@drawable/orange_circle"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/current_set_circle"
+            android:visibility="gone"
+            android:contentDescription="Current Set"/>
         <TextView
             android:id="@+id/set_number"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
+            android:gravity="center_horizontal"
             android:text="1"
             android:textSize="24sp"
             android:textAppearance="?attr/textAppearanceLargePopupMenu" />
@@ -49,11 +59,11 @@ android:layout_width="match_parent">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-
                 app:increment="1"
                 app:mode="integer"
                 app:activated="false"
                 app:default_number="5"
+                app:always_positive="true"
                 android:id="@+id/reps_button_edittext">
             </com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText>
         </FrameLayout>
@@ -71,6 +81,7 @@ android:layout_width="match_parent">
                 app:mode="decimal"
                 app:activated="false"
                 app:default_number="0"
+                app:always_positive="true"
                 android:id="@+id/weight_button_edittext">
             </com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText>
         </FrameLayout>
@@ -88,6 +99,7 @@ android:layout_width="match_parent">
                 app:mode="decimal"
                 app:activated="false"
                 app:default_number="0"
+                app:always_positive="true"
                 android:id="@+id/distance_button_edittext">
             </com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText>
         </FrameLayout>
@@ -104,6 +116,7 @@ android:layout_width="match_parent">
                 app:increment="15"
                 app:mode="integer"
                 app:default_number="300"
+                app:always_positive="true"
                 android:id="@+id/time_button_edittext">
             </com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText>
         </FrameLayout>

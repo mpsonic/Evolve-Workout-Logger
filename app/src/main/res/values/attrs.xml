@@ -7,5 +7,7 @@
             <enum name="integer" value="0"/>
             <enum name="decimal" value="1"/>
         </attr>
+        <attr name="always_positive" format="boolean"/>
+        <attr name="hint" format="string"/>
     </declare-styleable>
 </resources>

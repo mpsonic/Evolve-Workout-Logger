@@ -167,18 +167,15 @@
                             android:layout_weight="2"
                             android:orientation="horizontal">
 
-                            <EditText
-                                android:layout_width="@dimen/number_edittext_width"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:inputType="numberDecimal"
-                                android:ems="3"
-                                android:id="@+id/repsEditStartingMeasurement"
-                                android:digits="0123456789"
-                                android:paddingEnd="@dimen/edittext_padding"
-                                android:paddingStart="@dimen/edittext_padding"
-                                android:textSize="@dimen/abc_text_size_medium_material"
-                                android:textAlignment="center" />
+                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                                android:id="@+id/bet_reps_starting_measurement"
+                                android:layout_width="@dimen/button_edit_text_width"
+                                android:layout_height="wrap_content"
+                                app:default_number="5"
+                                app:mode="integer"
+                                app:increment="1"
+                                app:always_positive="true"
+                                app:activated="false"/>
                         </LinearLayout>
                     </TableRow>
 
@@ -197,19 +194,15 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2">
-                            <EditText
-                                android:layout_width="@dimen/number_edittext_width"
+                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                                android:id="@+id/bet_weight_starting_measurement"
+                                android:layout_width="@dimen/button_edit_text_width"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:inputType="numberDecimal"
-                                android:ems="3"
-                                android:id="@+id/weightEditStartingMeasurement"
-                                android:digits="0123456789."
-                                android:paddingEnd="@dimen/edittext_padding"
-                                android:paddingStart="@dimen/edittext_padding"
-                                android:layout_marginRight="8dp"
-                                android:textSize="@dimen/abc_text_size_medium_material"
-                                android:textAlignment="center" />
+                                app:default_number="0"
+                                app:mode="decimal"
+                                app:increment="2.5"
+                                app:always_positive="true"
+                                app:activated="false"/>
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -235,19 +228,15 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2">
-                            <EditText
-                                android:layout_width="@dimen/number_edittext_width"
+                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                                android:id="@+id/bet_distance_starting_measurement"
+                                android:layout_width="@dimen/button_edit_text_width"
                                 android:layout_height="wrap_content"
-                                android:ems="3"
-                                android:id="@+id/distanceEditStartingMeasurement"
-                                android:inputType="numberDecimal"
-                                android:paddingEnd="@dimen/edittext_padding"
-                                android:paddingStart="@dimen/edittext_padding"
-                                android:layout_marginRight="8dp"
-                                android:textSize="@dimen/abc_text_size_medium_material"
-                                android:layout_gravity="center_horizontal"
-                                android:textAlignment="center"
-                                android:gravity="center" />
+                                app:default_number="0"
+                                app:mode="decimal"
+                                app:increment="1"
+                                app:always_positive="true"
+                                app:activated="false"/>
                             <Spinner
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -271,45 +260,37 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2">
-                            <EditText
-                                android:layout_width="@dimen/number_edittext_width"
+
+                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                                android:id="@+id/bet_time_hours_starting_measurement"
+                                android:layout_width="72dp"
                                 android:layout_height="wrap_content"
-                                android:ems="3"
-                                android:id="@+id/timeHourEdittext"
-                                android:inputType="number"
-                                android:paddingEnd="@dimen/edittext_padding"
-                                android:paddingStart="@dimen/edittext_padding"
-                                android:textSize="@dimen/abc_text_size_medium_material"
-                                android:hint="@string/hours_edittext_hint"
-                                android:layout_gravity="center_horizontal"
-                                android:textAlignment="center"
-                                android:gravity="center" />
-                            <EditText
-                                android:layout_width="@dimen/number_edittext_width"
+                                app:default_number="0"
+                                app:mode="integer"
+                                app:increment="1"
+                                app:always_positive="true"
+                                app:activated="false"
+                                app:hint="@string/hours_edittext_hint"/>
+                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                                android:id="@+id/bet_time_minutes_starting_measurement"
+                                android:layout_width="72dp"
                                 android:layout_height="wrap_content"
-                                android:ems="3"
-                                android:id="@+id/timeMinuteEdittext"
-                                android:inputType="number"
-                                android:paddingEnd="@dimen/edittext_padding"
-                                android:paddingStart="@dimen/edittext_padding"
-                                android:textSize="@dimen/abc_text_size_medium_material"
-                                android:hint="@string/minutes_edittext_hint"
-                                android:layout_gravity="center_horizontal"
-                                android:textAlignment="center"
-                                android:gravity="center" />
-                            <EditText
-                                android:layout_width="@dimen/number_edittext_width"
+                                app:default_number="0"
+                                app:mode="integer"
+                                app:increment="1"
+                                app:always_positive="true"
+                                app:activated="false"
+                                app:hint="@string/minutes_edittext_hint"/>
+                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                                android:id="@+id/bet_time_seconds_starting_measurement"
+                                android:layout_width="72dp"
                                 android:layout_height="wrap_content"
-                                android:ems="3"
-                                android:id="@+id/timeSecondEdittext"
-                                android:inputType="number"
-                                android:paddingEnd="@dimen/edittext_padding"
-                                android:paddingStart="@dimen/edittext_padding"
-                                android:textSize="@dimen/abc_text_size_medium_material"
-                                android:hint="@string/seconds_edittext_hint"
-                                android:layout_gravity="center_horizontal"
-                                android:textAlignment="center"
-                                android:gravity="center" />
+                                app:default_number="0"
+                                app:mode="integer"
+                                app:increment="1"
+                                app:always_positive="true"
+                                app:activated="false"
+                                app:hint="@string/seconds_edittext_hint"/>
                         </LinearLayout>
                     </TableRow>
 
@@ -427,7 +408,7 @@
                         <EditText
                             android:layout_width="@dimen/number_edittext_width"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:ems="10"
                             android:id="@+id/editWeightIncreasePerSession"
                             android:layout_gravity="center_horizontal"

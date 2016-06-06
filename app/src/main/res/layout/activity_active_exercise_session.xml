@@ -7,9 +7,19 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.ActiveExerciseSession">
 
-    <include layout="@layout/appbar"/>
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
 
-    <include layout="@layout/content_active_exercise_session"/>
+        <include layout="@layout/appbar"
+            android:id="@+id/appbar" />
+        <include layout="@layout/content_active_exercise_session"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/appbar"
+            android:id="@+id/exercise_session_scroll_content"/>
+    </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
 

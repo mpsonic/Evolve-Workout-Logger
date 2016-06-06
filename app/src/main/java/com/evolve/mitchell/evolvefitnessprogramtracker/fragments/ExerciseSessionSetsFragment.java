@@ -10,12 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.ExerciseSession;
-import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewExerciseSessionAdapter;
+import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.MeasurementCategory;
+import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.ExerciseSessionAdapter;
 import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewItemClickListener;
+
+import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
@@ -26,8 +30,9 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerVi
 public class ExerciseSessionSetsFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerViewExerciseSessionAdapter mAdapter;
+    private ExerciseSessionAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private int mExercisePosition;
     private static final String TAG = ExerciseSessionSetsFragment.class.getSimpleName();
 
     private OnFragmentInteractionListener mFragmentInteractionListener;
@@ -59,13 +64,8 @@ public class ExerciseSessionSetsFragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercise_session_sets, container, false);
-    }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onViewCreated");
-        super.onViewCreated(view, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_exercise_session_sets, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_exercise_session_sets);
 
@@ -78,7 +78,8 @@ public class ExerciseSessionSetsFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        mAdapter = new RecyclerViewExerciseSessionAdapter(mExerciseSession);
+        int color = getResources().getColor(R.color.accent_light_green);
+        mAdapter = new ExerciseSessionAdapter(mExerciseSession, color);
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(
@@ -91,6 +92,18 @@ public class ExerciseSessionSetsFragment extends Fragment {
                         })
         );
 
+        ArrayList<FrameLayout> headerLayouts = new ArrayList<>(4);
+        headerLayouts.add((FrameLayout) view.findViewById(R.id.reps_layout));
+        headerLayouts.add((FrameLayout) view.findViewById(R.id.weight_layout));
+        headerLayouts.add((FrameLayout) view.findViewById(R.id.distance_layout));
+        headerLayouts.add((FrameLayout) view.findViewById(R.id.time_layout));
+
+        for (MeasurementCategory category: MeasurementCategory.values()) {
+            if (!mExerciseSession.hasCategory(category)) {
+                headerLayouts.get(category.value()).setVisibility(View.GONE);
+            }
+        }
+
         // Display the empty view if there are no exercises in the Routine Session
         TextView emptyView = (TextView) view.findViewById(R.id.empty_view_active_exercise_sessions);
         if (mExerciseSession == null || mExerciseSession.getNumSets() == 0){
@@ -101,6 +114,14 @@ public class ExerciseSessionSetsFragment extends Fragment {
             mRecyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated");
+        super.onViewCreated(view, savedInstanceState);
     }
 
     // Ensure that the activity is listening to the fragment according to the
@@ -125,14 +146,30 @@ public class ExerciseSessionSetsFragment extends Fragment {
         mFragmentInteractionListener = null;
     }
 
-    public void onItemSelected(int position){
+    public void onItemSelected(int position) {
         Log.d(TAG, "onItemSelected("+ position +")");
         mFragmentInteractionListener.setSelected(position);
     }
 
-    public void setExerciseSession(ExerciseSession exerciseSession){
-        Log.d(TAG, "setRoutineSession");
+    public void setExerciseSession(ExerciseSession exerciseSession) {
+        Log.d(TAG, "setExerciseSession");
         mExerciseSession = exerciseSession;
+    }
+
+    public void refreshSetAdded() {
+        mAdapter.notifyItemInserted(mExerciseSession.getNumSets() - 1);
+    }
+
+    public void refreshNextSet(int currentSetPosition) {
+        Log.d(TAG, "refreshNextSet("+ currentSetPosition +")");
+        mAdapter.notifyItemChanged(currentSetPosition);
+        if (mExerciseSession.getNumSets() - 1 != currentSetPosition) {
+            mAdapter.notifyItemChanged(currentSetPosition + 1);
+        }
+    }
+
+    public void refresh() {
+        mAdapter.notifyDataSetChanged();
     }
 
     /**

@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.DatabaseHelper;
-import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewCursorAdapter;
 import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewItemClickListener;
+import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RoutineCursorAdapter;
 
 /**
  * A {@link ListFragment} subclass.
@@ -30,7 +30,8 @@ public class SavedRoutinesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     private RecyclerView mRecyclerView;
-    private RecyclerViewCursorAdapter mAdapter;
+    private TextView mEmptyView;
+    private RoutineCursorAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
 
@@ -81,7 +82,7 @@ public class SavedRoutinesFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        mAdapter = new RecyclerViewCursorAdapter(mCursor);
+        mAdapter = new RoutineCursorAdapter(mCursor);
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(
@@ -95,15 +96,8 @@ public class SavedRoutinesFragment extends Fragment {
         );
 
         // Display the empty view if there is nothing in the database
-        TextView emptyView = (TextView) view.findViewById(R.id.empty_view_saved_routines);
-        if (mCursor.getCount() == 0){
-            mRecyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        }
-        else{
-            mRecyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-        }
+        mEmptyView = (TextView) view.findViewById(R.id.empty_view_saved_routines);
+        hideOrShowRecyclerView();
     }
 
     // Ensure that the activity is listening to the fragment according to the
@@ -142,8 +136,8 @@ public class SavedRoutinesFragment extends Fragment {
         if (mFragmentInteractionListener != null) {
             // Get the Routine Id based on the position selected
             mCursor.moveToPosition(position);
-            long routineId = mCursor.getLong(0);
-            mFragmentInteractionListener.routineSelected(routineId);
+            String routineName = mCursor.getString(0);
+            mFragmentInteractionListener.routineSelected(routineName);
         }
     }
 
@@ -153,9 +147,21 @@ public class SavedRoutinesFragment extends Fragment {
         mCursor = db.getRoutinesCursor();
         mAdapter.setCursor(mCursor);
         mAdapter.notifyDataSetChanged();
+        hideOrShowRecyclerView();
+    }
+
+    private void hideOrShowRecyclerView() {
+        if (mCursor.getCount() == 0){
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+        else{
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }
     }
 
     public interface OnFragmentInteractionListener {
-        void routineSelected(long id);
+        void routineSelected(String routineName);
     }
 }

@@ -55,7 +55,7 @@
             android:label="@string/title_activity_create_routine"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.StartRoutine"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.StartRoutine" />
@@ -88,7 +88,15 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".activities.ComponentTesting" />
-        <activity android:name=".activities.ActiveExerciseSession"/>
+
+        <!-- Active Exercise Session -->
+        <activity android:name=".activities.ActiveExerciseSession"
+            android:parentActivityName=".activities.ActiveRoutineSession"
+            android:windowSoftInputMode="adjustNothing|stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ActiveRoutineSession" />
+        </activity>
     </application>
 
 </manifest>

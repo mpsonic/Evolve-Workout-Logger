@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -10,9 +11,7 @@
         layout="@layout/component_set_header"
         android:id="@+id/set_header"/>
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_exercise_session_sets"
         android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.ExerciseSessionSetsFragment"
         android:layout_width="match_parent"
@@ -20,6 +19,21 @@
         app:layoutManager="LinearLayoutManager"
         tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.ExerciseSessionSetsFragment"
         tools:listitem="@layout/fragment_set" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/empty_view_active_exercise_sessions"
+        android:text="@string/text_no_sets"
+        android:gravity="center_vertical|center_horizontal"
+        android:textStyle="bold"
+        android:background="@drawable/background_and_border_2"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textIsSelectable="false"
+        android:textAppearance="@android:style/TextAppearance.Medium" />
 
 </LinearLayout>
 

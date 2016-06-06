@@ -7,6 +7,8 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Set;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -17,6 +19,8 @@ import static org.junit.Assert.assertTrue;
  *
  * Created by Mitchell on 5/25/2016.
  */
+
+@RunWith(JUnit4.class)
 public class ExerciseSessionTest {
 
     private Exercise exercise;
@@ -120,7 +124,7 @@ public class ExerciseSessionTest {
         assertTrue(session.isCompleted());
 
         session.completeCurrentSetAndMoveToNext();
-        assertTrue(session.getCurrentSet() != null);
+        assertTrue(session.getCurrentSetIndex() != 0);
         assertEquals(session.getSetProgress(), 100);
         assertTrue(session.isCompleted());
 

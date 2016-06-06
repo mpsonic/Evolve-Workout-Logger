@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.DatabaseHelper;
-import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewCursorAdapter;
+import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.ExerciseCursorAdapter;
 import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewItemClickListener;
 
 /**
@@ -30,7 +30,7 @@ public class SavedExercisesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     private RecyclerView mRecyclerView;
-    private RecyclerViewCursorAdapter mAdapter;
+    private ExerciseCursorAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
 
@@ -81,7 +81,7 @@ public class SavedExercisesFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        mAdapter = new RecyclerViewCursorAdapter(mCursor);
+        mAdapter = new ExerciseCursorAdapter(mCursor);
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(

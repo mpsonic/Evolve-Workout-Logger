@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.RoutineSession;
 import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewItemClickListener;
-import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewRoutineSessionAdapter;
+import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RoutineSessionAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +28,7 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerVi
 public class RoutineSessionExercisesFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerViewRoutineSessionAdapter mAdapter;
+    private RoutineSessionAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static final String TAG = RoutineSessionExercisesFragment.class.getSimpleName();
 
@@ -81,7 +81,7 @@ public class RoutineSessionExercisesFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        mAdapter = new RecyclerViewRoutineSessionAdapter(mRoutineSession);
+        mAdapter = new RoutineSessionAdapter(mRoutineSession);
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(
@@ -138,6 +138,10 @@ public class RoutineSessionExercisesFragment extends Fragment {
     public void setRoutineSession(RoutineSession routineSession){
         Log.d(TAG, "setRoutineSession");
         mRoutineSession = routineSession;
+    }
+
+    public void refresh() {
+        mAdapter.notifyDataSetChanged();
     }
 
     /**

@@ -10,33 +10,32 @@ import android.widget.TextView;
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
 
 /**
+ * A RecyclerView adapter that lists Routines gotten from a database cursor
  *
- * A RecyclerView adapter that can populate the view with
- * list items (two line text views) given a database cursor
- *
- * Created by Mitchell on 1/13/2016.
+ * Created by Mitchell on 5/31/2016.
  */
-public class RecyclerViewCursorAdapter
-        extends RecyclerView.Adapter<RecyclerViewCursorAdapter.ViewHolder>{
+public class RoutineCursorAdapter
+    extends RecyclerView.Adapter<RoutineCursorAdapter.ViewHolder>{
 
-    private static final String TAG = RecyclerViewCursorAdapter.class.getSimpleName();
+    private static final String TAG = RoutineCursorAdapter.class.getSimpleName();
     private Cursor mCursor;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public View mView;
+        public TextView primaryText;
+        public TextView secondaryText;
 
         public ViewHolder(View v){
             super(v);
-            mView = v;
+            primaryText = (TextView) v.findViewById(R.id.primary_text);
+            secondaryText = (TextView) v.findViewById(R.id.secondary_text);
         }
-
     }
 
     // Constructor sets the adapter data
-    public RecyclerViewCursorAdapter(Cursor cursor){
+    public RoutineCursorAdapter(Cursor cursor){
         setCursor(cursor);
     }
 
@@ -50,9 +49,7 @@ public class RecyclerViewCursorAdapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.name_and_description_row, parent, false);
-
-        // set the view's size, margins, padding, and layout parameters
+                .inflate(R.layout.two_line_list_item, parent, false);
 
         return new ViewHolder(v);
     }
@@ -61,12 +58,10 @@ public class RecyclerViewCursorAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
-        TextView nameText = (TextView) holder.mView.findViewById(R.id.rowName);
-        TextView descriptionText = (TextView) holder.mView.findViewById(R.id.rowDescription);
-        String name = mCursor.getString(1);
-        String description = mCursor.getString(2);
-        nameText.setText(name);
-        descriptionText.setText(description);
+        String name = mCursor.getString(0);
+        String description = mCursor.getString(1);
+        holder.primaryText.setText(name);
+        holder.secondaryText.setText(description);
     }
 
     // Return the size of your data set

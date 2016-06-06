@@ -12,7 +12,6 @@
         android:divider="@color/light_shade_3"
         android:layout_marginTop="5dp"
         android:dividerHeight="1dp"
-        android:headerDividersEnabled="true"
-        android:background="@drawable/background_and_border_2" />
+        android:headerDividersEnabled="true" />
 
 </FrameLayout>

@@ -64,5 +64,14 @@
     <string name="start_page_banner">Evolve</string>
     <string name="component_testing_button_text">Component Testing</string>
     <string name="start_a_routine_button_text">Start A Routine</string>
+    <string name="text_no_sets">Add a set</string>
+    <string name="text_button_add_set">Add Set</string>
+    <string name="text_button_next_set">Next Set</string>
+    <string name="menu_prevoius_exercise_title">Prevoius Exercise</string>
+    <string name="menu_next_exercise_title">Next Exercise</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="dialog_finish_routine_session">Are you sure you want to finish your workout?</string>
+    <string name="text_no_exercise_sessions">Add an exercise</string>
 
 </resources>

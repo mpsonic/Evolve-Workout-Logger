@@ -20,10 +20,10 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.RoutineSe
  * showing the progress of each exercise
  *
  */
-public class RecyclerViewRoutineSessionAdapter
-        extends RecyclerView.Adapter<RecyclerViewRoutineSessionAdapter.ViewHolder>{
+public class RoutineSessionAdapter
+        extends RecyclerView.Adapter<RoutineSessionAdapter.ViewHolder>{
 
-    private static final String TAG = RecyclerViewCursorAdapter.class.getSimpleName();
+    private static final String TAG = RoutineSessionAdapter.class.getSimpleName();
     private RoutineSession mRoutineSession;
 
 
@@ -40,7 +40,7 @@ public class RecyclerViewRoutineSessionAdapter
         }
     }
 
-    public RecyclerViewRoutineSessionAdapter(RoutineSession rs){
+    public RoutineSessionAdapter(RoutineSession rs){
         mRoutineSession = rs;
     }
 

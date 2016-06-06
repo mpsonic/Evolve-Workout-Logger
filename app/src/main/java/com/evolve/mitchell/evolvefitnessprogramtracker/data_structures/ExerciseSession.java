@@ -33,7 +33,7 @@ public class ExerciseSession {
         mCompletedSets = 0;
         if (createSets) {
             ExerciseSession template = exercise.getMostRecentExerciseSession();
-            if (template != null) {
+            if (template != null && template.getNumSets() != 0) {
                 MeasurementCategory incrementCategory = exercise.getCategoryToIncrement();
                 if (incrementCategory != null) {
                     float increment = exercise.getIncrement();
@@ -154,8 +154,8 @@ public class ExerciseSession {
     }
 
 
-    public Set getCurrentSet(){
-        return getSet(mCurrentSetIndex);
+    public int getCurrentSetIndex(){
+        return mCurrentSetIndex;
     }
 
 

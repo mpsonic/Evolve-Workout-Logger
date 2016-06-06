@@ -74,7 +74,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/distance_layout_title"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:gravity="center"
                     style="@style/MediumDisplayText"/>
             </FrameLayout>
 

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <!--<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/active_routine_session_date_layout">
@@ -33,7 +33,7 @@
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentRight="true" />
 
-        </RelativeLayout>
+        </RelativeLayout>-->
 
 
         <fragment
@@ -43,6 +43,13 @@
             android:id="@+id/fragment_routine_session_exercises"
             android:layout_gravity="center_horizontal"
             tools:layout="@layout/fragment_routine_session_exercises" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_button_add_exercise"
+            style="@style/Button"
+            android:id="@+id/button_add_exercise_to_routine_session" />
 
         <TextView
             android:layout_width="match_parent"

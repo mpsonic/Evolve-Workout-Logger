@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.CreateRoutine"
-    tools:showIn="@layout/activity_create_routine">
+    android:layout_height="wrap_content">
 
-    <fragment
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.RoutineExercisesFragment"
-        android:id="@+id/fragment_create_routine"
-        tools:layout="@layout/fragment_routine_exercises"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.CreateRoutine"
+        tools:showIn="@layout/activity_create_routine">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_add_exercise_to_routine"
-        android:layout_below="@+id/fragment_create_routine"
-        android:layout_margin="16dp"
-        android:gravity="center_horizontal"
-        android:text="@string/text_button_add_exercise"
-        android:onClick="handleButtonClick" />
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.RoutineExercisesFragment"
+            android:id="@+id/fragment_create_routine"
+            tools:layout="@layout/fragment_routine_exercises"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-</RelativeLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_add_exercise_to_routine"
+            android:layout_below="@+id/fragment_create_routine"
+            style="@style/Button"
+            android:gravity="center_horizontal"
+            android:text="@string/text_button_add_exercise"
+            android:onClick="handleButtonClick" />
+
+    </RelativeLayout>
+
+</ScrollView>
+

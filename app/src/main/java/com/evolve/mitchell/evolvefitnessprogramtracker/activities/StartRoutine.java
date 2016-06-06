@@ -37,7 +37,7 @@ public class StartRoutine extends AppCompatActivity implements
         });
     }
 
-    public void routineSelected(long id) {
+    public void routineSelected(String routineName) {
         /*String message = "Selected Routine " + id;
         Toast toast = new Toast(this);
         toast.setText(message);
@@ -45,8 +45,7 @@ public class StartRoutine extends AppCompatActivity implements
         toast.show();*/
 
         Intent i = new Intent(this, ActiveRoutineSession.class);
-        i.putExtra(DatabaseHelper.KEY_ROUTINE_NAME, id);
-        i.putExtra(ActivityEnum.SENDER, ActivityEnum.START_ROUTINE);
+        i.putExtra(DatabaseHelper.KEY_ROUTINE_NAME, routineName);
         startActivity(i);
         finish();
     }

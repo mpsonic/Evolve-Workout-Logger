@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+        android:id="@+id/group_navigate">
+        <item
+            android:id="@+id/previous_exercise"
+            android:icon="@drawable/ic_arrow_upward_white_24dp"
+            android:title="@string/menu_prevoius_exercise_title"
+            app:showAsAction="ifRoom"/>
+        <item
+            android:id="@+id/next_exercise"
+            android:icon="@drawable/ic_arrow_downward_white_24dp"
+            android:title="@string/menu_next_exercise_title"
+            app:showAsAction="ifRoom"/>
+    </group>
+
+</menu>

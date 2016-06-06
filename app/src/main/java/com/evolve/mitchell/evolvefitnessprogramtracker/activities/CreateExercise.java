@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
+import com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.DatabaseHelper;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Exercise;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.MeasurementCategory;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 
 public class CreateExercise extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    ActivityEnum mPreviousActivity;
+    Boolean mExerciseCreated = false;
 
     RelativeLayout contentLayout;
     RelativeLayout unitsLayout;
@@ -161,10 +162,19 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mExerciseCreated = true;
                 persistExerciseAndFinish();
             }
         });
         fab.hide();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (!mExerciseCreated) {
+            persistExercise(false);
+        }
     }
 
     private boolean hasMeasurementsTracked() {
@@ -316,7 +326,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         }
     }
 
-    private String persistExercise() {
+    private Exercise createExerciseFromFormData() {
         Exercise exercise = new Exercise();
 
         EditText titleEdit = (EditText) findViewById(R.id.edit_title);
@@ -336,9 +346,9 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                 exercise.trackNewMeasurementCategory(unitCategory);
                 switch (unitCategory) {
                     case REPS:
-                        EditText startingRepsText = (EditText) findViewById(R.id.repsEditStartingMeasurement);
-                        assert startingRepsText != null;
-                        int startingReps = Integer.valueOf(startingRepsText.getText().toString());
+                        ButtonEditText repsBET = (ButtonEditText) findViewById(R.id.bet_reps_starting_measurement);
+                        assert repsBET != null;
+                        int startingReps = (int) repsBET.getNumber();
                         try {
                             exercise.setInitialMeasurementValue(MeasurementCategory.REPS, startingReps);
                         } catch (Exception e) {
@@ -346,9 +356,9 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         }
                         break;
                     case WEIGHT:
-                        EditText startingWeightText = (EditText) findViewById(R.id.weightEditStartingMeasurement);
-                        assert startingWeightText != null;
-                        float startingWeight = Float.valueOf(startingWeightText.getText().toString());
+                        ButtonEditText weightBET = (ButtonEditText) findViewById(R.id.bet_weight_starting_measurement);
+                        assert weightBET != null;
+                        float startingWeight = (int) weightBET.getNumber();
                         try {
                             exercise.setInitialMeasurementValue(MeasurementCategory.WEIGHT, startingWeight);
                         } catch (Exception e) {
@@ -356,9 +366,9 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         }
                         break;
                     case DISTANCE:
-                        EditText startingDistanceText = (EditText) findViewById(R.id.distanceEditStartingMeasurement);
-                        assert startingDistanceText != null;
-                        float startingDistance = Float.valueOf(startingDistanceText.getText().toString());
+                        ButtonEditText distanceBET = (ButtonEditText) findViewById(R.id.bet_distance_starting_measurement);
+                        assert distanceBET != null;
+                        float startingDistance = (int) distanceBET.getNumber();
                         try {
                             exercise.setInitialMeasurementValue(MeasurementCategory.DISTANCE, startingDistance);
                             //exercise.setTrackedMeasurementUnit(MeasurementCategory.DISTANCE, Unit.KILOMETERS);
@@ -367,15 +377,15 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         }
                         break;
                     case TIME:
-                        EditText hoursText = (EditText) findViewById(R.id.timeHourEdittext);
-                        EditText minutesText = (EditText) findViewById(R.id.timeMinuteEdittext);
-                        EditText secondsText = (EditText) findViewById(R.id.timeSecondEdittext);
-                        assert hoursText != null;
-                        assert minutesText != null;
-                        assert secondsText != null;
-                        float hours = Float.valueOf(hoursText.getText().toString());
-                        float minutes = Float.valueOf(minutesText.getText().toString());
-                        float seconds = Float.valueOf(secondsText.getText().toString());
+                        ButtonEditText hoursBET = (ButtonEditText) findViewById(R.id.bet_time_hours_starting_measurement);
+                        ButtonEditText minutesBET = (ButtonEditText) findViewById(R.id.bet_time_minutes_starting_measurement);
+                        ButtonEditText secondsBET = (ButtonEditText) findViewById(R.id.bet_time_seconds_starting_measurement);
+                        assert hoursBET != null;
+                        assert minutesBET != null;
+                        assert secondsBET != null;
+                        float hours = (int) hoursBET.getNumber();
+                        float minutes = (int) minutesBET.getNumber();
+                        float seconds = (int) secondsBET.getNumber();
                         float timeInSeconds = 3600*hours + 60*minutes + seconds;
                         try {
                             exercise.setInitialMeasurementValue(MeasurementCategory.TIME, timeInSeconds);
@@ -419,15 +429,17 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                 exercise.setIncrement(increment);
             }
         }
+        return exercise;
+    }
 
+    private String persistExercise(boolean permanent) {
+        Exercise exercise = createExerciseFromFormData();
         DatabaseHelper db = DatabaseHelper.getInstance(this);
-        String exerciseName = db.updateExercise(exercise);
-        db.close();
-        return exerciseName;
+        return db.insertExercise(exercise, permanent);
     }
 
     public void persistExerciseAndFinish() {
-        String exerciseName = persistExercise();
+        String exerciseName = persistExercise(true);
         Intent returnIntent = new Intent();
         returnIntent.putExtra(DatabaseHelper.KEY_EXERCISE_NAME, exerciseName);
         setResult(RESULT_OK, returnIntent);

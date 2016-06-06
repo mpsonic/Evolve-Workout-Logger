@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="@dimen/two_line_list_height">
 
-    <TextView
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/list_item_name"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="16dp"
-        android:typeface="normal"
-        android:textSize="16sp" />
+        android:orientation="vertical"
+        android:layout_centerVertical="true">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/list_item_description"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="16dp"
-        android:textSize="14sp" />
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/primary_text"
+            style="@style/TwoLineListPrimaryText"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/secondary_text"
+            style="@style/TwoLineListSecondaryText"/>
+    </LinearLayout>
+
+    <View style="@style/Divider.Horizontal"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

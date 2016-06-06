@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.evolve.mitchell.evolvefitnessprogramtracker.R;
 import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Routine;
 import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewItemClickListener;
-import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerViewRoutineAdapter;
+import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RoutineAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +27,7 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.helper_classes.RecyclerVi
 public class RoutineExercisesFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerViewRoutineAdapter mAdapter;
+    private RoutineAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private Routine mRoutine;
@@ -111,7 +111,7 @@ public class RoutineExercisesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // specify an adapter
-        mAdapter = new RecyclerViewRoutineAdapter(mRoutine);
+        mAdapter = new RoutineAdapter(mRoutine);
         mRecyclerView.setAdapter(mAdapter);
 
         // Make recyclerView invisible if there are no exercises in the routine

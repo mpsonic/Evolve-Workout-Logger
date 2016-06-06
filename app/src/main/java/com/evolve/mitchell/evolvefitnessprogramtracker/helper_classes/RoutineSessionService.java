@@ -19,11 +19,11 @@ public class RoutineSessionService extends Service {
     private final IBinder mBinder = new LocalBinder();
 
     // The routine session to be manipulated
-    private RoutineSession routineSession;
+    private RoutineSession mRoutineSession;
 
     //Class used for the client Binder.
     public class LocalBinder extends Binder {
-        RoutineSessionService getService() {
+        public RoutineSessionService getService() {
             // Return this instance of LocalService so clients can call public methods
             return RoutineSessionService.this;
         }
@@ -34,6 +34,12 @@ public class RoutineSessionService extends Service {
         return mBinder;
     }
 
-    //TODO: Write methods to manipulate the routine session
+    public void setRoutineSession(RoutineSession session) {
+        mRoutineSession = session;
+    }
+
+    public RoutineSession getRoutineSession() {
+        return mRoutineSession;
+    }
 
 }

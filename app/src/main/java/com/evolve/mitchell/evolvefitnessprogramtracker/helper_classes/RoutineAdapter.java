@@ -18,25 +18,23 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Routine;
  * Created by Mitchell on 2/15/2016.
  */
 
-public class RecyclerViewRoutineAdapter
-        extends RecyclerView.Adapter<RecyclerViewRoutineAdapter.ViewHolder> {
+public class RoutineAdapter
+        extends RecyclerView.Adapter<RoutineAdapter.ViewHolder> {
 
     private Routine mRoutine;
     private static final String TAG = "CreateRoutine-A";
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView mExerciseName;
-        public TextView mExerciseDescription;
+        public TextView exerciseName;
 
         public ViewHolder(View v) {
             super(v);
-            mExerciseName = (TextView) v.findViewById(R.id.list_item_name);
-            mExerciseDescription = (TextView) v.findViewById(R.id.list_item_description);
+            exerciseName = (TextView) v.findViewById(R.id.text_line);
         }
     }
 
     // Constructor sets the adapter data
-    public RecyclerViewRoutineAdapter(Routine routine){
+    public RoutineAdapter(Routine routine){
         mRoutine = routine;
     }
 
@@ -46,7 +44,7 @@ public class RecyclerViewRoutineAdapter
         Log.d(TAG, "onCreateViewHolder()");
         // Create a new two-line-list-item view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.two_line_list_item, parent, false);
+                .inflate(R.layout.one_line_list_item, parent, false);
 
         // pass the view into the view holder
         return new ViewHolder(v);
@@ -57,11 +55,7 @@ public class RecyclerViewRoutineAdapter
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder(" + position + ")");
         Exercise exercise = mRoutine.getExercise(position);
-        TextView nameText = holder.mExerciseName;
-        TextView descriptionText = holder.mExerciseDescription;
-
-        nameText.setText(exercise.getName());
-        descriptionText.setText("remove this text");
+        holder.exerciseName.setText(exercise.getName());
     }
 
     // Return the size of your data set

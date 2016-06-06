@@ -8,10 +8,10 @@
     </solid>
 
     <!-- view border color and width -->
-    <stroke
+    <!--<stroke
         android:width="2dp"
-        android:color="@color/dark_tint_3" >
-    </stroke>
+        android:color="@color/dark_tint_3">
+    </stroke>-->
 
     <!-- The radius makes the corners rounded
     <corners

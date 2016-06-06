@@ -13,5 +13,20 @@
     <dimen name="font_size_description">24sp</dimen>
     <dimen name="font_size_notes">24sp</dimen>
 
+    <dimen name="single_line_list_text_size">16sp</dimen>
+    <dimen name="single_line_list_height">48dp</dimen>
+    <dimen name="single_line_list_lr_padding">16dp</dimen>
+    <dimen name="single_line_list_tb_padding">8dp</dimen>
+
+    <dimen name="two_line_list_primary_text_size">16sp</dimen>
+    <dimen name="two_line_list_secondary_text_size">14dp</dimen>
+    <dimen name="two_line_list_height">72dp</dimen>
+    <dimen name="two_line_list_lr_padding">16dp</dimen>
+    <dimen name="two_line_list_tb_padding">8dp</dimen>
+
+    <dimen name="button_lr_margin">16dp</dimen>
+    <dimen name="button_top_margin">12dp</dimen>
+
+    <dimen name="button_edit_text_width">96dp</dimen>
 
 </resources>

@@ -3,6 +3,7 @@ package com.evolve.mitchell.evolvefitnessprogramtracker.components;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -20,9 +21,12 @@ import com.evolve.mitchell.evolvefitnessprogramtracker.R;
 public class ButtonEditText extends LinearLayout {
 
     private boolean mActivated = false;
+    private boolean mAlwaysPositive = false;
     private float mIncrement = 1;
     private float mNumber = 0;
     private boolean mIsInteger;
+    private String mHint = null;
+    private OnNumberChangedListener onNumberChangedListener = null;
 
     private EditText mEditText;
     private ImageButton mMoreButton;
@@ -53,12 +57,16 @@ public class ButtonEditText extends LinearLayout {
         mActivated = a.getBoolean(
                 R.styleable.ButtonEditText_activated,
                 mActivated);
+        mAlwaysPositive = a.getBoolean(
+                R.styleable.ButtonEditText_always_positive,
+                mAlwaysPositive);
         mIncrement = a.getFloat(
                 R.styleable.ButtonEditText_increment,
                 mIncrement);
         mNumber = a.getFloat(
                 R.styleable.ButtonEditText_default_number,
                 mNumber);
+        mHint = a.getString(R.styleable.ButtonEditText_hint);
         int mode = a.getInteger(R.styleable.ButtonEditText_mode, 1);
         mIsInteger = (mode == 0);
 
@@ -87,9 +95,19 @@ public class ButtonEditText extends LinearLayout {
 
         if (mIsInteger) {
             mNumber = Math.round(mNumber);
+            mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }
+        else {
+            mEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         }
 
-        mEditText.setText(getNumberString());
+        if (mHint != null) {
+            mEditText.setHint(mHint);
+        }
+        else {
+            mEditText.setText(getNumberString());
+        }
+
 
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -99,7 +117,15 @@ public class ButtonEditText extends LinearLayout {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                mNumber = Float.valueOf(mEditText.getText().toString());
+                String text = mEditText.getText().toString();
+                try {
+                    mNumber = Float.valueOf(text);
+                    onNumberChanged();
+                } catch (NumberFormatException e) {
+                    if (!text.equals("")) {
+                        mEditText.setText(getNumberString());
+                    }
+                }
             }
         });
 
@@ -135,14 +161,26 @@ public class ButtonEditText extends LinearLayout {
         EditText editText = (EditText) findViewById(R.id.number_edit_text);
         switch (button.getId()) {
             case R.id.button_less:
-                mNumber -= mIncrement;
-                editText.setText(getNumberString());
+                if (!(mAlwaysPositive && mNumber <= 0)) {
+                    mNumber -= mIncrement;
+                    editText.setText(getNumberString());
+                }
                 break;
             case R.id.button_more:
                 mNumber += mIncrement;
                 editText.setText(getNumberString());
                 break;
         }
+    }
+
+    private void onNumberChanged() {
+        if (onNumberChangedListener != null) {
+            onNumberChangedListener.numberChanged();
+        }
+    }
+
+    public void setOnNumberChangedListener(OnNumberChangedListener listener) {
+        onNumberChangedListener = listener;
     }
 
     public String getNumberString() {
@@ -207,5 +245,6 @@ public class ButtonEditText extends LinearLayout {
 
     public void setNumber(float number) {
         mNumber = number;
+        mEditText.setText(getNumberString());
     }
 }

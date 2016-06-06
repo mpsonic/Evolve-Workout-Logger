@@ -13,7 +13,7 @@
         android:layout_gravity="top"
         android:gravity="center_vertical|center_horizontal"
         android:layout_alignParentTop="true"
-        android:background="@drawable/background_and_border_1"
+        android:background="@color/light_orange"
         android:textStyle="bold" />
 
     <android.support.v7.widget.RecyclerView
@@ -25,16 +25,16 @@
         android:dividerHeight="1dp"
         android:headerDividersEnabled="true"
         android:layout_below="@+id/text_active_exercise_sessions_title"
-        android:background="@drawable/background_and_border_2">
+        android:background="@color/white">
     </android.support.v7.widget.RecyclerView>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:id="@+id/empty_view_active_exercise_sessions"
-        android:text="@string/text_no_saved_routines"
+        android:text="@string/text_no_exercise_sessions"
         android:layout_below="@+id/text_active_exercise_sessions_title"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|center_horizontal"
         android:textStyle="bold"
         android:background="@drawable/background_and_border_2"
         android:paddingStart="15dp"

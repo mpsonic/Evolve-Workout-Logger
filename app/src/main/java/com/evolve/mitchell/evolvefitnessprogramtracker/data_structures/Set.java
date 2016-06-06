@@ -27,6 +27,13 @@ public class Set {
         mMeasurementList.add(data);
     }
 
+    public void setMeasurement(MeasurementCategory category, float measurement) {
+        for (MeasurementData data: mMeasurementList) {
+            if (data.getCategory() == category) {
+                data.setMeasurement(measurement);
+            }
+        }
+    }
 
     // remove one of the measurements from the set
     public void deleteMeasurement(MeasurementCategory category){

@@ -67,7 +67,7 @@ public class CreateRoutine extends AppCompatActivity
             }
         } else {
             mRoutine = new Routine();
-            //mRoutineId = databaseHelper.addRoutine(mRoutine, false);
+            databaseHelper.insertRoutine(mRoutine, false);
         }
 
         FragmentManager fm = getSupportFragmentManager();
@@ -83,6 +83,7 @@ public class CreateRoutine extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         Log.d(TAG, "onSaveInstanceState()");
+        extractRoutineDataFromActivity();
         DatabaseHelper db = DatabaseHelper.getInstance(this);
         db.updateRoutine(mRoutine);
         db.close();
@@ -126,9 +127,7 @@ public class CreateRoutine extends AppCompatActivity
         finish();
     }
 
-    private boolean persistRoutine() {
-        Log.d(TAG, "persistRoutine");
-
+    private void extractRoutineDataFromActivity() {
         EditText titleEdit = (EditText) findViewById(R.id.edit_title);
         EditText descriptionEdit = (EditText) findViewById(R.id.edit_description);
         assert titleEdit != null;
@@ -138,6 +137,12 @@ public class CreateRoutine extends AppCompatActivity
         String description = descriptionEdit.getText().toString();
         mRoutine.setName(title);
         mRoutine.setDescription(description);
+    }
+
+    private boolean persistRoutine() {
+        Log.d(TAG, "persistRoutine");
+
+        extractRoutineDataFromActivity();
 
         DatabaseHelper db = DatabaseHelper.getInstance(this);
         String routineName = db.insertRoutine(mRoutine, true);
@@ -156,8 +161,12 @@ public class CreateRoutine extends AppCompatActivity
                 String exerciseName = data.getStringExtra(DatabaseHelper.KEY_EXERCISE_NAME);
                 DatabaseHelper db = DatabaseHelper.getInstance(this);
                 Exercise exercise = db.getExercise(exerciseName);
-                db.close();
                 mRoutine.addExercise(exercise);
+                db.insertRoutineExercise(
+                        mRoutine.getName(),
+                        exercise.getName(),
+                        mRoutine.getNumExercises() - 1
+                );
                 mFragment.refresh();
                 fab.show();
             }

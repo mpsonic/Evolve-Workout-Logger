@@ -1,15 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <fragment
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.ExerciseSessionSetsFragment"
-        android:id="@+id/fragment_exercise_session_sets"
-        android:layout_gravity="center_horizontal"
-        tools:layout="@layout/fragment_exercise_session_sets" />
+        android:orientation="vertical">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.ExerciseSessionSetsFragment"
+            android:id="@+id/fragment_exercise_session_sets"
+            android:layout_gravity="center_horizontal"
+            tools:layout="@layout/fragment_exercise_session_sets" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Button"
+                android:text="@string/text_button_add_set"
+                android:id="@+id/button_add_set" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Button"
+                android:text="@string/text_button_next_set"
+                android:id="@+id/button_next_set" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </ScrollView>
