@@ -1,13 +1,13 @@
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Exercise;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.ExerciseSession;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.MeasurementCategory;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.MeasurementData;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Set;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Unit;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Exercise;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.ExerciseSession;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementCategory;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementData;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Set;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Unit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

@@ -1,9 +1,9 @@
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.MeasurementCategory;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.MeasurementData;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementCategory;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementData;
 
 /**
  *

@@ -73,5 +73,18 @@
     <string name="no">No</string>
     <string name="dialog_finish_routine_session">Are you sure you want to finish your workout?</string>
     <string name="text_no_exercise_sessions">Add an exercise</string>
+    <string name="text_last_performed">Last Performed</string>
+    <string name="placeholder_number">1</string>
+    <string name="text_times_performed">Times Performed</string>
+
+    <string name="text_stat_category_column">Category</string>
+    <string name="text_stat_avg_column_title">Avg</string>
+    <string name="text_stat_max_column_title">Max</string>
+    <string name="placeholder_text">text</string>
+    <string name="text_no_stats">No Stats Recorded</string>
+    <string name="title_exercise_stats">Measurement Stats</string>
+    <string name="description_current_set">Current Set</string>
+    <string name="text_clear_data">Clear Data</string>
+    <string name="text_never">Never</string>
 
 </resources>

@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.CreateExercise"
+    tools:context="edu.umn.paull011.evolveworkoutlogger.activities.CreateExercise"
     tools:showIn="@layout/activity_create_exercise"
     android:id="@+id/contentLayout">
     
@@ -167,7 +167,7 @@
                             android:layout_weight="2"
                             android:orientation="horizontal">
 
-                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
                                 android:id="@+id/bet_reps_starting_measurement"
                                 android:layout_width="@dimen/button_edit_text_width"
                                 android:layout_height="wrap_content"
@@ -194,7 +194,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2">
-                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
                                 android:id="@+id/bet_weight_starting_measurement"
                                 android:layout_width="@dimen/button_edit_text_width"
                                 android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2">
-                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
                                 android:id="@+id/bet_distance_starting_measurement"
                                 android:layout_width="@dimen/button_edit_text_width"
                                 android:layout_height="wrap_content"
@@ -261,7 +261,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2">
 
-                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
                                 android:id="@+id/bet_time_hours_starting_measurement"
                                 android:layout_width="72dp"
                                 android:layout_height="wrap_content"
@@ -271,7 +271,7 @@
                                 app:always_positive="true"
                                 app:activated="false"
                                 app:hint="@string/hours_edittext_hint"/>
-                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
                                 android:id="@+id/bet_time_minutes_starting_measurement"
                                 android:layout_width="72dp"
                                 android:layout_height="wrap_content"
@@ -281,7 +281,7 @@
                                 app:always_positive="true"
                                 app:activated="false"
                                 app:hint="@string/minutes_edittext_hint"/>
-                            <com.evolve.mitchell.evolvefitnessprogramtracker.components.ButtonEditText
+                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
                                 android:id="@+id/bet_time_seconds_starting_measurement"
                                 android:layout_width="72dp"
                                 android:layout_height="wrap_content"

@@ -39,7 +39,7 @@
         <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.RoutineSessionExercisesFragment"
+            android:name="edu.umn.paull011.evolveworkoutlogger.fragments.RoutineSessionExercisesFragment"
             android:id="@+id/fragment_routine_session_exercises"
             android:layout_gravity="center_horizontal"
             tools:layout="@layout/fragment_routine_session_exercises" />

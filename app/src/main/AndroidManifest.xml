@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.evolve.mitchell.evolvefitnessprogramtracker">
+    package="edu.umn.paull011.evolveworkoutlogger">
 
     <application
         android:allowBackup="true"
@@ -26,28 +26,31 @@
             </intent-filter>
         </activity>
 
+        <!-- My Routines -->
+        <activity
+            android:name=".activities.MyRoutines"
+            android:label="@string/title_activity_my_routines"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.StartPage">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.umn.paull011.evolveworkoutlogger.activities.StartPage" />
+        </activity>
+
+        <!-- My Exercises -->
+        <activity
+            android:name=".activities.MyExercises"
+            android:parentActivityName=".activities.StartPage">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.umn.paull011.evolveworkoutlogger.activities.StartPage" />
+        </activity>
+
         <!-- Start Routine -->
         <activity
             android:name=".activities.StartRoutine"
             android:label="@string/title_activity_start_routine"
             android:launchMode="singleTop" />
-
-        <!-- My Routines -->
-        <activity
-            android:name=".activities.MyRoutines"
-            android:label="@string/title_activity_my_routines" />
-
-        <!-- Active Routine Session -->
-        <activity
-            android:name=".activities.ActiveRoutineSession"
-            android:label="@string/title_activity_active_routine_session"
-            android:launchMode="singleTop"
-            android:parentActivityName=".activities.ActiveRoutineSession"
-            android:windowSoftInputMode="adjustResize|stateHidden">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.evolve.mitchell.evolvefitnessprogramtracker.activities.ActiveRoutineSession" />
-        </activity>
 
         <!-- Create Routine -->
         <activity
@@ -58,7 +61,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.StartRoutine" />
+                android:value="edu.umn.paull011.evolveworkoutlogger.activities.StartRoutine" />
         </activity>
 
         <!-- Add Exercise -->
@@ -76,8 +79,33 @@
             android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.AddExercise" />
+                android:value="edu.umn.paull011.evolveworkoutlogger.activities.AddExercise" />
         </activity>
+
+        <!-- Active Routine Session -->
+        <activity
+            android:name=".activities.ActiveRoutineSession"
+            android:label="@string/title_activity_active_routine_session"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.ActiveRoutineSession"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.umn.paull011.evolveworkoutlogger.activities.ActiveRoutineSession" />
+        </activity>
+
+        <!-- Active Exercise Session -->
+        <activity
+            android:name=".activities.ActiveExerciseSession"
+            android:parentActivityName=".activities.ActiveRoutineSession"
+            android:windowSoftInputMode="adjustNothing|stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.umn.paull011.evolveworkoutlogger.activities.ActiveRoutineSession" />
+        </activity>
+
+        <!-- Component Testing -->
+        <activity android:name=".activities.ComponentTesting" />
 
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -87,16 +115,13 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities.ComponentTesting" />
-
-        <!-- Active Exercise Session -->
-        <activity android:name=".activities.ActiveExerciseSession"
-            android:parentActivityName=".activities.ActiveRoutineSession"
-            android:windowSoftInputMode="adjustNothing|stateHidden">
+        <activity android:name=".activities.ViewExercise"
+            android:parentActivityName=".activities.MyExercises">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.ActiveRoutineSession" />
+                android:value="edu.umn.paull011.evolveworkoutlogger.activities.MyExercises"/>
         </activity>
+        <activity android:name=".activities.ViewRoutine"/>
     </application>
 
 </manifest>

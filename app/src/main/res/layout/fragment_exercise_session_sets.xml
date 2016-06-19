@@ -13,12 +13,12 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_exercise_session_sets"
-        android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.ExerciseSessionSetsFragment"
+        android:name="edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseSessionSetsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.ExerciseSessionSetsFragment"
-        tools:listitem="@layout/fragment_set" />
+        tools:context="edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseSessionSetsFragment"
+        tools:listitem="@layout/component_set" />
 
     <TextView
         android:layout_width="match_parent"

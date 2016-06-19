@@ -5,19 +5,19 @@ import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 import android.test.ServiceTestCase;
 
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.DatabaseHelper;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Exercise;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.ExerciseSession;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.MeasurementCategory;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Routine;
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.RoutineSession;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Method;
+
+import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Exercise;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.ExerciseSession;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementCategory;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Routine;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.RoutineSession;
 
 /**
  * Testing for the DatabaseHelper class
@@ -81,7 +81,7 @@ public class DatabaseHelperTest extends AndroidTestCase {
     public void testGetLastRoutineSession() throws Exception {
         String exerciseName = db.insertExercise(exercise1, true);
         String routineName = db.insertRoutine(routine1, true);
-        int rSessionId = db.insertRoutineSession(rSession1);
+        int rSessionId = db.insertRoutineSessionDeep(rSession1);
         RoutineSession rSession2 = db.getLastRoutineSession(routine1);
         assertTrue(rSession1.equals(rSession2));
     }
@@ -98,6 +98,6 @@ public class DatabaseHelperTest extends AndroidTestCase {
 
     @Test
     public void testInsertRoutineSession() throws Exception {
-        int rSessionId = db.insertRoutineSession(rSession1);
+        int rSessionId = db.insertRoutineSessionDeep(rSession1);
     }
 }

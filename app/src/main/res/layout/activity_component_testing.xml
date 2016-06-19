@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.ComponentTesting">
+    tools:context="edu.umn.paull011.evolveworkoutlogger.activities.ComponentTesting">
 
     <include
         layout="@layout/component_set_header"
@@ -21,7 +21,7 @@
         android:layout_alignParentTop="true" />
 
     <include
-        layout="@layout/fragment_set"
+        layout="@layout/component_set"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_below="@id/header"/>

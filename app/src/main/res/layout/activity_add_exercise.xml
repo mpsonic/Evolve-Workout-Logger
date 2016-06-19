@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.MyRoutines">
+    tools:context="edu.umn.paull011.evolveworkoutlogger.activities.MyRoutines">
 
     <include layout="@layout/appbar"/>
 
@@ -19,7 +19,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.AddExercise">
+        tools:context="edu.umn.paull011.evolveworkoutlogger.activities.AddExercise">
 
         <!--<Button
             android:layout_width="fill_parent"
@@ -34,7 +34,7 @@
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.SavedExercisesFragment"
+            android:name="edu.umn.paull011.evolveworkoutlogger.fragments.SavedExercisesFragment"
             android:id="@+id/fragment_saved_exercises"
             android:layout_centerHorizontal="true"
             tools:layout="@layout/fragment_saved_exercises" />

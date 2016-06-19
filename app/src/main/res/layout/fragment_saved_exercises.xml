@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.SavedExercisesFragment">
+    tools:context="edu.umn.paull011.evolveworkoutlogger.fragments.SavedExercisesFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_saved_exercises"

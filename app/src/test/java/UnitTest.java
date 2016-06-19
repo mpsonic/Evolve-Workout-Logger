@@ -1,7 +1,7 @@
-import com.evolve.mitchell.evolvefitnessprogramtracker.data_structures.Unit;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Unit;
 
 /**
  * Testing the Unit enumeration

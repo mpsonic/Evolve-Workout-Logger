@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.activities.ActiveRoutineSession">
+    tools:context="edu.umn.paull011.evolveworkoutlogger.activities.ActiveRoutineSession">
 
     <RelativeLayout
         android:layout_width="match_parent"

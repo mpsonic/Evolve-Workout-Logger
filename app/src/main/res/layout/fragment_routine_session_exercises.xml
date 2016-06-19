@@ -2,19 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.RoutineSessionExercisesFragment">
+    tools:context="edu.umn.paull011.evolveworkoutlogger.fragments.RoutineSessionExercisesFragment">
 
     <TextView
         android:id="@+id/text_active_exercise_sessions_title"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/text_active_exercise_sessions_title"
         android:layout_gravity="top"
-        android:gravity="center_vertical|center_horizontal"
         android:layout_alignParentTop="true"
-        android:background="@color/light_orange"
-        android:textStyle="bold" />
+        style="@style/ColoredTitleHeader"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

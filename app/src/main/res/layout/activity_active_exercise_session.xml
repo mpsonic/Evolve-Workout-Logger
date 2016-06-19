@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
-    tools:context=".activities.ActiveExerciseSession">
+    tools:context="edu.umn.paull011.evolveworkoutlogger.activities.ActiveExerciseSession">
 
     <RelativeLayout
         android:layout_height="wrap_content"

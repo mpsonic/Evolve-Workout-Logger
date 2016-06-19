@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/component_stats_header"
+        android:id="@+id/set_header"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_exercise_stats"
+        android:name="edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseStatsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseStatsFragment"
+        tools:listitem="@layout/component_stat" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/empty_view_exercise_stats"
+        android:text="@string/text_no_stats"
+        android:gravity="center_vertical|center_horizontal"
+        android:textStyle="bold"
+        android:background="@drawable/background_and_border_2"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textIsSelectable="false"
+        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+</LinearLayout>

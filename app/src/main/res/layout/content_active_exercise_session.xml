@@ -11,7 +11,7 @@
         <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.evolve.mitchell.evolvefitnessprogramtracker.fragments.ExerciseSessionSetsFragment"
+            android:name="edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseSessionSetsFragment"
             android:id="@+id/fragment_exercise_session_sets"
             android:layout_gravity="center_horizontal"
             tools:layout="@layout/fragment_exercise_session_sets" />
