@@ -10,38 +10,81 @@ package edu.umn.paull011.evolveworkoutlogger.data_structures;
 // Finished
 public class MeasurementData{
 
+    private static final String TAG = MeasurementData.class.getSimpleName();
+    private MeasurementCategory mCategory;
+    private float mMeasurement;
+    private Unit mUnit;
+
+
     // Public
     public MeasurementData(){}
-    public MeasurementData(MeasurementCategory category, float measurement){
+
+    public MeasurementData(MeasurementCategory category, float measurement, Unit unit) {
         mCategory = category;
         mMeasurement = measurement;
+        mUnit = unit;
     }
 
-    public MeasurementCategory getCategory(){
+    public MeasurementData(MeasurementCategory category, float measurement) {
+        mCategory = category;
+        mMeasurement = measurement;
+        mUnit = category.getDefaultUnit(true);
+    }
+
+    public MeasurementCategory getCategory() {
         return mCategory;
     }
-
-
-    public float getMeasurement(){
-        return mMeasurement;
-    }
-
 
     public void setCategory(MeasurementCategory category){
         mCategory = category;
     }
 
+    public float getMeasurement() {
+        return mMeasurement;
+    }
 
     public void setMeasurement(float m){
         mMeasurement = m;
     }
 
+    public Unit getUnit() {
+        return mUnit;
+    }
 
     public void copyData(MeasurementData other){
         mCategory = other.mCategory;
         mMeasurement = other.mMeasurement;
     }
 
+    public String display() {
+        String unit = mUnit.getDisplayName();
+        String number = getDisplayNumber();
+        return number + " " + unit;
+    }
+
+    private String getDisplayNumber() {
+        if (mCategory == MeasurementCategory.TIME) {
+            return getTimeDisplayNumber();
+        }
+        if (isInteger()) {
+            return String.valueOf((int) mMeasurement);
+        }
+        return String.valueOf(mMeasurement);
+    }
+
+    private String getTimeDisplayNumber() {
+        if (mUnit == Unit.HOURS) {
+            return String.valueOf(mMeasurement / 3600);
+        } else if (mUnit == Unit.MINUTES) {
+            return String.valueOf(mMeasurement / 60);
+        } else {
+            return String.valueOf((int) mMeasurement);
+        }
+    }
+
+    private boolean isInteger() {
+        return (Math.round(mMeasurement) == mMeasurement);
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -55,10 +98,5 @@ public class MeasurementData{
         MeasurementData other = (MeasurementData) obj;
         return mCategory == other.mCategory && mMeasurement == other.mMeasurement;
     }
-
-    // Private
-    private MeasurementCategory mCategory;
-    private float mMeasurement;
-    private static final String TAG = MeasurementData.class.getSimpleName();
 
 }

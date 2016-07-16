@@ -12,6 +12,7 @@ import java.util.Calendar;
  */
 public class ExerciseSession {
 
+    private static final String TAG = ExerciseSession.class.getSimpleName();
     // Private
     private Exercise mExercise;
     private int mId;
@@ -20,7 +21,6 @@ public class ExerciseSession {
     private int mCurrentSetIndex;
     private int mCompletedSets;
     private Boolean mCompleted;
-    private static final String TAG = ExerciseSession.class.getSimpleName();
 
 
     // Public
@@ -71,13 +71,12 @@ public class ExerciseSession {
         mDate = date;
     }
 
+    public int getId() {
+        return mId;
+    }
 
     public void setId(int id) {
         mId = id;
-    }
-
-    public int getId(){
-        return mId;
     }
 
     public boolean isCompleted(){
@@ -123,7 +122,8 @@ public class ExerciseSession {
                 if (mExercise.isTracked(category)) {
                     MeasurementData newData = new MeasurementData(
                             category,
-                            category.getDefaultMeasurement()
+                            category.getDefaultMeasurement(),
+                            mExercise.getUnit(category)
                     );
                     newSet.addMeasurement(newData);
                 }

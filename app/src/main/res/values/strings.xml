@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Evolve Fitness Program Tracker</string>
+    <string name="app_name">Evolve Workout Logger</string>
     <string name="start_routine">Start A Routine</string>
 
     <string name="action_settings">Settings</string>
@@ -82,9 +82,13 @@
     <string name="text_stat_max_column_title">Max</string>
     <string name="placeholder_text">text</string>
     <string name="text_no_stats">No Stats Recorded</string>
-    <string name="title_exercise_stats">Measurement Stats</string>
+    <string name="title_exercise_stats">Stats</string>
     <string name="description_current_set">Current Set</string>
     <string name="text_clear_data">Clear Data</string>
     <string name="text_never">Never</string>
+
+
+    <string name="text_empty_view_exercise_history">No Exercise History</string>
+    <string name="text_fragment_exercise_history_title">History</string>
 
 </resources>

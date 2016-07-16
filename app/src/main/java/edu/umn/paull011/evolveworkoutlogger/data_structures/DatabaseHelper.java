@@ -569,56 +569,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Date lastPerformedDate = new Date(0);
         int sessionCount = 0;
         if (setsCursor.moveToFirst()) {
-            int sessionReps = 0;
-            int exerciseSessionId = 0;
-            float weightAmount = 0;
-            float distanceAmount = 0;
-            long timeAmount = 0;
             boolean bReps = exercise.isTracked(MeasurementCategory.REPS);
             boolean bWeight = exercise.isTracked(MeasurementCategory.WEIGHT);
             boolean bDistance = exercise.isTracked(MeasurementCategory.DISTANCE);
             boolean bTime = exercise.isTracked(MeasurementCategory.TIME);
-            boolean firstLoop = true;
-            Date thisDate;
+            String dateString;
+            Date date;
             while (!setsCursor.isAfterLast()) {
-                if (exerciseSessionId != setsCursor.getInt(4)) {
-                    sessionCount++;
-                    String dateString = setsCursor.getString(5);
-                    thisDate = Date.valueOf(dateString);
-                    if (lastPerformedDate.before(thisDate)) {
-                        lastPerformedDate = thisDate;
-                    }
-                }
+                Set set = new Set();
+                dateString = setsCursor.getString(5);
+                date = Date.valueOf(dateString);
                 if (bReps) {
-                    if (exerciseSessionId != setsCursor.getInt(4)) {
-                        if (!firstLoop) {
-                            stats.add(MeasurementCategory.REPS, sessionReps);
-                        } else {
-                            firstLoop = false;
-                        }
-                        exerciseSessionId = setsCursor.getInt(4);
-                        sessionReps = 0;
-                    }
-                    sessionReps += setsCursor.getInt(0);
+                    MeasurementData data = new MeasurementData(
+                            MeasurementCategory.REPS,
+                            setsCursor.getInt(0),
+                            exercise.getUnit(MeasurementCategory.REPS)
+                    );
+                    set.addMeasurement(data);
                 }
                 if (bWeight) {
-                    stats.add(MeasurementCategory.WEIGHT, setsCursor.getDouble(1));
+                    MeasurementData data = new MeasurementData(
+                            MeasurementCategory.WEIGHT,
+                            setsCursor.getFloat(1),
+                            exercise.getUnit(MeasurementCategory.WEIGHT)
+                    );
+                    set.addMeasurement(data);
                 }
                 if (bDistance) {
-                    stats.add(MeasurementCategory.DISTANCE, setsCursor.getDouble(2));
+                    MeasurementData data = new MeasurementData(
+                            MeasurementCategory.DISTANCE,
+                            setsCursor.getFloat(2),
+                            exercise.getUnit(MeasurementCategory.DISTANCE)
+                    );
+                    set.addMeasurement(data);
                 }
                 if (bTime) {
-                    stats.add(MeasurementCategory.TIME, setsCursor.getLong(3));
+                    MeasurementData data = new MeasurementData(
+                            MeasurementCategory.TIME,
+                            setsCursor.getLong(3),
+                            exercise.getUnit(MeasurementCategory.TIME)
+                    );
+                    set.addMeasurement(data);
                 }
+                stats.addSet(date, set);
                 setsCursor.moveToNext();
-            }
-            if (bReps) {
-                stats.add(MeasurementCategory.REPS, sessionReps);
             }
         }
         setsCursor.close();
-        stats.setTimesPerformed(sessionCount);
-        stats.setDateLastPerformed(lastPerformedDate);
         return stats;
     }
 
@@ -655,29 +652,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 if (reps) {
                     MeasurementData data = new MeasurementData(
                             MeasurementCategory.REPS,
-                            repsAmount
+                            repsAmount,
+                            exerciseSession.getUnit(MeasurementCategory.REPS)
                     );
                     set.addMeasurement(data);
                 }
                 if (weight) {
                     MeasurementData data = new MeasurementData(
                             MeasurementCategory.WEIGHT,
-                            weightAmount
-                            
+                            weightAmount,
+                            exerciseSession.getUnit(MeasurementCategory.WEIGHT)
                     );
                     set.addMeasurement(data);
                 }
                 if (distance) {
                     MeasurementData data = new MeasurementData(
                             MeasurementCategory.DISTANCE,
-                            distanceAmount
+                            distanceAmount,
+                            exerciseSession.getUnit(MeasurementCategory.DISTANCE)
                     );
                     set.addMeasurement(data);
                 }
                 if (time) {
                     MeasurementData data = new MeasurementData(
                             MeasurementCategory.TIME,
-                            timeAmount
+                            timeAmount,
+                            exerciseSession.getUnit(MeasurementCategory.TIME)
                     );
                     set.addMeasurement(data);
                 }
@@ -689,19 +689,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return sets;
     }
 
-
-
     // Routine Table Methods
+
+    // Routine Session table methods
+
+    // Routine Exercises table methods
+
+    // Json conversion methods
+
+
 
     /**
      * Persist a routine and all of its routine-exercise information to the database.
      *
-     * @param routine The routine to saved
+     * @param routine   The routine to saved
      * @param permanent Specify whether the routine is temporary or permanent. Temporary
      *                  routines will be cleaned from the database periodically.
      * @return The name of the successfully saved routine
      */
-    public String insertRoutine(Routine routine, boolean permanent){
+    public String insertRoutine(Routine routine, boolean permanent) {
 
         // Save routine in Routine table
         ContentValues values = extractRoutineData(routine);
@@ -716,16 +722,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues primaryKeyValues = this.getPrimaryKeyValuesFromRowId(TABLE_ROUTINES, rowId);
         assert primaryKeyValues != null;
         String routineName = primaryKeyValues.getAsString(KEY_ROUTINE_NAME);
-        if (BuildConfig.DEBUG && !routineName.equals(routine.getName())) { throw new AssertionError(); }
+        if (BuildConfig.DEBUG && !routineName.equals(routine.getName())) {
+            throw new AssertionError();
+        }
 
         // Save routine-exercise pairings into Routine Exercises table
         this.saveRoutineExercises(routine);
 
         return routineName;
-    }
-
+    }    // Routine Exercises table column names
     /**
-     *
      * @param routine The routine to update in the database
      * @return the name of the successfully updated routine
      */
@@ -742,12 +748,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues primaryKeyValues = this.getPrimaryKeyValuesFromRowId(TABLE_ROUTINES, rowId);
         assert primaryKeyValues != null;
         String routineName = primaryKeyValues.getAsString(KEY_ROUTINE_NAME);
-        if (BuildConfig.DEBUG && !routineName.equals(routine.getName())) { throw new AssertionError(); }
+        if (BuildConfig.DEBUG && !routineName.equals(routine.getName())) {
+            throw new AssertionError();
+        }
 
         // Save routine-exercise pairings into Routine Exercises table
         this.saveRoutineExercises(routine);
         return routineName;
-    }
+    }    // Exercise Session Table Column Names
 
     /**
      * Delete a routine and its routine-exercise data from the database
@@ -755,7 +763,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param routineName the name of the routine to be deleted
      * @return true if the routine is sucessfully deleted, false if otherwise;
      */
-    public boolean deleteRoutine(String routineName){
+    public boolean deleteRoutine(String routineName) {
         String[] rName = new String[]{routineName};
         int count = writableDB.delete(
                 TABLE_ROUTINES,
@@ -771,10 +779,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
         return false;
-    }
-
+    }    // KEY_EXERCISE_NAME
     // Can return null if routineName is not in the database
-    public Routine getRoutine(String routineName){
+    public Routine getRoutine(String routineName) {
         Cursor cursor = readableDB.query(
                 TABLE_ROUTINES,
                 new String[]{KEY_ROUTINE_NAME, KEY_ROUTINE_DESCRIPTION},
@@ -786,7 +793,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);
 
         Routine routine = null;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             routine = this.makeRoutineFromCursor(cursor);
         }
 
@@ -794,12 +801,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return routine;
     }
 
+    // Routine Session Table Column Names
+
     private ContentValues extractRoutineData(Routine routine) {
         ContentValues values = new ContentValues();
         values.put(KEY_ROUTINE_NAME, routine.getName());
         values.put(KEY_ROUTINE_DESCRIPTION, routine.getDescription());
         return values;
-    }
+    }    // Sets Table Column Names
 
     private Routine makeRoutineFromCursor(Cursor routineCursor) {
         String name = routineCursor.getString(COLUMN_ROUTINE_NAME);
@@ -808,31 +817,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Routine routine = new Routine(name);
         routine.setDescription(description);
         List<Exercise> routineExercises = getRoutineExercises(name);
-        for (Exercise exercise: routineExercises) {
+        for (Exercise exercise : routineExercises) {
             routine.addExercise(exercise);
         }
 
         return routine;
     }
 
-    public Cursor getRoutinesCursor(){
+    public Cursor getRoutinesCursor() {
         String query =
                 "SELECT " + KEY_ROUTINE_NAME + "," + KEY_ROUTINE_DESCRIPTION +
-                " FROM " + TABLE_ROUTINES +
-                " WHERE " + KEY_PERMANENT + "='1'" +
-                " AND " + KEY_ROUTINE_NAME + "<>''";
+                        " FROM " + TABLE_ROUTINES +
+                        " WHERE " + KEY_PERMANENT + "='1'" +
+                        " AND " + KEY_ROUTINE_NAME + "<>''";
         return readableDB.rawQuery(query, null);
     }
 
-    public int getRoutineCount(){
+    public int getRoutineCount() {
         Cursor cursor = getRoutinesCursor();
         int count = cursor.getCount();
         cursor.close();
         return count;
     }
-
-
-    // Routine Session table methods
 
     /**
      * Persist a RoutineSession and all of its ExerciseSession data to the database
@@ -858,7 +864,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues primaryKeyValues = this.getPrimaryKeyValuesFromRowId(TABLE_ROUTINE_SESSIONS, rowId);
         assert primaryKeyValues != null;
         Integer sessionId = primaryKeyValues.getAsInteger(KEY_ROUTINE_SESSION_ID);
-        if (BuildConfig.DEBUG && sessionId == null) { throw new AssertionError(); }
+        if (BuildConfig.DEBUG && sessionId == null) {
+            throw new AssertionError();
+        }
         session.setId(sessionId);
         return sessionId;
     }
@@ -906,8 +914,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String dateString = routineSessionCursor.getString(1);
             Date exerciseSessionDate = Date.valueOf(dateString);
             routineSession.setDate(exerciseSessionDate);
-            List<ExerciseSession> exerciseSessions  = this.getRoutineSessionExerciseSessions(routineSession);
-            for (ExerciseSession session: exerciseSessions) {
+            List<ExerciseSession> exerciseSessions = this.getRoutineSessionExerciseSessions(routineSession);
+            for (ExerciseSession session : exerciseSessions) {
                 routineSession.addExerciseSession(session);
             }
         }
@@ -943,10 +951,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exerciseSessions;
     }
 
-    /*public long updateRoutineSession(RoutineSession session) {
-
-    }*/
-
     /**
      * Delete a RoutineSession and all of the associated ExerciseSession data from the database
      *
@@ -954,7 +958,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return true if successful, false if otherwise
      */
     public boolean deleteRoutineSession(RoutineSession session) {
-        String[] routineSessionId = new String[] {String.valueOf(session.getId())};
+        String[] routineSessionId = new String[]{String.valueOf(session.getId())};
         int count = writableDB.delete(
                 TABLE_ROUTINE_SESSIONS,
                 KEY_ROUTINE_SESSION_ID + "=?",
@@ -964,7 +968,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (count == 1) {
             Cursor exerciseSessionCursor = readableDB.query(
                     TABLE_EXERCISE_SESSIONS,
-                    new String[] {KEY_EXERCISE_SESSION_ID},
+                    new String[]{KEY_EXERCISE_SESSION_ID},
                     KEY_ROUTINE_SESSION_ID + "=?",
                     routineSessionId,
                     null,
@@ -979,7 +983,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 writableDB.delete(
                         TABLE_SETS,
                         KEY_EXERCISE_SESSION_ID + "=?",
-                        new String[] {String.valueOf(exerciseSessionId)}
+                        new String[]{String.valueOf(exerciseSessionId)}
                 );
             }
             exerciseSessionCursor.close();
@@ -994,8 +998,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }
-
-    // Routine Exercises table methods
 
     private void saveRoutineExercises(Routine routine) {
         int numExercises = routine.getNumExercises();
@@ -1054,7 +1056,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         writableDB.delete(
                 TABLE_ROUTINE_EXERCISES,
                 KEY_ROUTINE_NAME + "=?",
-                new String[] {routineName}
+                new String[]{routineName}
         );
     }
 
@@ -1062,11 +1064,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         writableDB.delete(
                 TABLE_ROUTINE_EXERCISES,
                 KEY_ROUTINE_NAME + "=? AND " + KEY_POSITION + "=?",
-                new String[] {routineName, String.valueOf(position)}
+                new String[]{routineName, String.valueOf(position)}
         );
     }
-
-
 
     public void cleanTemporaryData() {
         deleteTemporaryExercises();
@@ -1082,13 +1082,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         writableDB.delete(TABLE_SETS, null, null);
     }
 
-
     private void deleteTemporaryRoutines() {
         Cursor temporaryRoutines = readableDB.query(
                 TABLE_ROUTINES,
-                new String[] {KEY_ROUTINE_NAME},
+                new String[]{KEY_ROUTINE_NAME},
                 KEY_PERMANENT + "=?",
-                new String[] {"0"},
+                new String[]{"0"},
                 null,
                 null,
                 null,
@@ -1111,43 +1110,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void deleteTemporaryExercises() {
-        writableDB.delete(TABLE_EXERCISES, KEY_EXERCISE_NAME + "=? OR " +  KEY_PERMANENT + "=?", new String[]{"''","0"});
+        writableDB.delete(TABLE_EXERCISES, KEY_EXERCISE_NAME + "=? OR " + KEY_PERMANENT + "=?", new String[]{"''", "0"});
     }
 
-
-    // Json conversion methods
-
     // Convert an object to json code
-    private String toJson(Object obj){
+    private String toJson(Object obj) {
         Gson gson = new Gson();
         return gson.toJson(obj, obj.getClass());
     }
 
     // Convert json back into an object of class c
-    private Object parseJson(String json, Class c){
+    private Object parseJson(String json, Class c) {
         Gson gson = new Gson();
         return gson.fromJson(json, c);
     }
 
-
     // Static Variables
-
-    private static DatabaseHelper mInstance;
-    private static SQLiteDatabase writableDB;
-    private static SQLiteDatabase readableDB;
-    private static final String TAG = DatabaseHelper.class.getSimpleName();
-
 
     // Database Version
     private static final int DATABASE_VERSION = 10;
 
-
     // Database Name
     public static final String DATABASE_NAME = "Evolve.db";
-    private static final String KEY_ROWID = "ROWID";
+
+    private static DatabaseHelper mInstance;
+
+    private static SQLiteDatabase writableDB;
+
+    private static SQLiteDatabase readableDB;
+
+
+    private static final String TAG = DatabaseHelper.class.getSimpleName();
 
     // Table Names
     private static final String TABLE_EXERCISES = "Exercises";
+
     private static final String TABLE_ROUTINES = "Routines";
     private static final String TABLE_EXERCISE_SESSIONS = "ExerciseSessions";
     private static final String TABLE_ROUTINE_SESSIONS = "RoutineSessions";
@@ -1159,50 +1156,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_EXERCISE_DESCRIPTION = "Description";
     private static final String KEY_EXERCISE_IS_REPS_TRACKED = "IsRepsTracked";
     private static final String KEY_EXERCISE_IS_WEIGHT_TRACKED = "IsWeightTracked";
+
     private static final String KEY_EXERCISE_IS_DISTANCE_TRACKED = "IsDistanceTracked";
     private static final String KEY_EXERCISE_IS_TIME_TRACKED = "IsTimeTracked";
     private static final String KEY_EXERCISE_WEIGHT_UNIT = "WeightUnit";
     private static final String KEY_EXERCISE_DISTANCE_UNIT = "DistanceUnit";
     private static final String KEY_EXERCISE_INCREMENT_CATEGORY = "IncrementCategory";
     private static final String KEY_EXERCISE_INCREMENT_PERIOD = "IncrementPeriod";
+
     private static final String KEY_EXERCISE_INCREMENT = "Increment";
     private static final String KEY_EXERCISE_CATEGORY = "Category";
     private static final String KEY_PERMANENT = "Permanent";
-
+    public static final String KEY_POSITION = "Position";
+    private static final String KEY_DATE = "Date";
+    private static final String KEY_COMPLETED = "Completed";
+    private static final String KEY_ROWID = "ROWID";
+    private static final String KEY_SETS_WEIGHT_AMOUNT = "WeightAmount";
+    private static final String KEY_SETS_DISTANCE_AMOUNT = "DistanceAmount";
+    private static final String KEY_SETS_REPS_AMOUNT = "RepsAmount";
+    private static final String KEY_SETS_TIME_AMOUNT = "TimeAmount";
     // Routine table column names
     public static final String KEY_ROUTINE_NAME = "RoutineName";
     private static final String KEY_ROUTINE_DESCRIPTION = "Description";
 
-    // Routine Exercises table column names
-    // KEY_ROUTINE_NAME
-    // KEY_EXERCISE_NAME
-    public static final String KEY_POSITION = "Position";
-
-    // Exercise Session Table Column Names
-    private static final String KEY_EXERCISE_SESSION_ID = "ExerciseSessionId";
-    // KEY_EXERCISE_NAME
     private static final String KEY_ROUTINE_SESSION_ID = "RoutineSessionId";
-    private static final String KEY_DATE = "Date";
 
-    // Routine Session Table Column Names
-    // KEY_ROUTINE_SESSION_ID
-    // KEY_ROUTINE_NAME
-    // KEY_TIMESTAMP
-
-    // Sets Table Column Names
-    // KEY_EXERCISE_NAME
-    // KEY_EXERCISE_SESSION_ID
-    private static final String KEY_SETS_REPS_AMOUNT = "RepsAmount";
-    private static final String KEY_SETS_WEIGHT_AMOUNT = "WeightAmount";
-    private static final String KEY_SETS_DISTANCE_AMOUNT = "DistanceAmount";
-    private static final String KEY_SETS_TIME_AMOUNT = "TimeAmount";
-    private static final String KEY_COMPLETED = "Completed";
-    // KEY_POSITION
-    // KEY_TIMESTAMP
+    private static final String KEY_EXERCISE_SESSION_ID = "ExerciseSessionId";
 
 
     public static final int NO_ID = -1;
-
     public static final int COLUMN_ROUTINE_NAME = 0;
     public static final int COLUMN_ROUTINE_DESCRIPTION = 1;
     public static final int COLUMN_ROUTINE_PERMANENT = 2;

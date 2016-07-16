@@ -7,27 +7,24 @@
     android:fitsSystemWindows="true"
     tools:context="edu.umn.paull011.evolveworkoutlogger.activities.CreateExercise">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:title="@string/title_activity_start_routine"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            android:title="@string/title_activity_start_routine"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         <android.support.design.widget.TextInputLayout
-            android:layout_height="80dp"
             android:layout_width="match_parent"
-            android:layout_marginLeft="72dp"
-            android:layout_marginRight="16dp"
+            android:layout_height="80dp"
             android:layout_marginBottom="8dp"
             app:hintTextAppearance="@style/AppTheme.HintTextAppearance">
 
@@ -41,12 +38,13 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="bottom|right|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_done_white_36dp" />
+        android:src="@drawable/ic_done_white_36dp"
+        app:layout_anchor="@id/app_bar_layout"
+        app:layout_anchorGravity="bottom|right|end" />
 
-    <include layout="@layout/content_create_exercise"
-        android:id="@+id/createExerciseContent" />
+    <include
+        android:id="@+id/createExerciseContent"
+        layout="@layout/content_create_exercise" />
 
 </android.support.design.widget.CoordinatorLayout>

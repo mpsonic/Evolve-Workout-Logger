@@ -21,6 +21,10 @@ public enum Unit {
     MINUTES(),
     HOURS();
 
+    // Private
+    private final boolean mUniversal;
+    private final boolean mImperial;
+
     Unit(){
         this.mUniversal = true;
         this.mImperial = true;
@@ -29,14 +33,6 @@ public enum Unit {
     Unit(boolean imperial){
         this.mUniversal = false;
         this.mImperial = imperial;
-    }
-
-    public boolean isUniversal(){
-        return mUniversal;
-    }
-
-    public boolean isImperial(){
-        return mImperial;
     }
 
     public static Unit getFromName(String name) {
@@ -79,7 +75,39 @@ public enum Unit {
         return result;
     }
 
-    // Private
-    private final boolean mUniversal;
-    private final boolean mImperial;
+    public boolean isUniversal() {
+        return mUniversal;
+    }
+
+    public boolean isImperial() {
+        return mImperial;
+    }
+
+    public String getDisplayName() {
+        switch (this) {
+            case REPS:
+                return "reps";
+            case KILOGRAMS:
+                return "kg";
+            case METERS:
+                return "m";
+            case KILOMETERS:
+                return "km";
+            case POUNDS:
+                return "lbs";
+            case FEET:
+                return "ft";
+            case MILES:
+                return "miles";
+            case TIME:
+                return "";
+            case SECONDS:
+                return "s";
+            case MINUTES:
+                return "m";
+            case HOURS:
+                return "h";
+        }
+        return "";
+    }
 }
