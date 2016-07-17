@@ -17,12 +17,7 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_gravity="bottom|end"
+        style="@style/FloatingActionButton"
         android:src="@drawable/ic_done_white_36dp"/>
-        <!--app:layout_anchor="@+id/app_bar_layout"
-        app:layout_anchorGravity="bottom|left|start" -->
 
 </android.support.design.widget.CoordinatorLayout>

@@ -8,10 +8,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
+import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Exercise;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Routine;
@@ -60,7 +64,7 @@ public class ActiveRoutineSession extends AppCompatActivity
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
         dateText.setText(dateFormat.format(date));*/
 
-        Button addExerciseButton = (Button) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.button_add_exercise_to_routine_session);
+        Button addExerciseButton = (Button) findViewById(R.id.button_add_exercise_to_routine_session);
         assert addExerciseButton != null;
         addExerciseButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -71,7 +75,7 @@ public class ActiveRoutineSession extends AppCompatActivity
                 }
         );
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(
                 new View.OnClickListener() {
@@ -82,6 +86,21 @@ public class ActiveRoutineSession extends AppCompatActivity
                     }
                 }
         );
+
+        EditText notesEdit = (EditText) findViewById(R.id.edit_notes);
+        notesEdit.setText(mRoutineSession.getNotes());
+        notesEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mRoutineSession.setNotes(String.valueOf(charSequence));
+            }
+        });
     }
 
     @Override

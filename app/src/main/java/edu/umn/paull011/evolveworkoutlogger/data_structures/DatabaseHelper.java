@@ -108,6 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String CREATE_ROUTINE_SESSIONS_TABLE = "CREATE TABLE " + TABLE_ROUTINE_SESSIONS + "(" +
                 KEY_ROUTINE_SESSION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 KEY_ROUTINE_NAME + " VARCHAR(128)," +
+                KEY_NOTES + " TEXT," +
                 KEY_COMPLETED + " INT," +
                 KEY_DATE + " DATE)";
 
@@ -890,6 +891,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_ROUTINE_NAME, session.getRoutine().getName());
         values.put(KEY_DATE, session.getDate().toString());
         values.put(KEY_COMPLETED, session.isCompleted());
+        values.put(KEY_NOTES, session.getNotes());
         return values;
     }
 
@@ -1128,7 +1130,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Static Variables
 
     // Database Version
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
     // Database Name
     public static final String DATABASE_NAME = "Evolve.db";
@@ -1169,18 +1171,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_PERMANENT = "Permanent";
     public static final String KEY_POSITION = "Position";
     private static final String KEY_DATE = "Date";
+    private static final String KEY_NOTES = "Notes";
     private static final String KEY_COMPLETED = "Completed";
     private static final String KEY_ROWID = "ROWID";
     private static final String KEY_SETS_WEIGHT_AMOUNT = "WeightAmount";
     private static final String KEY_SETS_DISTANCE_AMOUNT = "DistanceAmount";
     private static final String KEY_SETS_REPS_AMOUNT = "RepsAmount";
     private static final String KEY_SETS_TIME_AMOUNT = "TimeAmount";
+
     // Routine table column names
     public static final String KEY_ROUTINE_NAME = "RoutineName";
     private static final String KEY_ROUTINE_DESCRIPTION = "Description";
-
     private static final String KEY_ROUTINE_SESSION_ID = "RoutineSessionId";
-
     private static final String KEY_EXERCISE_SESSION_ID = "ExerciseSessionId";
 
 

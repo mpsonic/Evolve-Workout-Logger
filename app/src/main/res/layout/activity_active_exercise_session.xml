@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context="edu.umn.paull011.evolveworkoutlogger.activities.ActiveExerciseSession">
 
@@ -19,6 +19,25 @@
             android:layout_below="@id/appbar"
             android:id="@+id/exercise_session_scroll_content"/>
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        style="@style/FloatingActionButton"
+        android:id="@+id/fab"
+        android:src="@drawable/ic_done_white_36dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="top|end"
+        android:layout_marginBottom="96dp"
+        android:src="@drawable/ic_add_white_36dp"
+        app:layout_anchor="@id/fab"
+        app:layout_anchorGravity="top"
+        android:id="@+id/fab_add"
+        android:visibility="gone"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -18,6 +18,7 @@ public class RoutineSession {
     private Date mDate;
     private boolean mCompleted;
     private ArrayList<ExerciseSession> mExerciseSessions;
+    private String mNotes;
     private static final String TAG = RoutineSession.class.getSimpleName();
 
     // Public
@@ -26,6 +27,7 @@ public class RoutineSession {
         mId = -1;
         mDate = new Date(Calendar.getInstance().getTimeInMillis());
         mCompleted = false;
+        mNotes = "";
         int numExercises = routine.getNumExercises();
         mExerciseSessions = new ArrayList<>(numExercises);
         boolean increment;
@@ -88,6 +90,13 @@ public class RoutineSession {
         mDate = date;
     }
 
+    public String getNotes() {
+        return mNotes;
+    }
+
+    public void setNotes(String notes) {
+        mNotes = notes;
+    }
 
     public boolean isCompleted() {
         return mCompleted;
