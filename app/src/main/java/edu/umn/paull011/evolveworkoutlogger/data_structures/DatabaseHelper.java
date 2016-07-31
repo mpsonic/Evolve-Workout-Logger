@@ -303,9 +303,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Exercise Session Table Methods
-    public int insertExerciseSession(long routineSessionId, ExerciseSession session) {
+    public int insertExerciseSession(long routineSessionId, ExerciseSession session, int position) {
         ContentValues values = extractExerciseSessionData(session);
         values.put(KEY_ROUTINE_SESSION_ID, routineSessionId);
+        values.put(KEY_POSITION, position);
         long rowId = writableDB.insertWithOnConflict(
                 TABLE_EXERCISE_SESSIONS,
                 null,
@@ -553,22 +554,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return deleted;
     }
 
+    public RoutineStats getRoutineStats(Routine routine) {
+        Cursor setsCursor = readableDB.rawQuery(
+                "SELECT s." + KEY_DATE + ", s." + KEY_EXERCISE_NAME +
+                        ", Count(s." + KEY_POSITION + ")" + ", s." + KEY_EXERCISE_SESSION_ID +
+                        ", es." + KEY_POSITION + " " +
+                        "FROM " + TABLE_SETS + " AS s " +
+                        "INNER JOIN " + TABLE_EXERCISE_SESSIONS + " AS es " +
+                        "ON es." + KEY_EXERCISE_SESSION_ID + " = s." + KEY_EXERCISE_SESSION_ID + " " +
+                        "INNER JOIN " + TABLE_ROUTINE_SESSIONS + " AS rs " +
+                        "ON es." + KEY_ROUTINE_SESSION_ID + " = rs." + KEY_ROUTINE_SESSION_ID + " " +
+                        "WHERE rs." + KEY_ROUTINE_NAME + " = '" + routine.getName() + "' " +
+                        "GROUP BY s." + KEY_EXERCISE_NAME + ", s." + KEY_EXERCISE_SESSION_ID + " " +
+                        "ORDER BY es." + KEY_POSITION,
+                null
+        );
+
+        RoutineStats stats = new RoutineStats();
+        Date date;
+        int setCount;
+        String exerciseName;
+        if (setsCursor.moveToFirst()) {
+            while (!setsCursor.isAfterLast()) {
+                date = Date.valueOf(setsCursor.getString(0));
+                exerciseName = setsCursor.getString(1);
+                setCount = setsCursor.getInt(2);
+                stats.add(date, exerciseName, setCount);
+                setsCursor.moveToNext();
+            }
+        }
+        setsCursor.close();
+        return stats;
+    }
+
     public ExerciseStats getExerciseStats(Exercise exercise) {
         Cursor setsCursor = readableDB.query(
                 TABLE_SETS,
-                new String[]{KEY_SETS_REPS_AMOUNT, KEY_SETS_REPS_AMOUNT, KEY_SETS_WEIGHT_AMOUNT,
-                        KEY_SETS_DISTANCE_AMOUNT, KEY_EXERCISE_SESSION_ID, KEY_DATE},
-                KEY_EXERCISE_NAME + "=?",
-                new String[]{String.valueOf(exercise.getName())},
+                new String[] {KEY_SETS_REPS_AMOUNT, KEY_SETS_WEIGHT_AMOUNT,
+                KEY_SETS_DISTANCE_AMOUNT, KEY_SETS_TIME_AMOUNT, KEY_DATE},
+                KEY_COMPLETED + "=1",
                 null,
                 null,
-                KEY_EXERCISE_SESSION_ID,
+                null,
                 null
         );
 
         ExerciseStats stats = new ExerciseStats();
-        Date lastPerformedDate = new Date(0);
-        int sessionCount = 0;
         if (setsCursor.moveToFirst()) {
             boolean bReps = exercise.isTracked(MeasurementCategory.REPS);
             boolean bWeight = exercise.isTracked(MeasurementCategory.WEIGHT);
@@ -578,7 +609,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Date date;
             while (!setsCursor.isAfterLast()) {
                 Set set = new Set();
-                dateString = setsCursor.getString(5);
+                dateString = setsCursor.getString(4);
                 date = Date.valueOf(dateString);
                 if (bReps) {
                     MeasurementData data = new MeasurementData(
@@ -878,7 +909,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ExerciseSession exerciseSession;
         for (int i = 0; i < numExerciseSessions; i++) {
             exerciseSession = routineSession.getExerciseSession(i);
-            insertExerciseSession(routineSessionId, exerciseSession);
+            insertExerciseSession(routineSessionId, exerciseSession, i);
         }
     }
 

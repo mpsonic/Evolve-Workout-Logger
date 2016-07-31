@@ -2,12 +2,14 @@ package edu.umn.paull011.evolveworkoutlogger.components;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -82,6 +84,7 @@ public class ButtonEditText extends LinearLayout {
 
         setLayoutParams(params);*/
         setGravity(Gravity.CENTER);
+        setFocusable(true);
 
         // Get the views
         mEditText = (EditText) this.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.number_edit_text);
@@ -130,7 +133,9 @@ public class ButtonEditText extends LinearLayout {
         mEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                setActivated(hasFocus);
+                if (!hasFocus) {
+                    setActivated(false);
+                }
             }
         });
 
@@ -244,5 +249,31 @@ public class ButtonEditText extends LinearLayout {
     public void setNumber(float number) {
         mNumber = number;
         mEditText.setText(getNumberString());
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return !mActivated;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (!mActivated) {
+                setActivated(true);
+                this.requestFocus();
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
+        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+        if (!gainFocus) {
+            if (this.findFocus() == null) {
+                setActivated(false);
+            }
+        }
     }
 }

@@ -20,9 +20,9 @@ import edu.umn.paull011.evolveworkoutlogger.data_structures.Set;
  * Created by Mitchell on 7/13/2016.
  */
 public class ExerciseHistoryCardAdapter extends RecyclerView.Adapter<ExerciseHistoryCardAdapter.ViewHolder> {
-    public static final String TAG = ExerciseHistoryCardAdapter.class.getSimpleName();
-    public Exercise mExercise;
-    public List<Set> mSetList;
+    private static final String TAG = ExerciseHistoryCardAdapter.class.getSimpleName();
+    private Exercise mExercise;
+    private List<Set> mSetList;
 
     public ExerciseHistoryCardAdapter(Exercise exercise, List<Set> setList) {
         Log.d(TAG, "ExerciseHistoryCardAdapter Constructor");

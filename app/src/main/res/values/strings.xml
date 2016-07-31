@@ -12,8 +12,8 @@
     <string name="title_activity_my_routines">My Routines</string>
     <string name="title_activity_active_routine_session">Active Routine Session</string>
     <string name="title_activity_add_exercise">Add Exercise</string>
-    <string name="title_activity_create_routine">CreateRoutine</string>
-    <string name="title_activity_create_exercise">CreateExercise</string>
+    <string name="title_activity_create_routine">Create Routine</string>
+    <string name="title_activity_create_exercise">Create Exercise</string>
 
     <string name="button_start_new_routine">Start New Routine</string>
     <string name="button_add_new_routine">Add New Routine</string>
@@ -67,7 +67,7 @@
     <string name="text_no_sets">Add a set</string>
     <string name="text_button_add_set">Add Set</string>
     <string name="text_button_next_set">Next Set</string>
-    <string name="menu_prevoius_exercise_title">Prevoius Exercise</string>
+    <string name="menu_prevoius_exercise_title">Previous Exercise</string>
     <string name="menu_next_exercise_title">Next Exercise</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -90,5 +90,10 @@
 
     <string name="text_empty_view_exercise_history">No Exercise History</string>
     <string name="text_fragment_exercise_history_title">History</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_empty_view_routine_history">No Routine History</string>
+    <string name="text_view_routine_exercises_banner">Exercises</string>
 
 </resources>
