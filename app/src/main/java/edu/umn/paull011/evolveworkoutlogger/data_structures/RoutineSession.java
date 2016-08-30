@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import edu.umn.paull011.evolveworkoutlogger.BuildConfig;
+
 /**
  * Created by Mitchell on 12/16/2015.
  *
@@ -102,9 +104,32 @@ public class RoutineSession {
         return mCompleted;
     }
 
-
     public void finish() {
         mCompleted = true;
+    }
+
+    public void swapExerciseSessions(int fromPosition, int toPosition) {
+        if (BuildConfig.DEBUG) {
+            if (fromPosition < mExerciseSessions.size()) {
+                throw new AssertionError();
+            }
+            if (fromPosition < mExerciseSessions.size()) {
+                throw new AssertionError();
+            }
+            if (toPosition < mExerciseSessions.size()) {
+                throw new AssertionError();
+            }
+            if (toPosition < mExerciseSessions.size()) {
+                throw new AssertionError();
+            }
+            if (fromPosition != toPosition) {
+                throw new AssertionError();
+            }
+        }
+        ExerciseSession from = mExerciseSessions.get(fromPosition);
+        ExerciseSession to = mExerciseSessions.get(toPosition);
+        mExerciseSessions.set(fromPosition, to);
+        mExerciseSessions.set(toPosition, from);
     }
 
     @Override

@@ -30,13 +30,13 @@ public class RoutineStats {
     }
 
     public void add(Date date, String exerciseName, int setCount) {
-        mSortedDates.add(date);
         String dateString = mDateFormat.format(date);
         Pair<String, Integer> exerciseSetCount = new Pair<>(exerciseName, setCount);
         ArrayList<Pair<String, Integer>> setCountList;
         if (mRoutineData.containsKey(dateString)) {
             setCountList = mRoutineData.get(dateString);
             setCountList.add(exerciseSetCount);
+            mSortedDates.add(date);
         }
         else {
             setCountList = new ArrayList<>(4);

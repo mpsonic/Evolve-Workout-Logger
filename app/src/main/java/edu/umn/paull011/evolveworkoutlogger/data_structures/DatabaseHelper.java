@@ -5,14 +5,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import edu.umn.paull011.evolveworkoutlogger.BuildConfig;
 
@@ -28,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // TODO: Implement way to store and sort exercises by category
 
     public static synchronized DatabaseHelper getInstance(Context context) {
+        Log.d(TAG,"getInstance");
         if (mInstance == null) {
             if (context != null) {
                 Context appContext = null;
@@ -55,11 +60,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        Log.d(TAG,"DatabaseHelper");
         writableDB = getWritableDatabase();
         readableDB = getReadableDatabase();
     }
 
     private void refreshDatabases() {
+        Log.d(TAG,"refreshDatabases");
         writableDB.close();
         readableDB.close();
         writableDB = getWritableDatabase();
@@ -68,6 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public synchronized void close() {
+        Log.d(TAG,"close");
         super.close();
         writableDB.close();
         readableDB.close();
@@ -75,6 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d(TAG,"onCreate");
         String CREATE_EXERCISES_TABLE = "CREATE TABLE " + TABLE_EXERCISES + "(" +
                 KEY_EXERCISE_NAME + " varchar(128) NOT NULL," +
                 KEY_EXERCISE_DESCRIPTION + " TEXT," +
@@ -141,6 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d(TAG,"onUpgrade");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTINES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISE_SESSIONS);
@@ -159,6 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return the Name (primary key) of the successfully inserted exercise, or null if there is an error
      */
     public String insertExercise(Exercise exercise, boolean permanent){
+        Log.d(TAG,"insertExercise");
         ContentValues values = extractExerciseData(exercise);
         values.put(KEY_PERMANENT, permanent);
         long rowId = writableDB.insertWithOnConflict(
@@ -181,6 +192,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Exercise getExercise(String exerciseName){
+        Log.d(TAG,"getExercise");
         Cursor cursor = readableDB.query(
                 TABLE_EXERCISES,
                 null,
@@ -206,6 +218,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return the rowId of the successfully updated exercise, or -1 if there is an error
      */
     public String updateExercise(Exercise exercise){
+        Log.d(TAG,"updateExercise");
         ContentValues values = extractExerciseData(exercise);
         long rowId = writableDB.insertWithOnConflict(
                 TABLE_EXERCISES,
@@ -220,6 +233,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteExercise(Exercise exercise) {
+        Log.d(TAG,"deleteExercise");
         writableDB.delete(
                 TABLE_EXERCISES,
                 KEY_EXERCISE_NAME + "=?",
@@ -228,6 +242,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private ContentValues extractExerciseData(Exercise exercise) {
+        Log.d(TAG,"extractExerciseData");
         ContentValues values = new ContentValues();
         values.put(KEY_EXERCISE_NAME, exercise.getName());
         values.put(KEY_EXERCISE_DESCRIPTION, exercise.getDescription());
@@ -248,6 +263,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private Exercise makeExerciseFromCursor(Cursor cursor) {
+        Log.d(TAG,"makeExerciseFromCursor");
         Exercise exercise = new Exercise();
 
         String name = cursor.getString(COLUMN_EXERCISE_NAME);
@@ -284,6 +300,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getExercisesCursor(String category) {
+        Log.d(TAG,"getExercisesCursor");
         String query =
                 "SELECT " + KEY_EXERCISE_NAME +
                 " FROM " + TABLE_EXERCISES +
@@ -296,6 +313,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public int getExerciseCount(){
+        Log.d(TAG,"getExerciseCount");
         Cursor cursor = getExercisesCursor(null);
         int count = cursor.getCount();
         cursor.close();
@@ -304,6 +322,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Exercise Session Table Methods
     public int insertExerciseSession(long routineSessionId, ExerciseSession session, int position) {
+        Log.d(TAG,"insertExerciseSession");
         ContentValues values = extractExerciseSessionData(session);
         values.put(KEY_ROUTINE_SESSION_ID, routineSessionId);
         values.put(KEY_POSITION, position);
@@ -324,6 +343,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void saveExerciseSessionSets(ExerciseSession session) {
+        Log.d(TAG,"saveExerciseSessionSets");
         int numSets = session.getNumSets();
         int exerciseSessionId = session.getId();
         String exerciseName = session.getExerciseName();
@@ -335,6 +355,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private ContentValues getPrimaryKeyValuesFromRowId(String tableName, long rowId) {
+        Log.d(TAG,"getPrimaryKeyValuesFromRowId");
         ContentValues primaryKeyValues = new ContentValues();
         String[] primaryKeyNames;
         switch (tableName) {
@@ -385,6 +406,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public int updateExerciseSession(ExerciseSession session) {
+        Log.d(TAG,"updateExerciseSession");
         ContentValues values = extractExerciseSessionData(session);
         if (session.getId() != NO_ID) {
             long rowId = writableDB.insertWithOnConflict(
@@ -403,6 +425,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteExerciseSession(ExerciseSession session) {
+        Log.d(TAG,"deleteExerciseSession");
         if (session.getId() != NO_ID) {
             writableDB.delete(
                     TABLE_EXERCISE_SESSIONS,
@@ -413,6 +436,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ExerciseSession getExerciseSession(RoutineSession routineSession, int exerciseSessionId) {
+        Log.d(TAG,"getExerciseSession");
         Cursor exerciseSessionCursor = readableDB.query(
                 TABLE_EXERCISE_SESSIONS,
                 new String[] {KEY_EXERCISE_NAME},
@@ -429,10 +453,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ExerciseSession exerciseSession = new ExerciseSession(exercise, false);
             exerciseSession.setId(exerciseSessionId);
             List<Set> sets = getExerciseSessionSets(exerciseSession);
+            exerciseSessionCursor.close();
+            Boolean completed = true;
             for (Set set: sets) {
                 exerciseSession.addSet(set);
             }
-            exerciseSessionCursor.close();
+            exerciseSession.refreshCurrentSetIndex();
             return exerciseSession;
         }
         exerciseSessionCursor.close();
@@ -440,6 +466,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ExerciseSession getLastExerciseSession(Exercise exercise) {
+        Log.d(TAG,"getLastExerciseSession");
         String exerciseName = exercise.getName();
         ExerciseSession exerciseSession = new ExerciseSession(exercise, false);
 
@@ -470,6 +497,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private ContentValues extractExerciseSessionData(ExerciseSession session) {
+        Log.d(TAG,"extractExerciseSessionData");
         ContentValues values = new ContentValues();
         Calendar calendar = Calendar.getInstance();
         if (session.getId() != NO_ID) {
@@ -484,6 +512,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Sets Table Methods
 
     private ContentValues extractSetData(Set set) {
+        Log.d(TAG,"extractSetData");
         ContentValues values = new ContentValues();
         MeasurementData repsData = set.getMeasurementData(MeasurementCategory.REPS);
         MeasurementData weightData = set.getMeasurementData(MeasurementCategory.WEIGHT);
@@ -514,6 +543,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return true if successful, false if unsuccessful
      */
     public boolean insertSet(ExerciseSession session, int position, Set set) {
+        Log.d(TAG,"insertSet");
         if (BuildConfig.DEBUG && session.getId() == NO_ID) {throw new AssertionError();}
         if (BuildConfig.DEBUG && position < 0) {throw new AssertionError();}
         ContentValues values = extractSetData(set);
@@ -540,6 +570,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return true if delete was successful (one row deleted), false if otherwise.
      */
     public boolean deleteSet(ExerciseSession session, int position) {
+        Log.d(TAG,"deleteSet");
         boolean deleted = false;
         if (session.getId() != NO_ID) {
             int count = writableDB.delete(
@@ -555,6 +586,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public RoutineStats getRoutineStats(Routine routine) {
+        Log.d(TAG,"getRoutineStats");
         Cursor setsCursor = readableDB.rawQuery(
                 "SELECT s." + KEY_DATE + ", s." + KEY_EXERCISE_NAME +
                         ", Count(s." + KEY_POSITION + ")" + ", s." + KEY_EXERCISE_SESSION_ID +
@@ -588,6 +620,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ExerciseStats getExerciseStats(Exercise exercise) {
+        Log.d(TAG,"getExerciseStats");
         Cursor setsCursor = readableDB.query(
                 TABLE_SETS,
                 new String[] {KEY_SETS_REPS_AMOUNT, KEY_SETS_WEIGHT_AMOUNT,
@@ -652,11 +685,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private List<Set> getExerciseSessionSets(ExerciseSession exerciseSession) {
+        Log.d(TAG,"getExerciseSessionSets");
         long exerciseSessionId = exerciseSession.getId();
         Cursor setsCursor = readableDB.query(
                 TABLE_SETS,
                 new String[]{KEY_SETS_REPS_AMOUNT, KEY_SETS_WEIGHT_AMOUNT,
-                        KEY_SETS_DISTANCE_AMOUNT, KEY_SETS_TIME_AMOUNT, KEY_DATE},
+                        KEY_SETS_DISTANCE_AMOUNT, KEY_SETS_TIME_AMOUNT, KEY_DATE, KEY_COMPLETED},
                 KEY_EXERCISE_SESSION_ID + "=?",
                 new String[]{String.valueOf(exerciseSessionId)},
                 null,
@@ -667,6 +701,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         LinkedList<Set> sets = new LinkedList<>();
         if (setsCursor.moveToFirst()) {
+            boolean completed;
             int repsAmount;
             float weightAmount;
             float distanceAmount;
@@ -680,6 +715,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 weightAmount = setsCursor.getFloat(1);
                 distanceAmount = setsCursor.getFloat(2);
                 timeAmount = setsCursor.getInt(3);
+                completed = (setsCursor.getInt(5) != 0);
                 Set set = new Set();
                 if (reps) {
                     MeasurementData data = new MeasurementData(
@@ -713,6 +749,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     );
                     set.addMeasurement(data);
                 }
+                if (completed) {
+                    set.finish();
+                }
                 sets.add(set);
                 setsCursor.moveToNext();
             }
@@ -740,6 +779,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return The name of the successfully saved routine
      */
     public String insertRoutine(Routine routine, boolean permanent) {
+        Log.d(TAG,"insertRoutine");
 
         // Save routine in Routine table
         ContentValues values = extractRoutineData(routine);
@@ -768,6 +808,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return the name of the successfully updated routine
      */
     public String updateRoutine(Routine routine) {
+        Log.d(TAG,"updateRoutine");
         // Save routine in Routine table
         ContentValues values = extractRoutineData(routine);
         long rowId = writableDB.insertWithOnConflict(
@@ -796,6 +837,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return true if the routine is sucessfully deleted, false if otherwise;
      */
     public boolean deleteRoutine(String routineName) {
+        Log.d(TAG,"deleteRoutine");
         String[] rName = new String[]{routineName};
         int count = writableDB.delete(
                 TABLE_ROUTINES,
@@ -814,6 +856,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }    // KEY_EXERCISE_NAME
     // Can return null if routineName is not in the database
     public Routine getRoutine(String routineName) {
+        Log.d(TAG,"getRoutine");
         Cursor cursor = readableDB.query(
                 TABLE_ROUTINES,
                 new String[]{KEY_ROUTINE_NAME, KEY_ROUTINE_DESCRIPTION},
@@ -836,6 +879,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Routine Session Table Column Names
 
     private ContentValues extractRoutineData(Routine routine) {
+        Log.d(TAG,"extractRoutineData");
         ContentValues values = new ContentValues();
         values.put(KEY_ROUTINE_NAME, routine.getName());
         values.put(KEY_ROUTINE_DESCRIPTION, routine.getDescription());
@@ -843,6 +887,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }    // Sets Table Column Names
 
     private Routine makeRoutineFromCursor(Cursor routineCursor) {
+        Log.d(TAG,"makeRoutineFromCursor");
         String name = routineCursor.getString(COLUMN_ROUTINE_NAME);
         String description = routineCursor.getString(COLUMN_ROUTINE_DESCRIPTION);
 
@@ -857,6 +902,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getRoutinesCursor() {
+        Log.d(TAG,"getRoutinesCursor");
         String query =
                 "SELECT " + KEY_ROUTINE_NAME + "," + KEY_ROUTINE_DESCRIPTION +
                         " FROM " + TABLE_ROUTINES +
@@ -866,6 +912,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public int getRoutineCount() {
+        Log.d(TAG,"getRoutineCount");
         Cursor cursor = getRoutinesCursor();
         int count = cursor.getCount();
         cursor.close();
@@ -879,12 +926,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return The RoutineSessionId of the successfully saved RoutineSession
      */
     public int insertRoutineSessionDeep(RoutineSession session) {
+        Log.d(TAG,"insertRoutineSessionDeep");
         this.insertRoutineSession(session);
         this.saveRoutineSessionExerciseSessions(session);
         return (int) session.getId();
     }
 
     public int insertRoutineSession(RoutineSession session) {
+        Log.d(TAG,"insertRoutineSession");
         ContentValues values = extractRoutineSessionData(session);
         long rowId = writableDB.insertWithOnConflict(
                 TABLE_ROUTINE_SESSIONS,
@@ -904,6 +953,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void saveRoutineSessionExerciseSessions(RoutineSession routineSession) {
+        Log.d(TAG,"saveRoutineSessionExerciseSessions");
         long routineSessionId = routineSession.getId();
         int numExerciseSessions = routineSession.getExerciseCount();
         ExerciseSession exerciseSession;
@@ -914,6 +964,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private ContentValues extractRoutineSessionData(RoutineSession session) {
+        Log.d(TAG,"extractRoutineSessionData");
         ContentValues values = new ContentValues();
         Calendar calendar = Calendar.getInstance();
         if (session.getId() != NO_ID) {
@@ -926,18 +977,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return values;
     }
 
+    public boolean routineSessionExistsForDate(String routineName, Date date) {
+        Log.d(TAG,"routineSessionExistsForDate");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String todayDateString = format.format(Calendar.getInstance().getTime());
+        Cursor routineSessionCursor = readableDB.query(
+                TABLE_ROUTINE_SESSIONS,
+                new String[]{KEY_ROUTINE_SESSION_ID},
+                KEY_ROUTINE_NAME + " = ? " + " AND " + KEY_DATE + " >= ?",
+                new String[]{routineName, todayDateString},
+                null,
+                null,
+                null
+        );
+
+        Boolean result = routineSessionCursor.getCount() > 0;
+        routineSessionCursor.close();
+        return result;
+    }
+
     public RoutineSession getLastRoutineSession(Routine routine) {
+        Log.d(TAG,"getLastRoutineSession");
         String routineName = routine.getName();
         RoutineSession routineSession = new RoutineSession(routine, false);
 
         Cursor routineSessionCursor = readableDB.query(
                 TABLE_ROUTINE_SESSIONS,
-                new String[]{KEY_ROUTINE_SESSION_ID, KEY_DATE},
+                new String[]{KEY_ROUTINE_SESSION_ID, KEY_DATE, KEY_NOTES},
                 KEY_ROUTINE_NAME + "=?",
                 new String[]{routineName},
                 null,
                 null,
-                KEY_DATE + " ASC",
+                KEY_DATE + " Desc",
                 "1"
         );
 
@@ -947,6 +1018,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String dateString = routineSessionCursor.getString(1);
             Date exerciseSessionDate = Date.valueOf(dateString);
             routineSession.setDate(exerciseSessionDate);
+            String notes = routineSessionCursor.getString(2);
+            routineSession.setNotes(notes);
             List<ExerciseSession> exerciseSessions = this.getRoutineSessionExerciseSessions(routineSession);
             for (ExerciseSession session : exerciseSessions) {
                 routineSession.addExerciseSession(session);
@@ -958,6 +1031,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private List<ExerciseSession> getRoutineSessionExerciseSessions(RoutineSession routineSession) {
+        Log.d(TAG,"getRoutineSessionExerciseSessions");
         long routineSessionId = routineSession.getId();
         Cursor exerciseSessionCursor = readableDB.query(
                 TABLE_EXERCISE_SESSIONS,
@@ -991,6 +1065,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return true if successful, false if otherwise
      */
     public boolean deleteRoutineSession(RoutineSession session) {
+        Log.d(TAG,"deleteRoutineSession");
         String[] routineSessionId = new String[]{String.valueOf(session.getId())};
         int count = writableDB.delete(
                 TABLE_ROUTINE_SESSIONS,
@@ -1033,6 +1108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void saveRoutineExercises(Routine routine) {
+        Log.d(TAG,"saveRoutineExercises");
         int numExercises = routine.getNumExercises();
         String routineName = routine.getName();
         ContentValues values = new ContentValues();
@@ -1047,6 +1123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertRoutineExercise(String routineName, String exerciseName, int position) {
+        Log.d(TAG,"insertRoutineExercises");
         ContentValues values = new ContentValues();
         values.put(KEY_EXERCISE_NAME, exerciseName);
         values.put(KEY_ROUTINE_NAME, routineName);
@@ -1060,6 +1137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Exercise> getRoutineExercises(String routineName) {
+        Log.d(TAG,"getRoutineExercises");
         Cursor exercisesCursor = readableDB.rawQuery(
                 "SELECT " + TABLE_EXERCISES + ".*" +
                         " FROM " + TABLE_EXERCISES +
@@ -1086,6 +1164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteRoutineExercises(String routineName) {
+        Log.d(TAG,"deleteRoutineExercises");
         writableDB.delete(
                 TABLE_ROUTINE_EXERCISES,
                 KEY_ROUTINE_NAME + "=?",
@@ -1094,6 +1173,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteRoutineExercise(String routineName, int position) {
+        Log.d(TAG,"deleteRoutineExercises");
         writableDB.delete(
                 TABLE_ROUTINE_EXERCISES,
                 KEY_ROUTINE_NAME + "=? AND " + KEY_POSITION + "=?",
@@ -1102,11 +1182,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void cleanTemporaryData() {
+        Log.d(TAG,"cleanTemporaryData");
         deleteTemporaryExercises();
         deleteTemporaryRoutines();
     }
 
     public void makeFresh() {
+        Log.d(TAG,"makeFresh");
         writableDB.delete(TABLE_EXERCISES, null, null);
         writableDB.delete(TABLE_EXERCISE_SESSIONS, null, null);
         writableDB.delete(TABLE_ROUTINES, null, null);
@@ -1116,6 +1198,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void deleteTemporaryRoutines() {
+        Log.d(TAG,"deleteTemporaryRoutines");
         Cursor temporaryRoutines = readableDB.query(
                 TABLE_ROUTINES,
                 new String[]{KEY_ROUTINE_NAME},
@@ -1143,17 +1226,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void deleteTemporaryExercises() {
+        Log.d(TAG,"deleteTemporaryExercises");
         writableDB.delete(TABLE_EXERCISES, KEY_EXERCISE_NAME + "=? OR " + KEY_PERMANENT + "=?", new String[]{"''", "0"});
     }
 
     // Convert an object to json code
     private String toJson(Object obj) {
+        Log.d(TAG,"toJson");
         Gson gson = new Gson();
         return gson.toJson(obj, obj.getClass());
     }
 
     // Convert json back into an object of class c
     private Object parseJson(String json, Class c) {
+        Log.d(TAG,"parseJson");
         Gson gson = new Gson();
         return gson.fromJson(json, c);
     }

@@ -1,5 +1,7 @@
 package edu.umn.paull011.evolveworkoutlogger.helper_classes;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,20 +23,24 @@ import edu.umn.paull011.evolveworkoutlogger.data_structures.Set;
 
 
 /**
- *
+ * Adapter that populates a RecyclerView with the sets inside of an exercise session
  */
-public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSessionAdapter.ViewHolder> {
+public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSessionAdapter.ViewHolder>
+    implements ItemTouchHelperAdapter{
 
     private ExerciseSession mExerciseSession;
     private int mCompletedColor;
+    private Context mContext;
     private static final String TAG = ExerciseSessionAdapter.class.getSimpleName();
 
     public class SetMeasurementChangedListener implements OnNumberChangedListener {
         int mSetPosition;
         MeasurementCategory mCategory;
         ButtonEditText mButtonEditText;
+        private final String TAG = SetMeasurementChangedListener.class.getSimpleName();
 
         public SetMeasurementChangedListener(int setPosition, MeasurementCategory category, ButtonEditText buttonEditText) {
+            Log.d(TAG,"setMeasurementChangedListener");
             mSetPosition = setPosition;
             mCategory = category;
             mButtonEditText = buttonEditText;
@@ -42,6 +48,7 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
 
         @Override
         public void numberChanged() {
+            Log.d(TAG,"numberChanged");
             mExerciseSession.getSet(mSetPosition).setMeasurement(mCategory, mButtonEditText.getNumber());
         }
     }
@@ -52,9 +59,11 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
         public ImageView mCurrentSetCircle;
         public List<FrameLayout> mMeasurementLayouts;
         public List<ButtonEditText> mButtonEditTexts;
+        public final String TAG = ExerciseSessionAdapter.ViewHolder.class.getSimpleName();
 
         public ViewHolder(View v){
             super(v);
+            Log.d(TAG,"ViewHolder");
             mViewGroup = (ViewGroup) v;
             mSetNumber = (TextView) v.findViewById(R.id.set_number);
             mCurrentSetCircle = (ImageView) v.findViewById(R.id.current_set_circle);
@@ -83,9 +92,11 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
         }
     }
 
-    public ExerciseSessionAdapter(ExerciseSession exerciseSession, int completedColor){
+    public ExerciseSessionAdapter(Context context, ExerciseSession exerciseSession){
+        Log.d(TAG,"ExerciseSessionAdapter");
+        mContext = context;
         mExerciseSession = exerciseSession;
-        mCompletedColor = completedColor;
+        mCompletedColor = ContextCompat.getColor(context, R.color.accent_green);
     }
 
     @Override
@@ -119,10 +130,10 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
             else {
                 float categoryMeasurement = set.getMeasurementData(category).getMeasurement();
                 buttonEditText = holder.mButtonEditTexts.get(category.value());
-                buttonEditText.setNumber(categoryMeasurement);
                 SetMeasurementChangedListener listener =
                         new SetMeasurementChangedListener(position, category, buttonEditText);
                 buttonEditText.setOnNumberChangedListener(listener);
+                buttonEditText.setNumber(categoryMeasurement);
             }
         }
         if (set.isCompleted()) {
@@ -135,5 +146,21 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
     public int getItemCount() {
         Log.d(TAG, "getItemCount");
         return mExerciseSession.getNumSets();
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        Log.d(TAG,"onItemMove");
+        mExerciseSession.swapSets(fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        Log.d(TAG,"onItemDismiss");
+        mExerciseSession.removeSet(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mExerciseSession.getNumSets() - position);
     }
 }

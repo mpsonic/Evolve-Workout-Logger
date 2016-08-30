@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -18,7 +20,9 @@ import java.util.ArrayList;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.ExerciseSession;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementCategory;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.ExerciseSessionAdapter;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.ItemTouchHelperCallback;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RecyclerViewItemClickListener;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.TestItemTouchHelper;
 
 /**
  * A fragment representing a list of Items.
@@ -26,7 +30,7 @@ import edu.umn.paull011.evolveworkoutlogger.helper_classes.RecyclerViewItemClick
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class ExerciseSessionSetsFragment extends Fragment {
+public class ExerciseSessionSetsFragment extends Fragment{
 
     private RecyclerView mRecyclerView;
     private ExerciseSessionAdapter mAdapter;
@@ -37,7 +41,25 @@ public class ExerciseSessionSetsFragment extends Fragment {
     private ExerciseSession mExerciseSession;
     private static final String TAG = ExerciseSessionSetsFragment.class.getSimpleName();
 
+    public class ClearFocusTouchListener implements RecyclerView.OnTouchListener{
+
+        private final String TAG = ClearFocusTouchListener.class.getSimpleName();
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            Log.d(TAG,"onTouch");
+            int action = motionEvent.getActionMasked();
+            if (action == MotionEvent.ACTION_MOVE) {
+                View currentFocus = getActivity().getCurrentFocus();
+                if (currentFocus != null) {
+                    currentFocus.clearFocus();
+                }
+            }
+            return false;
+        }
+    }
+
     public ExerciseSessionSetsFragment() {
+        Log.d(TAG,"ExerciseSessionSetsFragment");
         // Required empty public constructor
     }
 
@@ -48,6 +70,7 @@ public class ExerciseSessionSetsFragment extends Fragment {
      * @return A new instance of fragment RoutineSessionExercisesFragment.
      */
     public static ExerciseSessionSetsFragment newInstance() {
+        Log.d(TAG,"newInstance");
         return new ExerciseSessionSetsFragment();
     }
 
@@ -68,18 +91,21 @@ public class ExerciseSessionSetsFragment extends Fragment {
 
         mRecyclerView = (RecyclerView) view.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.recycler_view_exercise_session_sets);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(false);
+        mRecyclerView.setOnTouchListener(new ClearFocusTouchListener());
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        int color = getResources().getColor(edu.umn.paull011.evolveworkoutlogger.R.color.accent_light_green);
-        mAdapter = new ExerciseSessionAdapter(mExerciseSession, color);
+        mAdapter = new ExerciseSessionAdapter(this.getContext(), mExerciseSession);
         mRecyclerView.setAdapter(mAdapter);
+
+        // add ItemTouchHelperCallBack to RecyclerView
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mAdapter);
+        ItemTouchHelper touchHelper = new TestItemTouchHelper(callback); //Prints log messages
+        touchHelper.attachToRecyclerView(mRecyclerView);
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewItemClickListener(getActivity(),
@@ -113,7 +139,6 @@ public class ExerciseSessionSetsFragment extends Fragment {
             mRecyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
-
         return view;
     }
 
@@ -156,6 +181,7 @@ public class ExerciseSessionSetsFragment extends Fragment {
     }
 
     public void refreshSetAdded() {
+        Log.d(TAG,"refreshSetAdded");
         mAdapter.notifyItemInserted(mExerciseSession.getNumSets() - 1);
     }
 
@@ -168,6 +194,7 @@ public class ExerciseSessionSetsFragment extends Fragment {
     }
 
     public void refresh() {
+        Log.d(TAG,"refresh");
         mAdapter.notifyDataSetChanged();
     }
 

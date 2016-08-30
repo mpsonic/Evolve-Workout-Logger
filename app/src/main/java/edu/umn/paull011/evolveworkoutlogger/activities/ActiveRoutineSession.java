@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -43,14 +44,28 @@ public class ActiveRoutineSession extends AppCompatActivity
         // Store the routine id so that it can be retrieved from the database
         Intent intent = getIntent();
         String routineName = intent.getStringExtra(DatabaseHelper.KEY_ROUTINE_NAME);
+        Boolean makeNewSession = intent.getBooleanExtra(StartRoutine.KEY_NEW_SESSION, true);
 
         // Get the routine and create a new routine session
-        DatabaseHelper db = DatabaseHelper.getInstance(this);
-        mRoutine = db.getRoutine(routineName);
-        mRoutineSession = mRoutine.createNewRoutineSession();
-        db.insertRoutineSessionDeep(mRoutineSession);
-        dataHolder.setRoutine(mRoutine);
-        dataHolder.setRoutineSession(mRoutineSession);
+        if (savedInstanceState == null) {
+            DatabaseHelper db = DatabaseHelper.getInstance(this);
+            mRoutine = db.getRoutine(routineName);
+            if (makeNewSession) {
+                mRoutineSession = mRoutine.createNewRoutineSession();
+                db.insertRoutineSessionDeep(mRoutineSession);
+            }
+            else {
+                mRoutineSession = db.getLastRoutineSession(mRoutine);
+            }
+            dataHolder.setRoutine(mRoutine);
+            dataHolder.setRoutineSession(mRoutineSession);
+
+        }
+        else {
+            mRoutine = dataHolder.getRoutine();
+            mRoutineSession = dataHolder.getRoutineSession();
+        }
+
 
         setContentView(edu.umn.paull011.evolveworkoutlogger.R.layout.activity_active_routine_session);
         Toolbar toolbar = (Toolbar) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.toolbar);
@@ -81,7 +96,9 @@ public class ActiveRoutineSession extends AppCompatActivity
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AreYouSureDialog dialog = new AreYouSureDialog();
+                        AreYouSureDialog dialog = AreYouSureDialog.newInstance(
+                                "Are you sure you want to finish your workout?"
+                        );
                         dialog.show(getFragmentManager(), "AreYouSureDialog");
                     }
                 }
@@ -101,6 +118,12 @@ public class ActiveRoutineSession extends AppCompatActivity
                 mRoutineSession.setNotes(String.valueOf(charSequence));
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putBoolean("Reload", true);
     }
 
     @Override

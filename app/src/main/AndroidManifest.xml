@@ -121,7 +121,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.umn.paull011.evolveworkoutlogger.activities.MyExercises"/>
         </activity>
-        <activity android:name=".activities.ViewRoutine"/>
+
+        <!-- View Routine -->
+        <activity android:name=".activities.ViewRoutine"
+            android:parentActivityName=".activities.MyRoutines">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.umn.paull011.evolveworkoutlogger.activities.MyRoutines"/>
+        </activity>
     </application>
 
 </manifest>

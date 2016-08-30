@@ -22,8 +22,9 @@ import edu.umn.paull011.evolveworkoutlogger.data_structures.Set;
 import edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseSessionSetsFragment;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RoutineSessionDataHolder;
 
-public class ActiveExerciseSession extends AppCompatActivity
-    implements ExerciseSessionSetsFragment.OnFragmentInteractionListener{
+public class ActiveExerciseSession extends AppCompatActivity implements
+        ExerciseSessionSetsFragment.OnFragmentInteractionListener,
+        ExerciseSession.OnExerciseSessionUpdateListener{
 
     private RoutineSessionDataHolder dataHolder = RoutineSessionDataHolder.getInstance();
     private Exercise mExercise;
@@ -78,31 +79,32 @@ public class ActiveExerciseSession extends AppCompatActivity
                     }
                 }
         );
-       /* Button addSetButton = (Button) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.button_add_set);
-        Button nextSetButton = (Button) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.button_next_set);
-        assert addSetButton != null;
-        assert nextSetButton != null;
 
-        addSetButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        handleButtonClick(v);
-                    }
-                }
-        );
+        refreshFab();
+    }
 
-        nextSetButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        handleButtonClick(v);
-                    }
-                }
-        );*/
+    @Override
+    public void onExerciseSessionUpdate() {
+        Log.d(TAG,"onExerciseSessionUpdate");
+        refreshFab();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d(TAG,"onStart");
+        super.onStart();
+        mExerciseSession.setOnExerciseSessionUpdatedListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG,"onStop");
+        super.onStop();
+        mExerciseSession.removeExerciseSessionUpdateListener();
     }
 
     private void handleButtonClick(View view) {
+        Log.d(TAG,"handleButtonClick");
         int id = view.getId();
         switch (id) {
             case R.id.fab:
@@ -120,12 +122,11 @@ public class ActiveExerciseSession extends AppCompatActivity
                 break;
             case R.id.fab_add:
                 addSet();
-
         }
-        refreshFab();
     }
 
     private void moveToNextSet() {
+        Log.d(TAG,"moveToNextSet");
         DatabaseHelper db = DatabaseHelper.getInstance(this);
         Set completedSet = mExerciseSession.getCurrentSet();
         int completedSetIndex = mExerciseSession.getCurrentSetIndex();
@@ -136,6 +137,7 @@ public class ActiveExerciseSession extends AppCompatActivity
     }
 
     private void addSet() {
+        Log.d(TAG,"addSet");
         DatabaseHelper db = DatabaseHelper.getInstance(this);
         mExerciseSession.generateNewSet();
         mSetsFragment.refreshSetAdded();
@@ -146,6 +148,7 @@ public class ActiveExerciseSession extends AppCompatActivity
     }
 
     private void refreshFab() {
+        Log.d(TAG,"refreshFab");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
         if (mExerciseSession.isCompleted()) {
@@ -160,6 +163,7 @@ public class ActiveExerciseSession extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG,"onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(edu.umn.paull011.evolveworkoutlogger.R.menu.menu_active_exercise_session, menu);
         MenuItem previous = menu.findItem(edu.umn.paull011.evolveworkoutlogger.R.id.previous_exercise);
@@ -176,6 +180,7 @@ public class ActiveExerciseSession extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG,"onOptionsItemSelected");
         int id = item.getItemId();
         Intent i;
         switch (id) {
@@ -194,6 +199,7 @@ public class ActiveExerciseSession extends AppCompatActivity
     }
 
     private void moveToPreviousExerciseSession() {
+        Log.d(TAG,"moveToPreviousExerciseSession");
         Intent i = new Intent(this, ActiveExerciseSession.class);
         i.putExtra(DatabaseHelper.KEY_POSITION, mExercisePosition - 1);
         startActivity(i);
@@ -201,6 +207,7 @@ public class ActiveExerciseSession extends AppCompatActivity
     }
 
     private void moveToNextExerciseSession() {
+        Log.d(TAG,"moveToNextExerciseSession");
         Intent i = new Intent(this, ActiveExerciseSession.class);
         i.putExtra(DatabaseHelper.KEY_POSITION, mExercisePosition + 1);
         startActivity(i);
