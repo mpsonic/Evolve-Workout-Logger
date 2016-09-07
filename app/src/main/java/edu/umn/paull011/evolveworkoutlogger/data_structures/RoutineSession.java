@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import edu.umn.paull011.evolveworkoutlogger.BuildConfig;
+
 /**
  * Created by Mitchell on 12/16/2015.
  *
@@ -18,6 +20,7 @@ public class RoutineSession {
     private Date mDate;
     private boolean mCompleted;
     private ArrayList<ExerciseSession> mExerciseSessions;
+    private String mNotes;
     private static final String TAG = RoutineSession.class.getSimpleName();
 
     // Public
@@ -26,6 +29,7 @@ public class RoutineSession {
         mId = -1;
         mDate = new Date(Calendar.getInstance().getTimeInMillis());
         mCompleted = false;
+        mNotes = "";
         int numExercises = routine.getNumExercises();
         mExerciseSessions = new ArrayList<>(numExercises);
         boolean increment;
@@ -88,14 +92,44 @@ public class RoutineSession {
         mDate = date;
     }
 
+    public String getNotes() {
+        return mNotes;
+    }
+
+    public void setNotes(String notes) {
+        mNotes = notes;
+    }
 
     public boolean isCompleted() {
         return mCompleted;
     }
 
-
     public void finish() {
         mCompleted = true;
+    }
+
+    public void swapExerciseSessions(int fromPosition, int toPosition) {
+        if (BuildConfig.DEBUG) {
+            if (fromPosition < mExerciseSessions.size()) {
+                throw new AssertionError();
+            }
+            if (fromPosition < mExerciseSessions.size()) {
+                throw new AssertionError();
+            }
+            if (toPosition < mExerciseSessions.size()) {
+                throw new AssertionError();
+            }
+            if (toPosition < mExerciseSessions.size()) {
+                throw new AssertionError();
+            }
+            if (fromPosition != toPosition) {
+                throw new AssertionError();
+            }
+        }
+        ExerciseSession from = mExerciseSessions.get(fromPosition);
+        ExerciseSession to = mExerciseSessions.get(toPosition);
+        mExerciseSessions.set(fromPosition, to);
+        mExerciseSessions.set(toPosition, from);
     }
 
     @Override

@@ -23,12 +23,20 @@ public class AreYouSureDialog extends DialogFragment {
         void onDialogNegativeClick(DialogFragment dialog);
     }
 
+    public static AreYouSureDialog newInstance(String message) {
+        AreYouSureDialog dialog = new AreYouSureDialog();
+        Bundle args = new Bundle();
+        args.putString("Message", message);
+        dialog.setArguments(args);
+        return dialog;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(edu.umn.paull011.evolveworkoutlogger.R.string.dialog_finish_routine_session)
+        String message = this.getArguments().getString("Message");
+        builder.setMessage(message)
                 .setPositiveButton(edu.umn.paull011.evolveworkoutlogger.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (mListener != null) {

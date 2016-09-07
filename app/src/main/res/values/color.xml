@@ -7,6 +7,7 @@
     <color name="dark_orange">#ef6c00</color>
 
     <!-- Greens -->
+    <color name="accent_very_light_green">#CCFF90</color>
     <color name="accent_light_green">#b2ff59</color>
     <color name="accent_green">#76ff03</color>
     <color name="accent_dark_green">#64dd17</color>

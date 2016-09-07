@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Routine;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RecyclerViewItemClickListener;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RoutineAdapter;
@@ -55,6 +56,7 @@ public class RoutineExercisesFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
+
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -73,7 +75,7 @@ public class RoutineExercisesFragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
         // Inflate the layout for this fragment
-        return inflater.inflate(edu.umn.paull011.evolveworkoutlogger.R.layout.fragment_routine_exercises, container, false);
+        return inflater.inflate(R.layout.fragment_routine_exercises, container, false);
     }
 
     @Override
@@ -81,7 +83,7 @@ public class RoutineExercisesFragment extends Fragment {
         Log.d(TAG, "onViewCreated()");
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = (RecyclerView) view.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.recycler_view_routine_exercises);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_routine_exercises);
         mRecyclerView.setHasFixedSize(false);
 
         // use a linear layout manager

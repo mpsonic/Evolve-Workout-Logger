@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class Exercise {
 
+    private static final String TAG = Exercise.class.getSimpleName();
     // Private
     private String mName;
     private String mDescription;
@@ -24,7 +25,6 @@ public class Exercise {
     private List<MeasurementCategory> mTrackedMeasurementCategories;
     private List<Float> mInitialMeasurementValues;
     private ExerciseSession mMostRecentExerciseSession;
-    private static final String TAG = Exercise.class.getSimpleName();
 
 
     // Constructors
@@ -85,31 +85,25 @@ public class Exercise {
         mIsImperialUnits = false;
     }
 
+    public String getExerciseCategory() {
+        return mExerciseCategory;
+    }
 
     public void setExerciseCategory(String category) {
         mExerciseCategory = category;
     }
 
-
-    public String getExerciseCategory() {
-        return mExerciseCategory;
-    }
-
-
     public void setMeasurementCategoryToIncrement(MeasurementCategory category){
         mCategoryToIncrement = category;
     }
-
-
-    public void setIncrement (float increment) {
-        mIncrement = increment;
-    }
-
 
     public float getIncrement() {
         return mIncrement;
     }
 
+    public void setIncrement(float increment) {
+        mIncrement = increment;
+    }
 
     public int getIncrementPeriod() {
         return mIncrementPeriod;
@@ -187,12 +181,12 @@ public class Exercise {
         mInitialMeasurementValues.set(category.value(), initialMeasurement);
     }
 
-    public void setMostRecentExerciseSession(ExerciseSession session) {
-        mMostRecentExerciseSession = session;
+    public ExerciseSession getMostRecentExerciseSession() {
+        return mMostRecentExerciseSession;
     }
 
-    public ExerciseSession getMostRecentExerciseSession(){
-        return mMostRecentExerciseSession;
+    public void setMostRecentExerciseSession(ExerciseSession session) {
+        mMostRecentExerciseSession = session;
     }
 
     public Set generateInitialSet() {
@@ -200,7 +194,8 @@ public class Exercise {
         for (MeasurementCategory category: mTrackedMeasurementCategories) {
             MeasurementData data = new MeasurementData(
                     category,
-                    mInitialMeasurementValues.get(category.value())
+                    mInitialMeasurementValues.get(category.value()),
+                    this.getUnit(category)
             );
             set.addMeasurement(data);
         }

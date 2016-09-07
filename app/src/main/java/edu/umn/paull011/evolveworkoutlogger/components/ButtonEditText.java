@@ -2,12 +2,15 @@ package edu.umn.paull011.evolveworkoutlogger.components;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,6 +28,7 @@ public class ButtonEditText extends LinearLayout {
     private boolean mIsInteger;
     private String mHint = null;
     private OnNumberChangedListener onNumberChangedListener = null;
+    private static String TAG = ButtonEditText.class.getSimpleName();
 
     private EditText mEditText;
     private ImageButton mMoreButton;
@@ -32,22 +36,25 @@ public class ButtonEditText extends LinearLayout {
 
     public ButtonEditText(Context context) {
         super(context);
+        Log.d(TAG,"ButtonEditText");
         init(context, null, 0);
     }
 
     public ButtonEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Log.d(TAG,"ButtonEditText");
         init(context, attrs, 0);
     }
 
     public ButtonEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        Log.d(TAG,"ButtonEditText");
         init(context, attrs, defStyle);
     }
 
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
-
+        Log.d(TAG,"init");
         // Load custom attributes
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, edu.umn.paull011.evolveworkoutlogger.R.styleable.ButtonEditText, defStyle, 0);
@@ -82,6 +89,7 @@ public class ButtonEditText extends LinearLayout {
 
         setLayoutParams(params);*/
         setGravity(Gravity.CENTER);
+        setFocusable(true);
 
         // Get the views
         mEditText = (EditText) this.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.number_edit_text);
@@ -130,7 +138,9 @@ public class ButtonEditText extends LinearLayout {
         mEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                setActivated(hasFocus);
+                if (!hasFocus) {
+                    setActivated(false);
+                }
             }
         });
 
@@ -155,6 +165,7 @@ public class ButtonEditText extends LinearLayout {
     }
 
     private void handleButtonClick(View view) {
+        Log.d(TAG,"handleButtonClick");
         ImageButton button = (ImageButton) view;
         EditText editText = (EditText) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.number_edit_text);
         switch (button.getId()) {
@@ -172,16 +183,19 @@ public class ButtonEditText extends LinearLayout {
     }
 
     private void onNumberChanged() {
+        Log.d(TAG,"onNumberChanged");
         if (onNumberChangedListener != null) {
             onNumberChangedListener.numberChanged();
         }
     }
 
     public void setOnNumberChangedListener(OnNumberChangedListener listener) {
+        Log.d(TAG,"setOnNumberChangedListener");
         onNumberChangedListener = listener;
     }
 
     public String getNumberString() {
+        Log.d(TAG,"getNumberString");
         if (mIsInteger) {
             int intNum = (int) mNumber;
             return String.valueOf(intNum);
@@ -195,6 +209,7 @@ public class ButtonEditText extends LinearLayout {
      * @return The activated attribute value.
      */
     public boolean getActivated() {
+        Log.d(TAG,"getActivated");
         return mActivated;
     }
 
@@ -205,6 +220,7 @@ public class ButtonEditText extends LinearLayout {
      * @param activated The activated attribute value to use.
      */
     public void setActivated(boolean activated) {
+        Log.d(TAG,"setActivated");
         if (mActivated != activated) {
             mActivated = activated;
             if (mActivated) {
@@ -224,6 +240,7 @@ public class ButtonEditText extends LinearLayout {
      * @return The increment attribute value.
      */
     public float getIncrement() {
+        Log.d(TAG,"getIncrement");
         return mIncrement;
     }
 
@@ -234,15 +251,47 @@ public class ButtonEditText extends LinearLayout {
      * @param increment The activated increment value to use
      */
     public void setIncrement(float increment) {
+        Log.d(TAG,"setIncrement");
         mIncrement = increment;
     }
 
     public float getNumber() {
+        Log.d(TAG,"getNumber");
         return mNumber;
     }
 
     public void setNumber(float number) {
+        Log.d(TAG,"setNumber");
         mNumber = number;
         mEditText.setText(getNumberString());
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        Log.d(TAG,"onInterceptTouchEvent");
+        return !mActivated;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d(TAG,"onTouchEvent");
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (!mActivated) {
+                setActivated(true);
+                this.requestFocus();
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
+        Log.d(TAG,"onFocusChanged");
+        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+        if (!gainFocus) {
+            if (this.findFocus() == null) {
+                setActivated(false);
+            }
+        }
     }
 }

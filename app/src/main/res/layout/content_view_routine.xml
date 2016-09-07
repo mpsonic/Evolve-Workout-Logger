@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,20 +11,25 @@
 
         <include layout="@layout/component_common_stats"/>
 
-        <fragment
-            android:id="@+id/fragment_exercise_stats"
-            android:name="edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseStatsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_exercise_stats" />
+        <TextView
+            style="@style/ColoredTitleHeader"
+            android:text="@string/text_view_routine_exercises_banner"/>
 
         <fragment
-            android:id="@+id/fragment_exercise_history"
-            android:name="edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseHistoryFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="edu.umn.paull011.evolveworkoutlogger.fragments.RoutineExercisesFragment"
+            tools:layout="@layout/fragment_routine_exercises"
+            android:id="@+id/fragment_view_routine_exercises"/>
+
+        <fragment
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            tools:layout="@layout/fragment_exercise_history" />
+            android:name="edu.umn.paull011.evolveworkoutlogger.fragments.RoutineHistoryFragment"
+            tools:layout="@layout/fragment_routine_history"
+            android:id="@+id/fragment_routine_history"/>
 
     </LinearLayout>
+
 </ScrollView>

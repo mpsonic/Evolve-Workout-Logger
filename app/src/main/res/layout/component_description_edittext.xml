@@ -2,15 +2,15 @@
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:orientation="vertical">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="72dp"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         app:hintTextAppearance="@style/AppTheme.HintTextAppearance">
 
         <EditText
@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/hint_description"
-            android:textSize="@dimen/font_size_description"
             android:inputType="textCapSentences|textMultiLine|textAutoComplete"
-            android:maxLines="3"/>
+            android:maxLines="3"
+            android:textSize="@dimen/font_size_description" />
     </android.support.design.widget.TextInputLayout>
 </merge>

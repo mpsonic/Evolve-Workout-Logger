@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 import edu.umn.paull011.evolveworkoutlogger.R;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 import edu.umn.paull011.evolveworkoutlogger.fragments.SavedRoutinesFragment;
 
 public class MyRoutines extends AppCompatActivity
@@ -25,6 +25,7 @@ public class MyRoutines extends AppCompatActivity
         assert toolbar != null;
         toolbar.setTitle("My Routines");
         setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mFragment = (SavedRoutinesFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_saved_routines);
@@ -32,8 +33,9 @@ public class MyRoutines extends AppCompatActivity
 
     @Override
     public void routineSelected(String routineName) {
-        String message = "Selected Routine " + routineName;
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, ViewRoutine.class);
+        i.putExtra(DatabaseHelper.KEY_ROUTINE_NAME, routineName);
+        startActivity(i);
     }
 
     public void handleButtonClick(View view) {

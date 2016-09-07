@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
 
     private Boolean mExerciseCreated = false;
 
-    private RelativeLayout contentLayout;
+    private ScrollView contentLayout;
     private RelativeLayout unitsLayout;
     private RelativeLayout trackedMeasurementsLayout;
     private LinearLayout startingMeasurementsLayout;
@@ -63,7 +64,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         setSupportActionBar(toolbar);
 
         // Get content layouts
-        contentLayout = (RelativeLayout) findViewById(R.id.createExerciseContent);
+        contentLayout = (ScrollView) findViewById(R.id.createExerciseContent);
 
         assert contentLayout != null;
         unitsLayout = (RelativeLayout) contentLayout.findViewById(R.id.unitsLayout);
@@ -403,27 +404,32 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
             if (targetToggle.isChecked()) {
                 switch (unitCategory) {
                     case REPS:
-                        EditText repsIncreaseText = (EditText) findViewById(R.id.editRepsIncreasePerSession);
-                        assert repsIncreaseText != null;
-                        increment = Integer.valueOf(repsIncreaseText.getText().toString());
+                        ButtonEditText repsIncreaseBET = (ButtonEditText)
+                                findViewById(R.id.create_exercise_bet_increase_reps);
+                        assert repsIncreaseBET != null;
+                        increment = repsIncreaseBET.getNumber();
                         break;
                     case WEIGHT:
-                        EditText weightIncreaseText = (EditText) findViewById(R.id.editWeightIncreasePerSession);
-                        assert weightIncreaseText != null;
-                        increment = Float.valueOf(weightIncreaseText.getText().toString());
+                        ButtonEditText weightIncreaseBET = (ButtonEditText)
+                                findViewById(R.id.create_exercise_bet_increase_weight);
+                        assert weightIncreaseBET != null;
+                        increment = weightIncreaseBET.getNumber();
                         break;
                     case DISTANCE:
-                        EditText distanceIncreaseText = (EditText) findViewById(R.id.editDistanceIncreasePerSession);
-                        assert distanceIncreaseText != null;
-                        increment = Float.valueOf(distanceIncreaseText.getText().toString());
+                        ButtonEditText distanceIncreaseBET = (ButtonEditText)
+                                findViewById(R.id.create_exercise_bet_increase_distance);
+                        assert distanceIncreaseBET != null;
+                        increment = distanceIncreaseBET.getNumber();
                         break;
                     case TIME:
-                        EditText minutesText = (EditText) findViewById(R.id.timeIncreaseMinuteEdittext);
-                        EditText secondsText = (EditText) findViewById(R.id.timeIncreaseSecondEdittext);
-                        assert minutesText != null;
-                        assert secondsText != null;
-                        float minutes = Float.valueOf(minutesText.getText().toString());
-                        float seconds = Float.valueOf(secondsText.getText().toString());
+                        ButtonEditText minutesBET = (ButtonEditText)
+                                findViewById(R.id.create_exercise_bet_increase_time_minutes);
+                        ButtonEditText secondsBET = (ButtonEditText)
+                                findViewById(R.id.create_exercise_bet_increase_time_seconds);
+                        assert minutesBET != null;
+                        assert secondsBET != null;
+                        float minutes = minutesBET.getNumber();
+                        float seconds = secondsBET.getNumber();
                         increment = 60*minutes + seconds;
                         break;
                 }

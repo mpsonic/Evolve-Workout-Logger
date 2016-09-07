@@ -4,14 +4,19 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
+import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Exercise;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Routine;
@@ -39,14 +44,28 @@ public class ActiveRoutineSession extends AppCompatActivity
         // Store the routine id so that it can be retrieved from the database
         Intent intent = getIntent();
         String routineName = intent.getStringExtra(DatabaseHelper.KEY_ROUTINE_NAME);
+        Boolean makeNewSession = intent.getBooleanExtra(StartRoutine.KEY_NEW_SESSION, true);
 
         // Get the routine and create a new routine session
-        DatabaseHelper db = DatabaseHelper.getInstance(this);
-        mRoutine = db.getRoutine(routineName);
-        mRoutineSession = mRoutine.createNewRoutineSession();
-        db.insertRoutineSessionDeep(mRoutineSession);
-        dataHolder.setRoutine(mRoutine);
-        dataHolder.setRoutineSession(mRoutineSession);
+        if (savedInstanceState == null) {
+            DatabaseHelper db = DatabaseHelper.getInstance(this);
+            mRoutine = db.getRoutine(routineName);
+            if (makeNewSession) {
+                mRoutineSession = mRoutine.createNewRoutineSession();
+                db.insertRoutineSessionDeep(mRoutineSession);
+            }
+            else {
+                mRoutineSession = db.getLastRoutineSession(mRoutine);
+            }
+            dataHolder.setRoutine(mRoutine);
+            dataHolder.setRoutineSession(mRoutineSession);
+
+        }
+        else {
+            mRoutine = dataHolder.getRoutine();
+            mRoutineSession = dataHolder.getRoutineSession();
+        }
+
 
         setContentView(edu.umn.paull011.evolveworkoutlogger.R.layout.activity_active_routine_session);
         Toolbar toolbar = (Toolbar) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.toolbar);
@@ -60,7 +79,7 @@ public class ActiveRoutineSession extends AppCompatActivity
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
         dateText.setText(dateFormat.format(date));*/
 
-        Button addExerciseButton = (Button) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.button_add_exercise_to_routine_session);
+        Button addExerciseButton = (Button) findViewById(R.id.button_add_exercise_to_routine_session);
         assert addExerciseButton != null;
         addExerciseButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -71,17 +90,40 @@ public class ActiveRoutineSession extends AppCompatActivity
                 }
         );
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AreYouSureDialog dialog = new AreYouSureDialog();
+                        AreYouSureDialog dialog = AreYouSureDialog.newInstance(
+                                "Are you sure you want to finish your workout?"
+                        );
                         dialog.show(getFragmentManager(), "AreYouSureDialog");
                     }
                 }
         );
+
+        EditText notesEdit = (EditText) findViewById(R.id.edit_notes);
+        notesEdit.setText(mRoutineSession.getNotes());
+        notesEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mRoutineSession.setNotes(String.valueOf(charSequence));
+            }
+        });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putBoolean("Reload", true);
     }
 
     @Override

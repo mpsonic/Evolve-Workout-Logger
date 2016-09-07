@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,497 +13,496 @@
     tools:context="edu.umn.paull011.evolveworkoutlogger.activities.CreateExercise"
     tools:showIn="@layout/activity_create_exercise"
     android:id="@+id/contentLayout">
-    
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/unitsLayout"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/units_layout_title"
+                android:id="@+id/unitSystemTextView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:id="@+id/unitButtonLayout"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/unitSystemTextView">
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imperialToggleButton"
+                    android:textOn="@string/imperial_toggle_button_text"
+                    android:textOff="@string/imperial_toggle_button_text"
+                    android:onClick="handleButtonClick"
+                    android:checked="true" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/metric_toggle_button_text"
+                    android:id="@+id/metricToggleButton"
+                    android:textOff="@string/metric_toggle_button_text"
+                    android:textOn="@string/metric_toggle_button_text"
+                    android:onClick="handleButtonClick" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/trackedMeasurementsLayout"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/tracked_measurements_layout_title"
+                android:id="@+id/trackedMeasurementsText"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/trackedMeasurementsButtonLayout"
+                android:layout_below="@+id/trackedMeasurementsText"
+                android:layout_centerHorizontal="true">
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/repsToggleButton"
+                    android:textOff="@string/reps_toggle_button_text"
+                    android:textOn="@string/reps_toggle_button_text"
+                    android:onClick="handleButtonClick" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/weightToggleButton"
+                    android:textOn="@string/weight_toggle_button_text"
+                    android:textOff="@string/weight_toggle_button_text"
+                    android:onClick="handleButtonClick" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/distanceToggleButton"
+                    android:textOff="@string/distance_toggle_button_text"
+                    android:textOn="@string/distance_toggle_button_text"
+                    android:onClick="handleButtonClick" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/timeToggleButton"
+                    android:textOff="@string/time_toggle_button_text"
+                    android:textOn="@string/time_toggle_button_text"
+                    android:onClick="handleButtonClick" />
+            </LinearLayout>
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:id="@+id/startingMeasurementsLayout"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/unitsLayout"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/units_layout_title"
-                    android:id="@+id/unitSystemTextView"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="8dp" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/starting_measurements_layout_title"
+                android:id="@+id/startingMeasurementsText"
+                android:layout_marginBottom="8dp" />
 
-                <LinearLayout
-                    android:id="@+id/unitButtonLayout"
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/unitSystemTextView">
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/imperialToggleButton"
-                        android:textOn="@string/imperial_toggle_button_text"
-                        android:textOff="@string/imperial_toggle_button_text"
-                        android:onClick="handleButtonClick"
-                        android:checked="true" />
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/metric_toggle_button_text"
-                        android:id="@+id/metricToggleButton"
-                        android:textOff="@string/metric_toggle_button_text"
-                        android:textOn="@string/metric_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-
-                </LinearLayout>
-            </RelativeLayout>
-
-
-            <RelativeLayout
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/trackedMeasurementsLayout"
-                android:layout_marginBottom="16dp">
+                android:layout_height="match_parent"
+                android:stretchColumns="*"
+                android:shrinkColumns="*"
+                android:id="@+id/startingMeasurementsTable">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/tracked_measurements_layout_title"
-                    android:id="@+id/trackedMeasurementsText"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="8dp" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/trackedMeasurementsButtonLayout"
-                    android:layout_below="@+id/trackedMeasurementsText"
-                    android:layout_centerHorizontal="true">
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
+                <TableRow
+                    android:id="@+id/repsRow">
+                    <TextView
+                        android:layout_width="0px"
                         android:layout_height="wrap_content"
-                        android:id="@+id/repsToggleButton"
-                        android:textOff="@string/reps_toggle_button_text"
-                        android:textOn="@string/reps_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/weightToggleButton"
-                        android:textOn="@string/weight_toggle_button_text"
-                        android:textOff="@string/weight_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/distanceToggleButton"
-                        android:textOff="@string/distance_toggle_button_text"
-                        android:textOn="@string/distance_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/timeToggleButton"
-                        android:textOff="@string/time_toggle_button_text"
-                        android:textOn="@string/time_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-                </LinearLayout>
-            </RelativeLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/startingMeasurementsLayout"
-                android:orientation="vertical"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/starting_measurements_layout_title"
-                    android:id="@+id/startingMeasurementsText"
-                    android:layout_marginBottom="8dp" />
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:stretchColumns="*"
-                    android:shrinkColumns="*"
-                    android:id="@+id/startingMeasurementsTable">
-
-                    <TableRow
-                        android:id="@+id/repsRow">
-                        <TextView
-                            android:layout_width="0px"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="@string/reps_layout_title"
-                            android:id="@+id/repsText"
-                            android:layout_weight="1" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:orientation="horizontal">
-
-                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                                android:id="@+id/bet_reps_starting_measurement"
-                                android:layout_width="@dimen/button_edit_text_width"
-                                android:layout_height="wrap_content"
-                                app:default_number="5"
-                                app:mode="integer"
-                                app:increment="1"
-                                app:always_positive="true"
-                                app:activated="false"/>
-                        </LinearLayout>
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/weightRow">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="@string/weight_layout_title"
-                            android:id="@+id/weightText"
-                            android:layout_weight="1" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2">
-                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                                android:id="@+id/bet_weight_starting_measurement"
-                                android:layout_width="@dimen/button_edit_text_width"
-                                android:layout_height="wrap_content"
-                                app:default_number="0"
-                                app:mode="decimal"
-                                app:increment="2.5"
-                                app:always_positive="true"
-                                app:activated="false"/>
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:id="@+id/weightUnitText"
-                                android:text="@string/weight_imperial_unit"
-                                />
-                        </LinearLayout>
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/distanceRow">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="@string/distance_layout_title"
-                            android:id="@+id/distanceText"
-                            android:layout_weight="1" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2">
-                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                                android:id="@+id/bet_distance_starting_measurement"
-                                android:layout_width="@dimen/button_edit_text_width"
-                                android:layout_height="wrap_content"
-                                app:default_number="0"
-                                app:mode="decimal"
-                                app:increment="1"
-                                app:always_positive="true"
-                                app:activated="false"/>
-                            <Spinner
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:id="@+id/distanceUnitSpinner"
-                                />
-                        </LinearLayout>
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/timeRow">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="@string/time_layout_title"
-                            android:id="@+id/timeText"
-                            android:layout_weight="1" />
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2">
-
-                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                                android:id="@+id/bet_time_hours_starting_measurement"
-                                android:layout_width="72dp"
-                                android:layout_height="wrap_content"
-                                app:default_number="0"
-                                app:mode="integer"
-                                app:increment="1"
-                                app:always_positive="true"
-                                app:activated="false"
-                                app:hint="@string/hours_edittext_hint"/>
-                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                                android:id="@+id/bet_time_minutes_starting_measurement"
-                                android:layout_width="72dp"
-                                android:layout_height="wrap_content"
-                                app:default_number="0"
-                                app:mode="integer"
-                                app:increment="1"
-                                app:always_positive="true"
-                                app:activated="false"
-                                app:hint="@string/minutes_edittext_hint"/>
-                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                                android:id="@+id/bet_time_seconds_starting_measurement"
-                                android:layout_width="72dp"
-                                android:layout_height="wrap_content"
-                                app:default_number="0"
-                                app:mode="integer"
-                                app:increment="1"
-                                app:always_positive="true"
-                                app:activated="false"
-                                app:hint="@string/seconds_edittext_hint"/>
-                        </LinearLayout>
-                    </TableRow>
-
-                </TableLayout>
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/targetIncreaseLayout"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/target_increase_layout_title"
-                    android:id="@+id/targetForIncreaseText"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="8dp" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/targetIncreaseButtonLayout"
-                    android:layout_below="@+id/targetForIncreaseText">
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/repsTargetToggleButton"
-                        android:textOff="@string/reps_toggle_button_text"
-                        android:textOn="@string/reps_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/weightTargetToggleButton"
-                        android:textOff="@string/weight_toggle_button_text"
-                        android:textOn="@string/weight_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/distanceTargetToggleButton"
-                        android:textOff="@string/distance_toggle_button_text"
-                        android:textOn="@string/distance_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/timeTargetToggleButton"
-                        android:textOff="@string/time_toggle_button_text"
-                        android:textOn="@string/time_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-                </LinearLayout>
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/increasePerSessionLayout"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/increse_per_session_layout_title"
-                    android:id="@+id/increasePerSessionText"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="8dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_below="@+id/increasePerSessionText"
-                    android:layout_centerHorizontal="true">
+                        android:layout_gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/reps_layout_title"
+                        android:id="@+id/repsText"
+                        android:layout_weight="1" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/repsIncreaseLayout"
-                        android:gravity="center_horizontal">
-                        <EditText
-                            android:layout_width="@dimen/number_edittext_width"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                            android:id="@+id/bet_reps_starting_measurement"
+                            android:layout_width="@dimen/button_edit_text_width"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:ems="10"
-                            android:id="@+id/editRepsIncreasePerSession"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/reps_unit">
-                        </TextView>
+                            app:default_number="5"
+                            app:mode="integer"
+                            app:increment="1"
+                            app:always_positive="true"
+                            app:activated="false"/>
                     </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/weightRow">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/weight_layout_title"
+                        android:id="@+id/weightText"
+                        android:layout_weight="1" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/weightIncreaseLayout">
-                        <EditText
-                            android:layout_width="@dimen/number_edittext_width"
+                        android:layout_weight="2">
+                        <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                            android:id="@+id/bet_weight_starting_measurement"
+                            android:layout_width="@dimen/button_edit_text_width"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:ems="10"
-                            android:id="@+id/editWeightIncreasePerSession"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center" />
+                            app:default_number="0"
+                            app:mode="decimal"
+                            app:increment="2.5"
+                            app:always_positive="true"
+                            app:activated="false"/>
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/weightUnitText"
                             android:text="@string/weight_imperial_unit"
-                            android:id="@+id/weightIncreaseUnitText" />
+                            />
                     </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/distanceRow">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/distance_layout_title"
+                        android:id="@+id/distanceText"
+                        android:layout_weight="1" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/distanceIncreaseLayout">
-                        <EditText
-                            android:layout_width="@dimen/number_edittext_width"
+                        android:layout_weight="2">
+                        <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                            android:id="@+id/bet_distance_starting_measurement"
+                            android:layout_width="@dimen/button_edit_text_width"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:ems="10"
-                            android:id="@+id/editDistanceIncreasePerSession"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center" />
+                            app:default_number="0"
+                            app:mode="decimal"
+                            app:increment="1"
+                            app:always_positive="true"
+                            app:activated="false"/>
                         <Spinner
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:id="@+id/distanceIncreaseUnitSpinner"
+                            android:id="@+id/distanceUnitSpinner"
                             />
                     </LinearLayout>
+                </TableRow>
 
+                <TableRow
+                    android:id="@+id/timeRow">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/time_layout_title"
+                        android:id="@+id/timeText"
+                        android:layout_weight="1" />
                     <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2">
+
+                        <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                            android:id="@+id/bet_time_hours_starting_measurement"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            app:default_number="0"
+                            app:mode="integer"
+                            app:increment="1"
+                            app:always_positive="true"
+                            app:activated="false"
+                            app:hint="@string/hours_edittext_hint"/>
+                        <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                            android:id="@+id/bet_time_minutes_starting_measurement"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            app:default_number="0"
+                            app:mode="integer"
+                            app:increment="1"
+                            app:always_positive="true"
+                            app:activated="false"
+                            app:hint="@string/minutes_edittext_hint"/>
+                        <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                            android:id="@+id/bet_time_seconds_starting_measurement"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            app:default_number="0"
+                            app:mode="integer"
+                            app:increment="1"
+                            app:always_positive="true"
+                            app:activated="false"
+                            app:hint="@string/seconds_edittext_hint"/>
+                    </LinearLayout>
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/targetIncreaseLayout"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/target_increase_layout_title"
+                android:id="@+id/targetForIncreaseText"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/targetIncreaseButtonLayout"
+                android:layout_below="@+id/targetForIncreaseText">
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/repsTargetToggleButton"
+                    android:textOff="@string/reps_toggle_button_text"
+                    android:textOn="@string/reps_toggle_button_text"
+                    android:onClick="handleButtonClick" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/weightTargetToggleButton"
+                    android:textOff="@string/weight_toggle_button_text"
+                    android:textOn="@string/weight_toggle_button_text"
+                    android:onClick="handleButtonClick" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/distanceTargetToggleButton"
+                    android:textOff="@string/distance_toggle_button_text"
+                    android:textOn="@string/distance_toggle_button_text"
+                    android:onClick="handleButtonClick" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/timeTargetToggleButton"
+                    android:textOff="@string/time_toggle_button_text"
+                    android:textOn="@string/time_toggle_button_text"
+                    android:onClick="handleButtonClick" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/increasePerSessionLayout"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/increse_per_session_layout_title"
+                android:id="@+id/increasePerSessionText"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
+                android:layout_below="@+id/increasePerSessionText"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/repsIncreaseLayout"
+                    android:gravity="center_horizontal">
+                    <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                        android:layout_width="@dimen/button_edit_text_width"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/create_exercise_bet_increase_reps"
+                        app:activated="false"
+                        app:default_number="1"
+                        app:always_positive="true"
+                        app:increment="1"
+                        app:mode="integer">
+                    </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/timeIncreaseLayout">
-                        <EditText
-                            android:layout_width="@dimen/number_edittext_width"
-                            android:layout_height="wrap_content"
-                            android:ems="3"
-                            android:id="@+id/timeIncreaseMinuteEdittext"
-                            android:inputType="number"
-                            android:paddingEnd="@dimen/edittext_padding"
-                            android:paddingStart="@dimen/edittext_padding"
-                            android:textSize="@dimen/abc_text_size_medium_material"
-                            android:hint="@string/minutes_edittext_hint"
-                            android:layout_gravity="center_horizontal"
-                            android:textAlignment="center"
-                            android:gravity="center" />
-                        <EditText
-                            android:layout_width="@dimen/number_edittext_width"
-                            android:layout_height="wrap_content"
-                            android:ems="3"
-                            android:id="@+id/timeIncreaseSecondEdittext"
-                            android:inputType="number"
-                            android:paddingEnd="@dimen/edittext_padding"
-                            android:paddingStart="@dimen/edittext_padding"
-                            android:textSize="@dimen/abc_text_size_medium_material"
-                            android:hint="@string/seconds_edittext_hint"
-                            android:layout_gravity="center_horizontal"
-                            android:textAlignment="center"
-                            android:gravity="center" />
-                    </LinearLayout>
+                        android:text="@string/reps_unit"
+                        android:layout_gravity="center">
+                    </TextView>
                 </LinearLayout>
 
-            </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/weightIncreaseLayout">
+                    <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                        android:layout_width="@dimen/button_edit_text_width"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/create_exercise_bet_increase_weight"
+                        app:activated="false"
+                        app:default_number="0"
+                        app:always_positive="true"
+                        app:increment="0.5"
+                        app:mode="decimal">
+                    </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/weight_imperial_unit"
+                        android:id="@+id/weightIncreaseUnitText"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/distanceIncreaseLayout">
+                    <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                        android:layout_width="@dimen/button_edit_text_width"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/create_exercise_bet_increase_distance"
+                        app:activated="false"
+                        app:default_number="1"
+                        app:always_positive="true"
+                        app:increment="1"
+                        app:mode="decimal">
+                    </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/distanceIncreaseUnitSpinner"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/timeIncreaseLayout">
+                    <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                        android:layout_width="@dimen/button_edit_text_width"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/create_exercise_bet_increase_time_minutes"
+                        app:activated="false"
+                        app:default_number="1"
+                        app:always_positive="true"
+                        app:increment="1"
+                        app:mode="integer"
+                        app:hint="mm">
+                    </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
+                    <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                        android:layout_width="@dimen/button_edit_text_width"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/create_exercise_bet_increase_time_seconds"
+                        app:activated="false"
+                        app:default_number="1"
+                        app:always_positive="true"
+                        app:increment="1"
+                        app:mode="integer"
+                        app:hint="ss">
+                    </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
+                </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/categoryLayout"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/categoryLayout"
-                android:layout_marginBottom="16dp">
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/category_layout_title"
+                android:id="@+id/categoryText"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="8dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/category_layout_title"
-                    android:id="@+id/categoryText"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="8dp" />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/categorySpinner"
+                android:layout_below="@+id/categoryText"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/categorySpinner"
-                    android:layout_below="@+id/categoryText"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
-
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
 
 

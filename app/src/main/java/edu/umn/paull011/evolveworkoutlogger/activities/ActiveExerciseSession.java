@@ -2,6 +2,7 @@ package edu.umn.paull011.evolveworkoutlogger.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
@@ -22,12 +22,14 @@ import edu.umn.paull011.evolveworkoutlogger.data_structures.Set;
 import edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseSessionSetsFragment;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RoutineSessionDataHolder;
 
-public class ActiveExerciseSession extends AppCompatActivity
-    implements ExerciseSessionSetsFragment.OnFragmentInteractionListener{
+public class ActiveExerciseSession extends AppCompatActivity implements
+        ExerciseSessionSetsFragment.OnFragmentInteractionListener,
+        ExerciseSession.OnExerciseSessionUpdateListener{
 
     private RoutineSessionDataHolder dataHolder = RoutineSessionDataHolder.getInstance();
     private Exercise mExercise;
     private ExerciseSession mExerciseSession;
+    private RoutineSession mRoutineSession;
     private int mExercisePosition;
     private ExerciseSessionSetsFragment mSetsFragment;
 
@@ -44,7 +46,8 @@ public class ActiveExerciseSession extends AppCompatActivity
         Intent intent = getIntent();
         mExercisePosition = intent.getIntExtra(DatabaseHelper.KEY_POSITION, -1);
         mExercise = dataHolder.getRoutine().getExercise(mExercisePosition);
-        mExerciseSession = dataHolder.getRoutineSession().getExerciseSession(mExercisePosition);
+        mRoutineSession = dataHolder.getRoutineSession();
+        mExerciseSession = mRoutineSession.getExerciseSession(mExercisePosition);
         mCurrentSetIndex = mExerciseSession.getCurrentSetIndex();
         RoutineSession routineSession = dataHolder.getRoutineSession();
 
@@ -54,57 +57,113 @@ public class ActiveExerciseSession extends AppCompatActivity
         toolbar.setTitle(mExercise.getName() + "  (" +
                 String.valueOf(mExercisePosition + 1) + "/" + routineSession.getExerciseCount() + ")");
         setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button addSetButton = (Button) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.button_add_set);
-        Button nextSetButton = (Button) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.button_next_set);
-        assert addSetButton != null;
-        assert nextSetButton != null;
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    handleButtonClick(view);
+                }
+            }
+        );
 
-        addSetButton.setOnClickListener(
+        FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+        fabAdd.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        handleButtonClick(v);
+                    public void onClick(View view) {
+                        handleButtonClick(view);
                     }
                 }
         );
 
-        nextSetButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        handleButtonClick(v);
-                    }
-                }
-        );
+        refreshFab();
+    }
+
+    @Override
+    public void onExerciseSessionUpdate() {
+        Log.d(TAG,"onExerciseSessionUpdate");
+        refreshFab();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d(TAG,"onStart");
+        super.onStart();
+        mExerciseSession.setOnExerciseSessionUpdatedListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG,"onStop");
+        super.onStop();
+        mExerciseSession.removeExerciseSessionUpdateListener();
     }
 
     private void handleButtonClick(View view) {
+        Log.d(TAG,"handleButtonClick");
         int id = view.getId();
-        DatabaseHelper db = DatabaseHelper.getInstance(this);
         switch (id) {
-            case R.id.button_add_set:
-                mExerciseSession.generateNewSet();
-                mSetsFragment.refreshSetAdded();
-                mCurrentSetIndex = mExerciseSession.getCurrentSetIndex();
-                int lastSetPosition = mExerciseSession.getNumSets()-1;
-                Set lastSet = mExerciseSession.getSet(lastSetPosition);
-                db.insertSet(mExerciseSession, lastSetPosition, lastSet);
+            case R.id.fab:
+                if (mExerciseSession.isCompleted()) {
+                    if (mExercisePosition == mRoutineSession.getExerciseCount() - 1) {
+                        NavUtils.navigateUpFromSameTask(this);
+                    }
+                    else {
+                        moveToNextExerciseSession();
+                    }
+                }
+                else {
+                    moveToNextSet();
+                }
                 break;
-            case R.id.button_next_set:
-                Set completedSet = mExerciseSession.getCurrentSet();
-                int completedSetIndex = mExerciseSession.getCurrentSetIndex();
-                mExerciseSession.completeCurrentSetAndMoveToNext();
-                mSetsFragment.refreshNextSet(mCurrentSetIndex);
-                mCurrentSetIndex = mExerciseSession.getCurrentSetIndex();
-                db.insertSet(mExerciseSession, completedSetIndex, completedSet);
-                break;
+            case R.id.fab_add:
+                addSet();
+        }
+    }
+
+    private void moveToNextSet() {
+        Log.d(TAG,"moveToNextSet");
+        DatabaseHelper db = DatabaseHelper.getInstance(this);
+        Set completedSet = mExerciseSession.getCurrentSet();
+        int completedSetIndex = mExerciseSession.getCurrentSetIndex();
+        mExerciseSession.completeCurrentSetAndMoveToNext();
+        mSetsFragment.refreshNextSet(mCurrentSetIndex);
+        mCurrentSetIndex = mExerciseSession.getCurrentSetIndex();
+        db.insertSet(mExerciseSession, completedSetIndex, completedSet);
+    }
+
+    private void addSet() {
+        Log.d(TAG,"addSet");
+        DatabaseHelper db = DatabaseHelper.getInstance(this);
+        mExerciseSession.generateNewSet();
+        mSetsFragment.refreshSetAdded();
+        mCurrentSetIndex = mExerciseSession.getCurrentSetIndex();
+        int lastSetPosition = mExerciseSession.getNumSets()-1;
+        Set lastSet = mExerciseSession.getSet(lastSetPosition);
+        db.insertSet(mExerciseSession, lastSetPosition, lastSet);
+    }
+
+    private void refreshFab() {
+        Log.d(TAG,"refreshFab");
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+        if (mExerciseSession.isCompleted()) {
+            fab.setImageResource(R.drawable.ic_done_all_white_36dp);
+            fabAdd.setVisibility(View.VISIBLE);
+        }
+        else {
+            fab.setImageResource(R.drawable.ic_done_white_36dp);
+            fabAdd.setVisibility(View.GONE);
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG,"onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(edu.umn.paull011.evolveworkoutlogger.R.menu.menu_active_exercise_session, menu);
         MenuItem previous = menu.findItem(edu.umn.paull011.evolveworkoutlogger.R.id.previous_exercise);
@@ -121,6 +180,7 @@ public class ActiveExerciseSession extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG,"onOptionsItemSelected");
         int id = item.getItemId();
         Intent i;
         switch (id) {
@@ -128,20 +188,30 @@ public class ActiveExerciseSession extends AppCompatActivity
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case edu.umn.paull011.evolveworkoutlogger.R.id.previous_exercise:
-                i = new Intent(this, ActiveExerciseSession.class);
-                i.putExtra(DatabaseHelper.KEY_POSITION, mExercisePosition - 1);
-                startActivity(i);
-                finish();
+                moveToPreviousExerciseSession();
                 return true;
             case edu.umn.paull011.evolveworkoutlogger.R.id.next_exercise:
-                i = new Intent(this, ActiveExerciseSession.class);
-                i.putExtra(DatabaseHelper.KEY_POSITION, mExercisePosition + 1);
-                startActivity(i);
-                finish();
+                moveToNextExerciseSession();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void moveToPreviousExerciseSession() {
+        Log.d(TAG,"moveToPreviousExerciseSession");
+        Intent i = new Intent(this, ActiveExerciseSession.class);
+        i.putExtra(DatabaseHelper.KEY_POSITION, mExercisePosition - 1);
+        startActivity(i);
+        finish();
+    }
+
+    private void moveToNextExerciseSession() {
+        Log.d(TAG,"moveToNextExerciseSession");
+        Intent i = new Intent(this, ActiveExerciseSession.class);
+        i.putExtra(DatabaseHelper.KEY_POSITION, mExercisePosition + 1);
+        startActivity(i);
+        finish();
     }
 
     public void setSelected(int position) {

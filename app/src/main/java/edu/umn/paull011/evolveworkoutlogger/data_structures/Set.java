@@ -1,6 +1,8 @@
 package edu.umn.paull011.evolveworkoutlogger.data_structures;
 
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Mitchell on 12/16/2015.
@@ -9,66 +11,59 @@ import java.util.LinkedList;
  */
 public class Set {
 
+    private static final String TAG = Set.class.getSimpleName();
     // Private
-    private LinkedList<MeasurementData> mMeasurementList;
+    private Map<MeasurementCategory, MeasurementData> mMeasurements;
     private float mPercentage;
     private boolean mCompleted;
-    private static final String TAG = Set.class.getSimpleName();
 
     // Public
     public Set(){
-        mMeasurementList = new LinkedList<>();
+        mMeasurements = new HashMap<>(4);
         mCompleted = false;
     }
 
 
     // add a new measurement to track in this set
     public void addMeasurement(MeasurementData data){
-        deleteMeasurement(data.getCategory());
-        mMeasurementList.add(data);
+        MeasurementCategory category = data.getCategory();
+        mMeasurements.remove(category);
+        mMeasurements.put(category, data);
     }
 
     public void setMeasurement(MeasurementCategory category, float measurement) {
-        for (MeasurementData data: mMeasurementList) {
-            if (data.getCategory() == category) {
-                data.setMeasurement(measurement);
-            }
+        if (mMeasurements.containsKey(category)) {
+            MeasurementData data = mMeasurements.get(category);
+            data.setMeasurement(measurement);
         }
     }
 
     // remove one of the measurements from the set
     public void deleteMeasurement(MeasurementCategory category){
-        for (MeasurementData data: mMeasurementList) {
-            if (data.getCategory() == category) {
-                mMeasurementList.remove(data);
-            }
-        }
+        mMeasurements.remove(category);
     }
 
 
     public MeasurementData getMeasurementData(MeasurementCategory category){
-        for (MeasurementData data: mMeasurementList) {
-            if (data.getCategory() == category) {
-                return data;
-            }
-        }
-        return null;
+        return mMeasurements.get(category);
     }
 
+    public Collection<MeasurementData> measurements() {
+        return mMeasurements.values();
+    }
 
     // take one of the set measurements and add num to it
     public void incrementMeasurement(MeasurementCategory category, float num){
-        for (MeasurementData data: mMeasurementList) {
-            if (data.getCategory() == category) {
-                float measurement = data.getMeasurement();
-                measurement += num;
-                data.setMeasurement(measurement);
-            }
+        if (mMeasurements.containsKey(category)) {
+            MeasurementData data = mMeasurements.get(category);
+            float measurement = data.getMeasurement();
+            measurement += num;
+            data.setMeasurement(measurement);
         }
     }
 
     public int getNumMeasurements(){
-        return mMeasurementList.size();
+        return mMeasurements.size();
     }
 
     // get the percentage value
@@ -97,10 +92,11 @@ public class Set {
 
     public void copyMeasurementInfo(Set oldSet){
         final int size = getNumMeasurements();
-        for (MeasurementData oldData: oldSet.mMeasurementList) {
+        for (MeasurementData oldData : oldSet.mMeasurements.values()) {
             MeasurementData newData = new MeasurementData(
                     oldData.getCategory(),
-                    oldData.getMeasurement()
+                    oldData.getMeasurement(),
+                    oldData.getUnit()
             );
             addMeasurement(newData);
         }
@@ -108,13 +104,12 @@ public class Set {
 
 
     public void copyMeasurementInfoAndIncrement(Set oldSet, MeasurementCategory incrementCategory, float increment){
-        for (MeasurementData oldData: oldSet.mMeasurementList) {
+        for (MeasurementData oldData : oldSet.mMeasurements.values()) {
             MeasurementData newData = new MeasurementData();
-            newData.setCategory(oldData.getCategory());
-            if (incrementCategory == oldData.getCategory())
+            newData.copyData(oldData);
+            if (incrementCategory == oldData.getCategory()) {
                 newData.setMeasurement(oldData.getMeasurement() + increment);
-            else
-                newData.setMeasurement(oldData.getMeasurement());
+            }
             addMeasurement(newData);
         }
     }
@@ -145,7 +140,7 @@ public class Set {
         }
         // is the measurement data identical?
         MeasurementData otherData;
-        for (MeasurementData myData: mMeasurementList) {
+        for (MeasurementData myData : mMeasurements.values()) {
             otherData = other.getMeasurementData(myData.getCategory());
             if(!(myData.equals(otherData)))
                 return false;
