@@ -4,9 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import edu.umn.paull011.evolveworkoutlogger.BuildConfig;
  *
  * Created by Mitchell on 1/6/2016.
  */
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteAssetHelper {
 
     // TODO: Implement way to store and sort exercises by category
 
@@ -73,7 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         readableDB.close();
     }
 
-    @Override
+    /*@Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_EXERCISES_TABLE = "CREATE TABLE " + TABLE_EXERCISES + "(" +
                 KEY_EXERCISE_NAME + " varchar(128) NOT NULL," +
@@ -136,16 +136,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_ROUTINE_SESSIONS_TABLE);
         db.execSQL(CREATE_ROUTINE_EXERCISES_TABLE);
         db.execSQL(CREATE_SETS_TABLE);
-    }
+    }*/
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISES);
+        /*db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTINES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISE_SESSIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTINE_SESSIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTINE_EXERCISES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETS);*/
         onCreate(db);
     }
 
@@ -1073,13 +1073,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         deleteTemporaryRoutines();
     }
 
-    public void makeFresh() {
-        writableDB.delete(TABLE_EXERCISES, null, null);
+    public void makeFresh(Context context) {
+        /*writableDB.delete(TABLE_EXERCISES, null, null);
         writableDB.delete(TABLE_EXERCISE_SESSIONS, null, null);
         writableDB.delete(TABLE_ROUTINES, null, null);
         writableDB.delete(TABLE_ROUTINE_SESSIONS, null, null);
         writableDB.delete(TABLE_ROUTINE_EXERCISES, null, null);
-        writableDB.delete(TABLE_SETS, null, null);
+        writableDB.delete(TABLE_SETS, null, null);*/
+        forceDatabaseReload(context);
+    }
+
+    public static void forceDatabaseReload(Context context){
+        DatabaseHelper dbHelper = new DatabaseHelper(context);
+        dbHelper.setForcedUpgrade(DATABASE_VERSION);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.setVersion(-1);
+        db.close();
+        db = dbHelper.getWritableDatabase();
     }
 
 
@@ -1139,7 +1149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Database Version
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 1;
 
 
     // Database Name

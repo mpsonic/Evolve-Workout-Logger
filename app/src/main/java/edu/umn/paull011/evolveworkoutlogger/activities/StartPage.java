@@ -97,7 +97,7 @@ public class StartPage extends AppCompatActivity {
                 break;
             case edu.umn.paull011.evolveworkoutlogger.R.id.button_clear_data:
                 DatabaseHelper db = DatabaseHelper.getInstance(this);
-                db.makeFresh();
+                db.makeFresh(this);
         }
     }
 }
