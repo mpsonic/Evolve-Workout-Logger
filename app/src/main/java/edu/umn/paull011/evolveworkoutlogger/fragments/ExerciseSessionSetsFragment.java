@@ -92,7 +92,7 @@ public class ExerciseSessionSetsFragment extends Fragment{
         mRecyclerView = (RecyclerView) view.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.recycler_view_exercise_session_sets);
 
         mRecyclerView.setHasFixedSize(false);
-        mRecyclerView.setOnTouchListener(new ClearFocusTouchListener());
+        //mRecyclerView.setOnTouchListener(new ClearFocusTouchListener());
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
