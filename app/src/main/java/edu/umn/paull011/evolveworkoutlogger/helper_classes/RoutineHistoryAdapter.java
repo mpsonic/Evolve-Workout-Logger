@@ -14,6 +14,7 @@ import java.util.List;
 
 import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.RoutineStats;
+import edu.umn.paull011.evolveworkoutlogger.fragments.RoutineHistoryFragment;
 
 /**
  * Created by Mitchell on 7/19/2016.
@@ -22,13 +23,14 @@ import edu.umn.paull011.evolveworkoutlogger.data_structures.RoutineStats;
  */
 public class RoutineHistoryAdapter extends RecyclerView.Adapter<RoutineHistoryAdapter.ViewHolder> {
     public static final String TAG = RoutineHistoryAdapter.class.getSimpleName();
-    public Context mContext;
+    public RoutineHistoryFragment.OnFragmentInteractionListener mListener;
     public RoutineStats mRoutineStats;
 
-    public RoutineHistoryAdapter(Context context, RoutineStats routineStats) {
+    public RoutineHistoryAdapter(RoutineHistoryFragment.OnFragmentInteractionListener listener,
+                                 RoutineStats routineStats) {
         Log.d(TAG, "RoutineHistoryAdapter Constructor");
         mRoutineStats = routineStats;
-        mContext = context;
+        mListener = listener;
     }
 
     @Override
@@ -45,15 +47,26 @@ public class RoutineHistoryAdapter extends RecyclerView.Adapter<RoutineHistoryAd
         RecyclerView recyclerView = holder.mSessionRecyclerView;
         TextView dateText = holder.mDateText;
         String dateString = mRoutineStats.getDateString(position);
-        List<Pair<String, Integer>> exerciseCountList = mRoutineStats.getExerciseSetCounts(position);
+        final List<Pair<String, Integer>> exerciseCountList = mRoutineStats.getExerciseSetCounts(position);
         RoutineHistoryCardAdapter cardAdapter = new RoutineHistoryCardAdapter(exerciseCountList);
 
         dateText.setText(dateString);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager((Context) mListener);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(cardAdapter);
+
+        recyclerView.addOnItemTouchListener(
+                new RecyclerViewItemClickListener((Context) mListener,
+                        new RecyclerViewItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                String exerciseName = exerciseCountList.get(position).first;
+                                mListener.exerciseSelected(exerciseName);
+                            }
+                        })
+        );
     }
 
     @Override

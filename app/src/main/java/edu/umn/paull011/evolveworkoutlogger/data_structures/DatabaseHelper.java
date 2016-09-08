@@ -4,11 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import android.util.Log;
 
 import com.google.gson.Gson;
-
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.sql.Date;
 import java.text.DateFormat;
@@ -136,7 +135,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                 KEY_SETS_REPS_AMOUNT + " INT," +
                 KEY_SETS_WEIGHT_AMOUNT + " FLOAT," +
                 KEY_SETS_DISTANCE_AMOUNT + " FLOAT," +
-                KEY_SETS_TIME_AMOUNT + " TIME," +
+                KEY_SETS_TIME_AMOUNT + " INT," +
                 KEY_COMPLETED + " INT," +
                 KEY_DATE + " DATE," +
                 "PRIMARY KEY ("+ KEY_EXERCISE_SESSION_ID + "," + KEY_POSITION +"))";
@@ -261,6 +260,22 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         values.put(KEY_EXERCISE_IS_WEIGHT_TRACKED, exercise.isTracked(MeasurementCategory.WEIGHT));
         values.put(KEY_EXERCISE_IS_DISTANCE_TRACKED, exercise.isTracked(MeasurementCategory.DISTANCE));
         values.put(KEY_EXERCISE_IS_TIME_TRACKED, exercise.isTracked(MeasurementCategory.TIME));
+        if (exercise.isTracked(MeasurementCategory.REPS)) {
+            int lastReps = (int) exercise.getInitialMeasurementValue(MeasurementCategory.REPS);
+            values.put(KEY_EXERCISE_REPS_LAST_VALUE, lastReps);
+        }
+        if (exercise.isTracked(MeasurementCategory.WEIGHT)) {
+            float lastWeight = exercise.getInitialMeasurementValue(MeasurementCategory.WEIGHT);
+            values.put(KEY_EXERCISE_WEIGHT_LAST_VALUE, lastWeight);
+        }
+        if (exercise.isTracked(MeasurementCategory.DISTANCE)) {
+            float lastDistance = exercise.getInitialMeasurementValue(MeasurementCategory.DISTANCE);
+            values.put(KEY_EXERCISE_DISTANCE_LAST_VALUE, lastDistance);
+        }
+        if (exercise.isTracked(MeasurementCategory.TIME)) {
+            int lastTime = (int) exercise.getInitialMeasurementValue(MeasurementCategory.TIME);
+            values.put(KEY_EXERCISE_TIME_LAST_VALUE, lastTime);
+        }
         return values;
     }
 
@@ -283,10 +298,42 @@ public class DatabaseHelper extends SQLiteAssetHelper {
 
         exercise.setName(name);
         exercise.setDescription(description);
-        if (isRepsTracked != 0) { exercise.trackNewMeasurementCategory(MeasurementCategory.REPS); }
-        if (isWeightTracked != 0) { exercise.trackNewMeasurementCategory(MeasurementCategory.WEIGHT); }
-        if (isDistanceTracked != 0) { exercise.trackNewMeasurementCategory(MeasurementCategory.DISTANCE); }
-        if (isTimeTracked != 0) { exercise.trackNewMeasurementCategory(MeasurementCategory.TIME); }
+        if (isRepsTracked != 0) {
+            exercise.trackNewMeasurementCategory(MeasurementCategory.REPS);
+            exercise.addInitialMeasurementData(
+                    new MeasurementData(
+                            MeasurementCategory.REPS,
+                            cursor.getFloat(COLUMN_EXERCISE_REPS_LAST_VALUE)
+                    )
+            );
+        }
+        if (isWeightTracked != 0) {
+            exercise.trackNewMeasurementCategory(MeasurementCategory.WEIGHT);
+            exercise.addInitialMeasurementData(
+                    new MeasurementData(
+                            MeasurementCategory.WEIGHT,
+                            cursor.getFloat(COLUMN_EXERCISE_WEIGHT_LAST_VALUE)
+                    )
+            );
+        }
+        if (isDistanceTracked != 0) {
+            exercise.trackNewMeasurementCategory(MeasurementCategory.DISTANCE);
+            exercise.addInitialMeasurementData(
+                    new MeasurementData(
+                            MeasurementCategory.DISTANCE,
+                            cursor.getFloat(COLUMN_EXERCISE_DISTANCE_LAST_VALUE)
+                    )
+            );
+        }
+        if (isTimeTracked != 0) {
+            exercise.trackNewMeasurementCategory(MeasurementCategory.TIME);
+            exercise.addInitialMeasurementData(
+                    new MeasurementData(
+                            MeasurementCategory.TIME,
+                            cursor.getFloat(COLUMN_EXERCISE_TIME_LAST_VALUE)
+                    )
+            );
+        }
         exercise.setIncrement(increment);
         if (incrementCategory != null)
             exercise.setMeasurementCategoryToIncrement(MeasurementCategory.getFromName(incrementCategory));
@@ -311,6 +358,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         if (category != null) {
             query += " AND " + KEY_EXERCISE_CATEGORY + "=" + category;
         }
+        query += " ORDER BY " + KEY_EXERCISE_NAME;
         return readableDB.rawQuery(query, null);
     }
 
@@ -1189,7 +1237,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         deleteTemporaryRoutines();
     }
 
-    public void makeFresh() {
+    public void makeFresh(Context context) {
         Log.d(TAG,"makeFresh");
         /*writableDB.delete(TABLE_EXERCISES, null, null);
         writableDB.delete(TABLE_EXERCISE_SESSIONS, null, null);
@@ -1259,7 +1307,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     // Static Variables
 
     // Database Version
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 1;
 
     // Database Name
     public static final String DATABASE_NAME = "Evolve.db";
@@ -1273,14 +1321,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
 
     private static final String TAG = DatabaseHelper.class.getSimpleName();
 
-
-    // Database Version
-    private static final int DATABASE_VERSION = 1;
-
-
-    // Database Name
-    public static final String DATABASE_NAME = "Evolve.db";
-    private static final String KEY_ROWID = "ROWID";
 
     // Table Names
     private static final String TABLE_EXERCISES = "Exercises";
@@ -1296,9 +1336,12 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     private static final String KEY_EXERCISE_DESCRIPTION = "Description";
     private static final String KEY_EXERCISE_IS_REPS_TRACKED = "IsRepsTracked";
     private static final String KEY_EXERCISE_IS_WEIGHT_TRACKED = "IsWeightTracked";
-
     private static final String KEY_EXERCISE_IS_DISTANCE_TRACKED = "IsDistanceTracked";
     private static final String KEY_EXERCISE_IS_TIME_TRACKED = "IsTimeTracked";
+    private static final String KEY_EXERCISE_REPS_LAST_VALUE = "RepsLastValue";
+    private static final String KEY_EXERCISE_WEIGHT_LAST_VALUE = "WeightLastValue";
+    private static final String KEY_EXERCISE_DISTANCE_LAST_VALUE = "DistanceLastValue";
+    private static final String KEY_EXERCISE_TIME_LAST_VALUE = "TimeLastValue";
     private static final String KEY_EXERCISE_WEIGHT_UNIT = "WeightUnit";
     private static final String KEY_EXERCISE_DISTANCE_UNIT = "DistanceUnit";
     private static final String KEY_EXERCISE_INCREMENT_CATEGORY = "IncrementCategory";
@@ -1342,4 +1385,9 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     public static final int COLUMN_EXERCISE_INCREMENT = 10;
     public static final int COLUMN_EXERCISE_CATEGORY = 11;
     public static final int COLUMN_EXERCISE_PERMANENT = 12;
+    public static final int COLUMN_EXERCISE_REPS_LAST_VALUE = 13;
+    public static final int COLUMN_EXERCISE_WEIGHT_LAST_VALUE = 14;
+    public static final int COLUMN_EXERCISE_DISTANCE_LAST_VALUE = 15;
+    public static final int COLUMN_EXERCISE_TIME_LAST_VALUE = 16;
+
 }

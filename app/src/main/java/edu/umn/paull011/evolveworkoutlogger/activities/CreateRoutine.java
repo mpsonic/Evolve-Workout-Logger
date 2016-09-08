@@ -94,7 +94,7 @@ public class CreateRoutine extends AppCompatActivity
     }
 
     @Override
-    public void exerciseSelected(int position) {
+    public void exerciseSelected(String exerciseName) {
         Log.d(TAG, "exerciseSelected()");
         //TODO: do something when exercise selected
     }

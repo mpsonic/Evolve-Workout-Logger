@@ -26,6 +26,7 @@ public class ButtonEditText extends LinearLayout {
     private float mIncrement = 1;
     private float mNumber = 0;
     private boolean mIsInteger;
+    private boolean mIsTime;
     private String mHint = null;
     private OnNumberChangedListener onNumberChangedListener = null;
     private static String TAG = ButtonEditText.class.getSimpleName();
@@ -74,6 +75,7 @@ public class ButtonEditText extends LinearLayout {
         mHint = a.getString(edu.umn.paull011.evolveworkoutlogger.R.styleable.ButtonEditText_hint);
         int mode = a.getInteger(edu.umn.paull011.evolveworkoutlogger.R.styleable.ButtonEditText_mode, 1);
         mIsInteger = (mode == 0);
+        mIsTime = (mode == 2);
 
         a.recycle();
 
@@ -92,7 +94,7 @@ public class ButtonEditText extends LinearLayout {
         setFocusable(true);
 
         // Get the views
-        mEditText = (EditText) this.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.number_edit_text);
+        mEditText = (EditText) this.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.edit_text);
         mMoreButton = (ImageButton) this.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.button_more);
         mLessButton = (ImageButton) this.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.button_less);
         assert mEditText != null;
@@ -104,7 +106,12 @@ public class ButtonEditText extends LinearLayout {
             mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         }
         else {
-            mEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            if (mIsTime) {
+                mEditText.setRawInputType(InputType.TYPE_CLASS_DATETIME | InputType.TYPE_DATETIME_VARIATION_TIME);
+            }
+            else {
+                mEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            }
         }
 
         if (mHint != null) {
@@ -125,10 +132,15 @@ public class ButtonEditText extends LinearLayout {
             public void afterTextChanged(Editable s) {
                 String text = mEditText.getText().toString();
                 try {
-                    mNumber = Float.valueOf(text);
+                    if (!mIsTime) {
+                        mNumber = Float.valueOf(text);
+                    }
+                    else {
+                        mNumber = parseTimeString(text);
+                    }
                     onNumberChanged();
                 } catch (NumberFormatException e) {
-                    if (!text.equals("")) {
+                    if (!text.equals("") && !mIsTime) {
                         mEditText.setText(getNumberString());
                     }
                 }
@@ -141,6 +153,7 @@ public class ButtonEditText extends LinearLayout {
                 if (!hasFocus) {
                     setActivated(false);
                 }
+                mEditText.setText(getNumberString());
             }
         });
 
@@ -167,7 +180,7 @@ public class ButtonEditText extends LinearLayout {
     private void handleButtonClick(View view) {
         Log.d(TAG,"handleButtonClick");
         ImageButton button = (ImageButton) view;
-        EditText editText = (EditText) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.number_edit_text);
+        EditText editText = (EditText) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.edit_text);
         switch (button.getId()) {
             case edu.umn.paull011.evolveworkoutlogger.R.id.button_less:
                 if (!(mAlwaysPositive && mNumber <= 0)) {
@@ -200,8 +213,76 @@ public class ButtonEditText extends LinearLayout {
             int intNum = (int) mNumber;
             return String.valueOf(intNum);
         }
+        else if (mIsTime) {
+            int intNum = (int) mNumber;
+            return createTimeString(intNum);
+        }
         return String.valueOf(mNumber);
     }
+
+    /***
+     * Make a time-formatted string from an integer number of seconds
+     */
+    private String createTimeString(int seconds) {
+        int hours = seconds/3600;
+        int minutes = (seconds % 3600)/60;
+        seconds = seconds % 60;
+        String result;
+        if (hours != 0) {
+            result = String.valueOf(hours) + ":"
+                    + fillOutLeadingZeros(String.valueOf(minutes),2) + ":"
+                    + fillOutLeadingZeros(String.valueOf(seconds),2);
+        }
+        else if (minutes != 0) {
+            result = String.valueOf(minutes) + ":"
+                    + fillOutLeadingZeros(String.valueOf(seconds),2);
+        }
+        else {
+            result = "0:" + fillOutLeadingZeros(String.valueOf(seconds), 2);
+        }
+        return result;
+    }
+
+    private int parseTimeString(String timeString) {
+        String[] timeComponents = timeString.split(":");
+        int seconds = 0;
+        if (timeComponents.length == 3) { // has hour component
+            seconds += Integer.valueOf(timeComponents[0]) * 3600;
+            seconds += Integer.valueOf(timeComponents[1]) * 60;
+            seconds += Integer.valueOf(timeComponents[2]);
+        }
+        else if (timeComponents.length == 2) {
+            seconds += Integer.valueOf(timeComponents[0]) * 60;
+            seconds += Integer.valueOf(timeComponents[1]);
+        }
+        else if (timeComponents.length == 1) {
+            seconds += Integer.valueOf(timeComponents[0]);
+        }
+        return seconds;
+    }
+
+    /***
+     * If the given string is shorter than the desired length, pad out the beginning of
+     * the string with zeros so that the string has a length of desiredLength
+     * @param numString An unpadded number string
+     * @param desiredLength The desired length of the string with zeroes prepended
+     * @return numString padded with leading zeros
+     */
+    private String fillOutLeadingZeros(String numString, int desiredLength) {
+        String result = "";
+        int numZerosToAdd = desiredLength - numString.length();
+        if (numZerosToAdd <= 0) {
+            return numString;
+        }
+        else {
+            for (int i = 0; i < numZerosToAdd; i++) {
+                result += "0";
+            }
+            result += numString;
+            return result;
+        }
+    }
+
 
     /**
      * Gets the activated attribute value.

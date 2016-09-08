@@ -42,6 +42,7 @@ public class RoutineStats {
             setCountList = new ArrayList<>(4);
             setCountList.add(exerciseSetCount);
             mRoutineData.put(dateString, setCountList);
+            mSortedDates.add(date);
         }
     }
 

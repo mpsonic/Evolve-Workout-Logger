@@ -1,6 +1,6 @@
 package edu.umn.paull011.evolveworkoutlogger.activities;
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -62,8 +62,10 @@ public class ViewRoutine extends AppCompatActivity
     }
 
     @Override
-    public void exerciseSelected(int position) {}
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {}
+    public void exerciseSelected(String exerciseName) {
+        // View Exercise
+        Intent i = new Intent(this, ViewExercise.class);
+        i.putExtra(DatabaseHelper.KEY_EXERCISE_NAME, exerciseName);
+        startActivity(i);
+    }
 }

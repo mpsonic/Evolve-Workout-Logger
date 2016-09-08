@@ -23,7 +23,6 @@ public class ExerciseSession {
     private Date mDate;
     private ArrayList<Set> mSetList;
     private int mCurrentSetIndex;
-    private int mCompletedSets;
     private Boolean mCompleted;
     private OnExerciseSessionUpdateListener mUpdateListener;
 
@@ -45,7 +44,6 @@ public class ExerciseSession {
         mSetList = new ArrayList<>();
         mCompleted = false;
         mCurrentSetIndex = 0;
-        mCompletedSets = 0;
         mUpdateListener = new DummyUpdatedListener();
         if (createSets) {
             ExerciseSession template = exercise.getMostRecentExerciseSession();
@@ -126,12 +124,6 @@ public class ExerciseSession {
     }
 
 
-    public int getNumCompletedSets(){
-        Log.d(TAG,"getNumCompletedSets");
-        return mCompletedSets;
-    }
-
-
     public boolean hasCategory(MeasurementCategory category) {
         Log.d(TAG,"hasCategory");
         return mExercise.isTracked(category);
@@ -141,7 +133,12 @@ public class ExerciseSession {
     public int getSetProgress(){
         Log.d(TAG,"getSetProgress");
         int numSets = mSetList.size();
-        int numSetsCompleted = mCompletedSets;
+        int numSetsCompleted = 0;
+        for (Set set: mSetList) {
+            if (set.isCompleted()) {
+                numSetsCompleted++;
+            }
+        }
         if (numSets != 0) {
             return (int)(100*((float)numSetsCompleted/numSets));
         }
@@ -159,7 +156,7 @@ public class ExerciseSession {
                 if (mExercise.isTracked(category)) {
                     MeasurementData newData = new MeasurementData(
                             category,
-                            category.getDefaultMeasurement(),
+                            mExercise.getInitialMeasurementValue(category),
                             mExercise.getUnit(category)
                     );
                     newSet.addMeasurement(newData);
@@ -216,7 +213,6 @@ public class ExerciseSession {
             Set currentSet = this.getSet(mCurrentSetIndex);
             if (!currentSet.isCompleted()){
                 currentSet.finish();
-                mCompletedSets++;
             }
             if (mCurrentSetIndex != getNumSets() - 1){
                 mCurrentSetIndex++;

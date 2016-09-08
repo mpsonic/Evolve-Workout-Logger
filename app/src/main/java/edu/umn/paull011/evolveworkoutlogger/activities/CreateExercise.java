@@ -24,6 +24,8 @@ import edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Exercise;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementCategory;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementData;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Unit;
 
 public class CreateExercise extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -342,6 +344,10 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
             exercise.setMetricUnits();
         }
 
+        Spinner categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
+        String category = categorySpinner.getSelectedItem().toString();
+        exercise.setExerciseCategory(category);
+
         for (MeasurementCategory unitCategory: MeasurementCategory.values()) {
             ToggleButton trackedToggle = (ToggleButton) unitViews.get(unitCategory.value()).get(0);
             if (trackedToggle.isChecked()) {
@@ -352,7 +358,12 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         assert repsBET != null;
                         int startingReps = (int) repsBET.getNumber();
                         try {
-                            exercise.setInitialMeasurementValue(MeasurementCategory.REPS, startingReps);
+                            exercise.addInitialMeasurementData(
+                                    new MeasurementData(
+                                            MeasurementCategory.REPS,
+                                            startingReps
+                                    )
+                            );
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -361,18 +372,35 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         ButtonEditText weightBET = (ButtonEditText) findViewById(R.id.bet_weight_starting_measurement);
                         assert weightBET != null;
                         float startingWeight = (int) weightBET.getNumber();
+                        Unit weightUnit = MeasurementCategory.WEIGHT.getDefaultUnit(exercise.isImperial());
                         try {
-                            exercise.setInitialMeasurementValue(MeasurementCategory.WEIGHT, startingWeight);
+                            exercise.addInitialMeasurementData(
+                                    new MeasurementData(
+                                            MeasurementCategory.WEIGHT,
+                                            startingWeight
+
+                                    )
+                            );
+                            exercise.setUnit(MeasurementCategory.WEIGHT, weightUnit);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         break;
                     case DISTANCE:
                         ButtonEditText distanceBET = (ButtonEditText) findViewById(R.id.bet_distance_starting_measurement);
+                        Spinner distanceUnitSpinner = (Spinner) findViewById(R.id.distanceUnitSpinner);
+                        Unit distanceUnit = Unit.getFromName(distanceUnitSpinner.getSelectedItem().toString());
                         assert distanceBET != null;
+                        assert distanceUnit != null;
                         float startingDistance = (int) distanceBET.getNumber();
                         try {
-                            exercise.setInitialMeasurementValue(MeasurementCategory.DISTANCE, startingDistance);
+                            exercise.addInitialMeasurementData(
+                                    new MeasurementData(
+                                            MeasurementCategory.DISTANCE,
+                                            startingDistance
+                                    )
+                            );
+                            exercise.setUnit(MeasurementCategory.DISTANCE, distanceUnit);
                             //exercise.setTrackedMeasurementUnit(MeasurementCategory.DISTANCE, Unit.KILOMETERS);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -390,7 +418,12 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         float seconds = (int) secondsBET.getNumber();
                         float timeInSeconds = 3600*hours + 60*minutes + seconds;
                         try {
-                            exercise.setInitialMeasurementValue(MeasurementCategory.TIME, timeInSeconds);
+                            exercise.addInitialMeasurementData(
+                                    new MeasurementData(
+                                            MeasurementCategory.TIME,
+                                            timeInSeconds
+                                    )
+                            );
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

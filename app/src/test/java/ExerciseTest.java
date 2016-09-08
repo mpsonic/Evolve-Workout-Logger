@@ -29,8 +29,18 @@ public class ExerciseTest {
         exercise.setMeasurementCategoryToIncrement(MeasurementCategory.WEIGHT);
         exercise.trackNewMeasurementCategory(MeasurementCategory.DISTANCE);
         exercise.trackNewMeasurementCategory(MeasurementCategory.WEIGHT);
-        exercise.setInitialMeasurementValue(MeasurementCategory.WEIGHT, 25);
-        exercise.setInitialMeasurementValue(MeasurementCategory.DISTANCE, 100);
+        exercise.addInitialMeasurementData(
+                new MeasurementData(
+                        MeasurementCategory.WEIGHT,
+                        25
+                )
+        );
+        exercise.addInitialMeasurementData(
+                new MeasurementData(
+                        MeasurementCategory.DISTANCE,
+                        100
+                )
+        );
         exercise.setUnit(MeasurementCategory.WEIGHT, Unit.POUNDS);
         exercise.setUnit(MeasurementCategory.DISTANCE, Unit.METERS);
     }

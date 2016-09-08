@@ -1,7 +1,6 @@
 package edu.umn.paull011.evolveworkoutlogger.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,7 +52,7 @@ public class RoutineHistoryFragment extends Fragment {
 
         RoutineStats routineStats = mDataHolder.getRoutineStats();
 
-        mAdapter = new RoutineHistoryAdapter(getActivity(), routineStats);
+        mAdapter = new RoutineHistoryAdapter(mListener, routineStats);
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -87,18 +86,7 @@ public class RoutineHistoryFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void exerciseSelected(String exerciseName);
     }
 }

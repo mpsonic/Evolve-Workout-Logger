@@ -137,7 +137,8 @@ public class RoutineExercisesFragment extends Fragment {
 
     public void onItemSelected(int position){
         Log.d(TAG, "onItemSelected("+ position +")");
-        mListener.exerciseSelected(position);
+        String exerciseName = mRoutine.getExercise(position).getName();
+        mListener.exerciseSelected(exerciseName);
     }
 
     public boolean isEmpty () {
@@ -152,6 +153,6 @@ public class RoutineExercisesFragment extends Fragment {
      * activity.
      */
     public interface OnFragmentInteractionListener {
-        void exerciseSelected(int position);
+        void exerciseSelected(String exerciseName);
     }
 }

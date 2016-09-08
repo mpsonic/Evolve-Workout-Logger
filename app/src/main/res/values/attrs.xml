@@ -6,6 +6,7 @@
         <attr name="mode" format="enum">
             <enum name="integer" value="0"/>
             <enum name="decimal" value="1"/>
+            <enum name="time" value="2"/>
         </attr>
         <attr name="always_positive" format="boolean"/>
         <attr name="hint" format="string"/>

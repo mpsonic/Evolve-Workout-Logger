@@ -37,6 +37,7 @@ public enum Unit {
 
     public static Unit getFromName(String name) {
         Unit result = null;
+        name = name.toUpperCase();
         switch (name) {
             case "REPS":
                 result = REPS;
@@ -53,7 +54,13 @@ public enum Unit {
             case "POUNDS":
                 result = POUNDS;
                 break;
+            case "LBS":
+                result = POUNDS;
+                break;
             case "FEET":
+                result = FEET;
+                break;
+            case "FT":
                 result = FEET;
                 break;
             case "MILES":
@@ -65,10 +72,16 @@ public enum Unit {
             case "SECONDS":
                 result = SECONDS;
                 break;
+            case "S":
+                result = SECONDS;
+                break;
             case "MINUTES":
                 result = MINUTES;
                 break;
             case "HOURS":
+                result = HOURS;
+                break;
+            case "H":
                 result = HOURS;
                 break;
         }

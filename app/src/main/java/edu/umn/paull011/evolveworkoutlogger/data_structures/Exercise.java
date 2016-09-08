@@ -23,7 +23,7 @@ public class Exercise {
     private int mIncrementPeriod;
     private List<Unit> mUnits;
     private List<MeasurementCategory> mTrackedMeasurementCategories;
-    private List<Float> mInitialMeasurementValues;
+    private Set mInitialMeasurementsSet;
     private ExerciseSession mMostRecentExerciseSession;
 
 
@@ -42,11 +42,12 @@ public class Exercise {
         mUnits.add(MeasurementCategory.DISTANCE.getDefaultUnit(true));
         mUnits.add(MeasurementCategory.TIME.getDefaultUnit(true));
         mTrackedMeasurementCategories = new ArrayList<>(4);
-        mInitialMeasurementValues = new ArrayList<>(4);
+        mInitialMeasurementsSet = new Set();
+        /*mInitialMeasurementValues = new ArrayList<>(4);
         mInitialMeasurementValues.add(MeasurementCategory.REPS.value(), MeasurementCategory.REPS.getDefaultMeasurement());
         mInitialMeasurementValues.add(MeasurementCategory.WEIGHT.value(), MeasurementCategory.WEIGHT.getDefaultMeasurement());
         mInitialMeasurementValues.add(MeasurementCategory.DISTANCE.value(), MeasurementCategory.DISTANCE.getDefaultMeasurement());
-        mInitialMeasurementValues.add(MeasurementCategory.TIME.value(), MeasurementCategory.TIME.getDefaultMeasurement());
+        mInitialMeasurementValues.add(MeasurementCategory.TIME.value(), MeasurementCategory.TIME.getDefaultMeasurement());*/
         mMostRecentExerciseSession = null;
     }
 
@@ -139,12 +140,27 @@ public class Exercise {
         return mTrackedMeasurementCategories.contains(category);
     }
 
-
-    // Gets the tracked measurement data by the measurement type (can return null)
+    // Gets the initial measurement value for the given category
     public float getInitialMeasurementValue(MeasurementCategory category){
-        return mInitialMeasurementValues.get(category.value());
+        MeasurementData initialData = mInitialMeasurementsSet.getMeasurementData(category);
+        if (initialData != null) {
+            return initialData.getMeasurement();
+        }
+        else {
+            return category.getDefaultMeasurement();
+        }
     }
 
+    /**
+     * Sets the initial value of a measurement category for this exercise (reps, weight, distance, or time).
+     * When the first Session of this exercise is created, the first set will have these initial values
+     * When setting the time value, input the amount of time in seconds.
+     *
+     * @param data The initial MeasurementData to add to the initial measurements
+     */
+    public void addInitialMeasurementData(MeasurementData data) {
+        mInitialMeasurementsSet.addMeasurement(data);
+    }
 
     // Keep tracked measurement category list sorted as categories are added (max size 4)
     public void trackNewMeasurementCategory(MeasurementCategory category){
@@ -169,18 +185,6 @@ public class Exercise {
         mTrackedMeasurementCategories.remove(deleteCategory);
     }
 
-    /**
-     * Sets the initial value of a measurement category for this exercise (reps, weight, distance, or time).
-     * When the first Session of this exercise is created, the first set will have these initial values
-     * When setting the time value, input the amount of time in seconds.
-     *
-     * @param category The measurement category whose tracked value will be updated
-     * @param initialMeasurement The new value
-     */
-    public void setInitialMeasurementValue(MeasurementCategory category, float initialMeasurement) {
-        mInitialMeasurementValues.set(category.value(), initialMeasurement);
-    }
-
     public ExerciseSession getMostRecentExerciseSession() {
         return mMostRecentExerciseSession;
     }
@@ -194,7 +198,7 @@ public class Exercise {
         for (MeasurementCategory category: mTrackedMeasurementCategories) {
             MeasurementData data = new MeasurementData(
                     category,
-                    mInitialMeasurementValues.get(category.value()),
+                    mInitialMeasurementsSet.getMeasurementData(category).getMeasurement(),
                     this.getUnit(category)
             );
             set.addMeasurement(data);

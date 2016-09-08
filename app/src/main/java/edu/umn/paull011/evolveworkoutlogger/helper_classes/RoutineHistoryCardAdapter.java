@@ -65,4 +65,6 @@ public class RoutineHistoryCardAdapter extends RecyclerView.Adapter<RoutineHisto
             mSetCount = (TextView) itemView.findViewById(R.id.text_card_routine_history_exercise_info);
         }
     }
+
+
 }
