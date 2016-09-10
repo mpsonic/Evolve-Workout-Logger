@@ -17,6 +17,7 @@ import java.util.List;
 import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText;
 import edu.umn.paull011.evolveworkoutlogger.components.OnNumberChangedListener;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Exercise;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.ExerciseSession;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementCategory;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Set;
@@ -29,8 +30,10 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
     implements ItemTouchHelperAdapter{
 
     private ExerciseSession mExerciseSession;
+    private Exercise mExercise;
     private int mCompletedColor;
     private Context mContext;
+    private ExerciseSessionDataHolder dataHolder = ExerciseSessionDataHolder.getInstance();
     private static final String TAG = ExerciseSessionAdapter.class.getSimpleName();
 
     public class SetMeasurementChangedListener implements OnNumberChangedListener {
@@ -49,11 +52,13 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
         @Override
         public void numberChanged() {
             Log.d(TAG,"numberChanged");
-            mExerciseSession.getSet(mSetPosition).setMeasurement(mCategory, mButtonEditText.getNumber());
+            float number = mButtonEditText.getNumber();
+            Set editedSet = mExerciseSession.getSet(mSetPosition);
+            editedSet.setMeasurement(mCategory, number);
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RemovableViewHolder{
         public ViewGroup mViewGroup;
         public TextView mSetNumber;
         public ImageView mCurrentSetCircle;
@@ -64,7 +69,7 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
         public ViewHolder(View v){
             super(v);
             Log.d(TAG,"ViewHolder");
-            mViewGroup = (ViewGroup) v;
+            mViewGroup = (ViewGroup) this.getSwipableView();
             mSetNumber = (TextView) v.findViewById(R.id.set_number);
             mCurrentSetCircle = (ImageView) v.findViewById(R.id.current_set_circle);
             mMeasurementLayouts = new ArrayList<>(4);
@@ -92,10 +97,11 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
         }
     }
 
-    public ExerciseSessionAdapter(Context context, ExerciseSession exerciseSession){
+    public ExerciseSessionAdapter(Context context){
         Log.d(TAG,"ExerciseSessionAdapter");
         mContext = context;
-        mExerciseSession = exerciseSession;
+        mExercise = dataHolder.getExercise();
+        mExerciseSession = dataHolder.getExerciseSession();
         mCompletedColor = ContextCompat.getColor(context, R.color.accent_green);
     }
 
@@ -142,6 +148,10 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
                         new SetMeasurementChangedListener(position, category, buttonEditText);
                 buttonEditText.setOnNumberChangedListener(listener);
                 buttonEditText.setNumber(categoryMeasurement);
+                if (category == MeasurementCategory.WEIGHT || category == MeasurementCategory.DISTANCE) {
+                    String unitText = mExercise.getUnit(category).getDisplayName();
+                    buttonEditText.setUnit(unitText);
+                }
             }
         }
         if (set.isCompleted()) {

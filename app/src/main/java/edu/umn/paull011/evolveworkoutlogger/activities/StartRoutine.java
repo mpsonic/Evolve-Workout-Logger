@@ -54,7 +54,9 @@ public class StartRoutine extends AppCompatActivity implements
         mSelectedRoutine = routineName;
         DatabaseHelper db = DatabaseHelper.getInstance(this);
         java.sql.Date today = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
-        if (db.routineSessionExistsForDate(routineName, today)) {
+        // This is commented out in order to test exercise measurement incrementing
+        // TODO: uncomment once increment bugs are fixed
+        /*if (db.routineSessionExistsForDate(routineName, today)) {
             AreYouSureDialog dialog = AreYouSureDialog.newInstance(
                     "A routine session for \"" + routineName + "\" has already been started for today. Continue routine?"
             );
@@ -62,7 +64,13 @@ public class StartRoutine extends AppCompatActivity implements
         }
         else {
             launchNewRoutineSession(routineName);
-        }
+        }*/
+        launchNewRoutineSession(routineName);
+    }
+
+    @Override
+    public boolean routinesDeletable() {
+        return false;
     }
 
     public void launchExistingRoutineSession(String routineName) {

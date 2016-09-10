@@ -78,10 +78,9 @@ public class RoutineSession {
     }
 
 
-    public int getExerciseCount(){
+    public int getExerciseSessionCount(){
         return mExerciseSessions.size();
     }
-
 
     public Date getDate(){
         return mDate;

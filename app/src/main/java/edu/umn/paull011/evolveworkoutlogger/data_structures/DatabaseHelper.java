@@ -233,12 +233,32 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         return exercise.getName();
     }
 
-    public void deleteExercise(Exercise exercise) {
+    /***
+     * Deletes an exercise and all of the data related to the exercise, including
+     * ExerciseSessions, Sets, and RoutineExercises.
+     * @param exerciseName Name of the exercise to be deleted from the database
+     */
+    public void deleteExercise(String exerciseName) {
         Log.d(TAG,"deleteExercise");
         writableDB.delete(
                 TABLE_EXERCISES,
                 KEY_EXERCISE_NAME + "=?",
-                new String[]{String.valueOf(exercise.getName())}
+                new String[]{exerciseName}
+        );
+        writableDB.delete(
+                TABLE_EXERCISE_SESSIONS,
+                KEY_EXERCISE_NAME + "=?",
+                new String[]{exerciseName}
+        );
+        writableDB.delete(
+                TABLE_ROUTINE_EXERCISES,
+                KEY_EXERCISE_NAME + "=?",
+                new String[]{exerciseName}
+        );
+        writableDB.delete(
+                TABLE_SETS,
+                KEY_EXERCISE_NAME + "=?",
+                new String[]{exerciseName}
         );
     }
 
@@ -527,7 +547,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                 new String[]{exerciseName},
                 null,
                 null,
-                KEY_DATE + " ASC",
+                KEY_DATE + " ASC, " + KEY_EXERCISE_SESSION_ID + " DESC",
                 "1"
         );
 
@@ -647,6 +667,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                         "INNER JOIN " + TABLE_ROUTINE_SESSIONS + " AS rs " +
                         "ON es." + KEY_ROUTINE_SESSION_ID + " = rs." + KEY_ROUTINE_SESSION_ID + " " +
                         "WHERE rs." + KEY_ROUTINE_NAME + " = '" + routine.getName() + "' " +
+                        "AND s." + KEY_COMPLETED + " = 1 " +
                         "GROUP BY s." + KEY_EXERCISE_NAME + ", s." + KEY_EXERCISE_SESSION_ID + " " +
                         "ORDER BY es." + KEY_POSITION,
                 null
@@ -675,8 +696,8 @@ public class DatabaseHelper extends SQLiteAssetHelper {
                 TABLE_SETS,
                 new String[] {KEY_SETS_REPS_AMOUNT, KEY_SETS_WEIGHT_AMOUNT,
                 KEY_SETS_DISTANCE_AMOUNT, KEY_SETS_TIME_AMOUNT, KEY_DATE},
-                KEY_COMPLETED + "=1",
-                null,
+                KEY_COMPLETED + "=1 AND " + KEY_EXERCISE_NAME + "=?",
+                new String[] {exercise.getName()},
                 null,
                 null,
                 null
@@ -831,6 +852,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     public String insertRoutine(Routine routine, boolean permanent) {
         Log.d(TAG,"insertRoutine");
 
+        this.deleteRoutine(routine.getName());
         // Save routine in Routine table
         ContentValues values = extractRoutineData(routine);
         values.put(KEY_PERMANENT, permanent);
@@ -970,13 +992,16 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     }
 
     /**
-     * Persist a RoutineSession and all of its ExerciseSession data to the database
+     * Persist a RoutineSession and all of its ExerciseSession data to the database.
+     * If a RoutineSession with the same ID is present in the database, it and all of its associated
+     * ExerciseSessions will be overwritten.
      *
      * @param session the RoutineSession to be saved
      * @return The RoutineSessionId of the successfully saved RoutineSession
      */
     public int insertRoutineSessionDeep(RoutineSession session) {
         Log.d(TAG,"insertRoutineSessionDeep");
+        this.deleteRoutineSession(session);
         this.insertRoutineSession(session);
         this.saveRoutineSessionExerciseSessions(session);
         return (int) session.getId();
@@ -1005,7 +1030,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     private void saveRoutineSessionExerciseSessions(RoutineSession routineSession) {
         Log.d(TAG,"saveRoutineSessionExerciseSessions");
         long routineSessionId = routineSession.getId();
-        int numExerciseSessions = routineSession.getExerciseCount();
+        int numExerciseSessions = routineSession.getExerciseSessionCount();
         ExerciseSession exerciseSession;
         for (int i = 0; i < numExerciseSessions; i++) {
             exerciseSession = routineSession.getExerciseSession(i);

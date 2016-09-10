@@ -19,6 +19,7 @@ import android.widget.EditText;
 import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Exercise;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.ExerciseSession;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Routine;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.RoutineSession;
 import edu.umn.paull011.evolveworkoutlogger.fragments.RoutineSessionExercisesFragment;
@@ -168,12 +169,15 @@ public class ActiveRoutineSession extends AppCompatActivity
                 String exerciseName = data.getStringExtra(DatabaseHelper.KEY_EXERCISE_NAME);
                 DatabaseHelper db = DatabaseHelper.getInstance(this);
                 Exercise exercise = db.getExercise(exerciseName);
-                mRoutineSession.addNewExerciseSessionFromExercise(exercise, true);
+                mRoutine.addExercise(exercise);
                 db.insertRoutineExercise(
                         mRoutine.getName(),
                         exercise.getName(),
                         mRoutine.getNumExercises() - 1
                 );
+                ExerciseSession exerciseSession = exercise.createNewExerciseSession();
+                mRoutineSession.addExerciseSession(exerciseSession);
+                db.insertExerciseSession(mRoutineSession.getId(), exerciseSession, mRoutineSession.getExerciseSessionCount() - 1);
                 mFragment.refresh();
             }
         }
@@ -184,6 +188,7 @@ public class ActiveRoutineSession extends AppCompatActivity
         dialog.dismiss();
         mRoutineSession.finish();
         DatabaseHelper db = DatabaseHelper.getInstance(this);
+        db.insertRoutine(mRoutine, true);
         db.insertRoutineSessionDeep(mRoutineSession);
         finish();
     }

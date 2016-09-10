@@ -35,6 +35,11 @@ public enum Unit {
         this.mImperial = imperial;
     }
 
+    /***
+     * Get the Unit enum from its name or abbreviation
+     * @param name unit name
+     * @return unit enum
+     */
     public static Unit getFromName(String name) {
         Unit result = null;
         name = name.toUpperCase();
@@ -64,6 +69,9 @@ public enum Unit {
                 result = FEET;
                 break;
             case "MILES":
+                result = MILES;
+                break;
+            case "MI":
                 result = MILES;
                 break;
             case "TIME":
@@ -96,6 +104,10 @@ public enum Unit {
         return mImperial;
     }
 
+    /***
+     * Get the name to be displayed (usually an abbreviation) for the unit
+     * @return display name
+     */
     public String getDisplayName() {
         switch (this) {
             case REPS:
@@ -111,7 +123,7 @@ public enum Unit {
             case FEET:
                 return "ft";
             case MILES:
-                return "miles";
+                return "mi";
             case TIME:
                 return "";
             case SECONDS:

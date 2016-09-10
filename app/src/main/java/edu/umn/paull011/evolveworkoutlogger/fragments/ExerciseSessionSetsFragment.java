@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.ExerciseSession;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementCategory;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.ExerciseSessionAdapter;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.ExerciseSessionDataHolder;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.ItemTouchHelperCallback;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RecyclerViewItemClickListener;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.TestItemTouchHelper;
@@ -35,10 +36,10 @@ public class ExerciseSessionSetsFragment extends Fragment{
     private RecyclerView mRecyclerView;
     private ExerciseSessionAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private int mExercisePosition;
     private OnFragmentInteractionListener mFragmentInteractionListener;
-
+    private ExerciseSessionDataHolder dataHolder = ExerciseSessionDataHolder.getInstance();
     private ExerciseSession mExerciseSession;
+
     private static final String TAG = ExerciseSessionSetsFragment.class.getSimpleName();
 
     public class ClearFocusTouchListener implements RecyclerView.OnTouchListener{
@@ -79,6 +80,8 @@ public class ExerciseSessionSetsFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+        mExerciseSession = dataHolder.getExerciseSession();
     }
 
     @Override
@@ -99,7 +102,7 @@ public class ExerciseSessionSetsFragment extends Fragment{
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        mAdapter = new ExerciseSessionAdapter(this.getContext(), mExerciseSession);
+        mAdapter = new ExerciseSessionAdapter(this.getContext());
         mRecyclerView.setAdapter(mAdapter);
 
         // add ItemTouchHelperCallBack to RecyclerView

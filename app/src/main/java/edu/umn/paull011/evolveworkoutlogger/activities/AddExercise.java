@@ -60,4 +60,9 @@ public class AddExercise extends AppCompatActivity
             }
         }
     }
+
+    @Override
+    public boolean exercisesDeletable() {
+        return false;
+    }
 }

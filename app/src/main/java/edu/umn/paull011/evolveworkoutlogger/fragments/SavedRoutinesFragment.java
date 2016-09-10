@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import android.widget.TextView;
 
 import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.ItemTouchHelperCallback;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RecyclerViewItemClickListener;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RoutineCursorAdapter;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.TestItemTouchHelper;
 
 /**
  * A {@link ListFragment} subclass.
@@ -33,6 +36,7 @@ public class SavedRoutinesFragment extends Fragment {
     private TextView mEmptyView;
     private RoutineCursorAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private Boolean mAllowSwipeToDelete;
 
     private OnFragmentInteractionListener mFragmentInteractionListener;
     private Cursor mCursor;
@@ -82,8 +86,14 @@ public class SavedRoutinesFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        mAdapter = new RoutineCursorAdapter(mCursor);
+        mAdapter = new RoutineCursorAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
+
+        if (mAllowSwipeToDelete) {
+            ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mAdapter);
+            ItemTouchHelper touchHelper = new TestItemTouchHelper(callback); //Prints log messages
+            touchHelper.attachToRecyclerView(mRecyclerView);
+        }
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewItemClickListener(getActivity(),
@@ -107,6 +117,7 @@ public class SavedRoutinesFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mFragmentInteractionListener = (OnFragmentInteractionListener) context;
+            mAllowSwipeToDelete = mFragmentInteractionListener.routinesDeletable();
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -116,7 +127,6 @@ public class SavedRoutinesFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mCursor.close();
         mFragmentInteractionListener = null;
     }
 
@@ -135,23 +145,27 @@ public class SavedRoutinesFragment extends Fragment {
     public void onRoutineSelected(int position) {
         if (mFragmentInteractionListener != null) {
             // Get the Routine Id based on the position selected
-            mCursor.moveToPosition(position);
-            String routineName = mCursor.getString(0);
+            String routineName = mAdapter.getRoutineNameFromPosition(position);
             mFragmentInteractionListener.routineSelected(routineName);
         }
     }
 
     public void refresh() {
-        DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
-        mCursor.close();
-        mCursor = db.getRoutinesCursor();
-        mAdapter.setCursor(mCursor);
+        mAdapter.refreshCursor();
         mAdapter.notifyDataSetChanged();
         hideOrShowRecyclerView();
     }
 
+    public void deleteSwipedRoutineFromAdapter() {
+        mAdapter.deleteSwipedRoutine();
+    }
+
+    public void unDismissSwipedRoutineFromAdapter() {
+        mAdapter.unDismissSwipedRoutine();
+    }
+
     private void hideOrShowRecyclerView() {
-        if (mCursor.getCount() == 0){
+        if (mAdapter.isEmpty()){
             mRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }
@@ -163,5 +177,6 @@ public class SavedRoutinesFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void routineSelected(String routineName);
+        boolean routinesDeletable();
     }
 }

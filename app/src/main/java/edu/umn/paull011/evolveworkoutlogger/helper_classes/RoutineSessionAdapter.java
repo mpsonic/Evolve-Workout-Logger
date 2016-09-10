@@ -1,5 +1,6 @@
 package edu.umn.paull011.evolveworkoutlogger.helper_classes;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,13 +21,15 @@ import edu.umn.paull011.evolveworkoutlogger.data_structures.RoutineSession;
  *
  */
 public class RoutineSessionAdapter
-        extends RecyclerView.Adapter<RoutineSessionAdapter.ViewHolder>{
+        extends RecyclerView.Adapter<RoutineSessionAdapter.ViewHolder>
+        implements ItemTouchHelperAdapter{
 
     private static final String TAG = RoutineSessionAdapter.class.getSimpleName();
     private RoutineSession mRoutineSession;
+    private Context mContext;
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RemovableViewHolder{
         public TextView mExerciseName;
         public ImageView mCompletedCheckmark;
         public ProgressBar mProgressBar;
@@ -39,7 +42,8 @@ public class RoutineSessionAdapter
         }
     }
 
-    public RoutineSessionAdapter(RoutineSession rs){
+    public RoutineSessionAdapter(Context context, RoutineSession rs) {
+        mContext = context;
         mRoutineSession = rs;
     }
 
@@ -79,6 +83,21 @@ public class RoutineSessionAdapter
     @Override
     public int getItemCount() {
         Log.d(TAG, "getItemCount");
-        return mRoutineSession.getExerciseCount();
+        return mRoutineSession.getExerciseSessionCount();
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        return false;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        Log.d(TAG,"onItemDismiss (" + position + ")");
+//        DatabaseHelper db = DatabaseHelper.getInstance(mContext);
+        mRoutineSession.getRoutine().removeExercise(position);
+        mRoutineSession.removeExerciseSession(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mRoutineSession.getExerciseSessionCount() - position);
     }
 }

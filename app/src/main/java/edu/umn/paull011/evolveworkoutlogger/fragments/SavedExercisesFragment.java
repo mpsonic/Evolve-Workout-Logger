@@ -7,14 +7,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.ExerciseCursorAdapter;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.ItemTouchHelperCallback;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RecyclerViewItemClickListener;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.TestItemTouchHelper;
 
 /**
  * A {@link ListFragment} subclass.
@@ -31,6 +34,8 @@ public class SavedExercisesFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ExerciseCursorAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private TextView mEmptyView;
+    private Boolean mAllowSwipeToDelete;
 
 
     private OnFragmentInteractionListener mFragmentInteractionListener;
@@ -38,6 +43,7 @@ public class SavedExercisesFragment extends Fragment {
     private static final String TAG = SavedExercisesFragment.class.getSimpleName();
 
     public SavedExercisesFragment() {
+        Log.d(TAG, "SavedExercisesFragment");
         // Required empty public constructor
     }
 
@@ -48,15 +54,15 @@ public class SavedExercisesFragment extends Fragment {
      * @return A new instance of fragment SavedExercisesFragment.
      */
     public static SavedExercisesFragment newInstance() {
+        Log.d(TAG, "newInstance");
         return new SavedExercisesFragment();
     }
 
     // Get saved routines from the database
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
-        mCursor = db.getExercisesCursor(null);
     }
 
     @Override
@@ -81,8 +87,14 @@ public class SavedExercisesFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        mAdapter = new ExerciseCursorAdapter(mCursor);
+        mAdapter = new ExerciseCursorAdapter(this.getActivity());
         mRecyclerView.setAdapter(mAdapter);
+
+        if (mAllowSwipeToDelete) {
+            ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mAdapter);
+            ItemTouchHelper touchHelper = new TestItemTouchHelper(callback); //Prints log messages
+            touchHelper.attachToRecyclerView(mRecyclerView);
+        }
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewItemClickListener(getActivity(),
@@ -93,17 +105,9 @@ public class SavedExercisesFragment extends Fragment {
                             }
                         })
         );
-
-        // Display the empty view if there is nothing in the database
-        TextView emptyView = (TextView) view.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.empty_view_saved_exercises);
-        if (mCursor.getCount() == 0){
-            mRecyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        }
-        else{
-            mRecyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-        }
+        mEmptyView = (TextView) view.findViewById(
+                edu.umn.paull011.evolveworkoutlogger.R.id.empty_view_saved_exercises);
+        hideOrShowRecyclerView();
     }
 
     // Ensure that the activity is listening to the fragment according to the
@@ -113,6 +117,7 @@ public class SavedExercisesFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mFragmentInteractionListener = (OnFragmentInteractionListener) context;
+            mAllowSwipeToDelete = mFragmentInteractionListener.exercisesDeletable();
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -122,7 +127,6 @@ public class SavedExercisesFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mCursor.close();
         mFragmentInteractionListener = null;
     }
 
@@ -141,21 +145,39 @@ public class SavedExercisesFragment extends Fragment {
     public void onExerciseSelected(int position) {
         if (mFragmentInteractionListener != null) {
             // Get the Exercise Id based on the position selected
-            mCursor.moveToPosition(position);
-            String exerciseName = mCursor.getString(0);
+            String exerciseName = mAdapter.getExerciseNameAtPosition(position);
             mFragmentInteractionListener.exerciseSelected(exerciseName);
         }
     }
 
     public void refresh() {
-        DatabaseHelper db = DatabaseHelper.getInstance(getActivity());
-        mCursor.close();
-        mCursor = db.getExercisesCursor(null);
-        mAdapter.setCursor(mCursor);
+        mAdapter.refreshCursor();
         mAdapter.notifyDataSetChanged();
+        hideOrShowRecyclerView();
+    }
+
+    public void deleteSwipedExerciseFromAdapter() {
+        mAdapter.deleteSwipedExercise();
+    }
+
+    public void unDismissSwipedExerciseFromAdapter() {
+        mAdapter.unDismissSwipedExercise();
+    }
+
+    private void hideOrShowRecyclerView() {
+        // Display the empty view if there is nothing in the database
+        if (mAdapter.isEmpty()){
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+        else{
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }
     }
 
     public interface OnFragmentInteractionListener {
         void exerciseSelected(String exerciseName);
+        boolean exercisesDeletable();
     }
 }

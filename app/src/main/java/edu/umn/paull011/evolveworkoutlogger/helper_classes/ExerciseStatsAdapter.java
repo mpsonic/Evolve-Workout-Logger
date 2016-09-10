@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import edu.umn.paull011.evolveworkoutlogger.R;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Exercise;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.ExerciseStats;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementCategory;
 
@@ -17,7 +18,9 @@ import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementCategory;
  */
 public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdapter.ViewHolder> {
 
-    public ExerciseStats mExerciseStats;
+    private ExerciseStats mExerciseStats;
+    private Exercise mExercise;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mCategory;
         public TextView mAvg;
@@ -31,8 +34,9 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
         }
     }
 
-    public ExerciseStatsAdapter(ExerciseStats exerciseStats) {
+    public ExerciseStatsAdapter(Exercise exercise, ExerciseStats exerciseStats) {
         mExerciseStats = exerciseStats;
+        mExercise = exercise;
     }
 
     @Override
@@ -50,8 +54,21 @@ public class ExerciseStatsAdapter extends RecyclerView.Adapter<ExerciseStatsAdap
                 count++;
                 if (count == position) {
                     holder.mCategory.setText(category.name());
-                    holder.mAvg.setText(String.valueOf(mExerciseStats.getAvg(category)));
-                    holder.mMax.setText(String.valueOf(mExerciseStats.getMax(category)));
+                    double avgMeasurement = mExerciseStats.getAvg(category);
+                    double maxMeasurement = mExerciseStats.getMax(category);
+                    String avgString;
+                    String maxString;
+                    if (category == MeasurementCategory.TIME) {
+                        avgString = TimeStringHelper.createTimeString((int) avgMeasurement);
+                        maxString = TimeStringHelper.createTimeString((int) maxMeasurement);
+                    }
+                    else {
+                        String unitDisplay = mExercise.getUnit(category).getDisplayName();
+                        avgString = String.valueOf(avgMeasurement) + " " + unitDisplay;
+                        maxString = String.valueOf(maxMeasurement) + " " + unitDisplay;
+                    }
+                    holder.mAvg.setText(avgString);
+                    holder.mMax.setText(maxString);
                     break;
                 }
             }

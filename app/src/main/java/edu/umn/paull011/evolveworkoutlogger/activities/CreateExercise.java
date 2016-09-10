@@ -467,6 +467,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
                         break;
                 }
                 exercise.setIncrement(increment);
+                exercise.setMeasurementCategoryToIncrement(unitCategory);
             }
         }
         return exercise;

@@ -19,7 +19,7 @@
         android:layout_height="70dp"
         android:id="@+id/empty_view_saved_routines"
         android:text="@string/text_no_saved_routines"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:textStyle="bold"
         android:background="@drawable/background_and_border_2"
         android:paddingStart="15dp"

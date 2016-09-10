@@ -1,5 +1,6 @@
 package edu.umn.paull011.evolveworkoutlogger.helper_classes;
 
+import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
@@ -50,5 +51,25 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public boolean isLongPressDragEnabled() {
         Log.d(TAG,"isLongPressDragEnabled");
         return true;
+    }
+
+    @Override
+    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        getDefaultUIUtil().clearView(((RemovableViewHolder) viewHolder).getSwipableView());
+    }
+
+    @Override
+    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+        if (viewHolder != null) {
+            getDefaultUIUtil().onSelected(((RemovableViewHolder) viewHolder).getSwipableView());
+        }
+    }
+
+    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        getDefaultUIUtil().onDraw(c, recyclerView, ((RemovableViewHolder) viewHolder).getSwipableView(), dX, dY,    actionState, isCurrentlyActive);
+    }
+
+    public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        getDefaultUIUtil().onDrawOver(c, recyclerView, ((RemovableViewHolder) viewHolder).getSwipableView(), dX, dY,    actionState, isCurrentlyActive);
     }
 }

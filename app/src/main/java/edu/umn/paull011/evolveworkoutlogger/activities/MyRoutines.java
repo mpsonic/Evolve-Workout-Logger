@@ -1,6 +1,7 @@
 package edu.umn.paull011.evolveworkoutlogger.activities;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,11 @@ import android.view.View;
 import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 import edu.umn.paull011.evolveworkoutlogger.fragments.SavedRoutinesFragment;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.AreYouSureDialog;
 
 public class MyRoutines extends AppCompatActivity
-        implements SavedRoutinesFragment.OnFragmentInteractionListener {
+        implements SavedRoutinesFragment.OnFragmentInteractionListener,
+        AreYouSureDialog.DialogChooserListener {
 
     SavedRoutinesFragment mFragment;
     private static final String TAG = MyRoutines.class.getSimpleName();
@@ -38,6 +41,11 @@ public class MyRoutines extends AppCompatActivity
         startActivity(i);
     }
 
+    @Override
+    public boolean routinesDeletable() {
+        return true;
+    }
+
     public void handleButtonClick(View view) {
         int id = view.getId();
         switch (id) {
@@ -45,6 +53,16 @@ public class MyRoutines extends AppCompatActivity
                 Intent i = new Intent(this, CreateRoutine.class);
                 startActivityForResult(i, ResponseCodes.NEW_ROUTINE.getValue());
         }
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        mFragment.deleteSwipedRoutineFromAdapter();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        mFragment.unDismissSwipedRoutineFromAdapter();
     }
 
     @Override

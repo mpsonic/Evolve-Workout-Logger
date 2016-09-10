@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import edu.umn.paull011.evolveworkoutlogger.R;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Exercise;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.ExerciseStats;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.ExerciseStatsAdapter;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.ExerciseStatsDataHolder;
@@ -79,7 +80,8 @@ public class ExerciseStatsFragment extends Fragment {
 
         // specify an adapter
         ExerciseStats exerciseStats = mDataHolder.getExerciseStats();
-        mAdapter = new ExerciseStatsAdapter(exerciseStats);
+        Exercise exercise = mDataHolder.getExercise();
+        mAdapter = new ExerciseStatsAdapter(exercise, exerciseStats);
         mRecyclerView.setAdapter(mAdapter);
 
         // Display the empty view if there are no exercises in the Routine Session

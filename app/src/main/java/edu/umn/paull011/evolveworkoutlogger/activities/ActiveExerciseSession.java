@@ -20,13 +20,15 @@ import edu.umn.paull011.evolveworkoutlogger.data_structures.ExerciseSession;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.RoutineSession;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Set;
 import edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseSessionSetsFragment;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.ExerciseSessionDataHolder;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RoutineSessionDataHolder;
 
 public class ActiveExerciseSession extends AppCompatActivity implements
         ExerciseSessionSetsFragment.OnFragmentInteractionListener,
         ExerciseSession.OnExerciseSessionUpdateListener{
 
-    private RoutineSessionDataHolder dataHolder = RoutineSessionDataHolder.getInstance();
+    private RoutineSessionDataHolder routineSessionDataHolder = RoutineSessionDataHolder.getInstance();
+    private ExerciseSessionDataHolder exerciseSessionDataHolder = ExerciseSessionDataHolder.getInstance();
     private Exercise mExercise;
     private ExerciseSession mExerciseSession;
     private RoutineSession mRoutineSession;
@@ -45,17 +47,18 @@ public class ActiveExerciseSession extends AppCompatActivity implements
 
         Intent intent = getIntent();
         mExercisePosition = intent.getIntExtra(DatabaseHelper.KEY_POSITION, -1);
-        mExercise = dataHolder.getRoutine().getExercise(mExercisePosition);
-        mRoutineSession = dataHolder.getRoutineSession();
+        mExercise = routineSessionDataHolder.getRoutine().getExercise(mExercisePosition);
+        mRoutineSession = routineSessionDataHolder.getRoutineSession();
         mExerciseSession = mRoutineSession.getExerciseSession(mExercisePosition);
         mCurrentSetIndex = mExerciseSession.getCurrentSetIndex();
-        RoutineSession routineSession = dataHolder.getRoutineSession();
+        exerciseSessionDataHolder.setExercise(mExercise);
+        exerciseSessionDataHolder.setExerciseSession(mExerciseSession);
 
         setContentView(edu.umn.paull011.evolveworkoutlogger.R.layout.activity_active_exercise_session);
         Toolbar toolbar = (Toolbar) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.toolbar);
         assert toolbar != null;
         toolbar.setTitle(mExercise.getName() + "  (" +
-                String.valueOf(mExercisePosition + 1) + "/" + routineSession.getExerciseCount() + ")");
+                String.valueOf(mExercisePosition + 1) + "/" + mRoutineSession.getExerciseSessionCount() + ")");
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -109,7 +112,7 @@ public class ActiveExerciseSession extends AppCompatActivity implements
         switch (id) {
             case R.id.fab:
                 if (mExerciseSession.isCompleted()) {
-                    if (mExercisePosition == mRoutineSession.getExerciseCount() - 1) {
+                    if (mExercisePosition == mRoutineSession.getExerciseSessionCount() - 1) {
                         NavUtils.navigateUpFromSameTask(this);
                     }
                     else {
@@ -168,7 +171,7 @@ public class ActiveExerciseSession extends AppCompatActivity implements
         inflater.inflate(edu.umn.paull011.evolveworkoutlogger.R.menu.menu_active_exercise_session, menu);
         MenuItem previous = menu.findItem(edu.umn.paull011.evolveworkoutlogger.R.id.previous_exercise);
         MenuItem next = menu.findItem(edu.umn.paull011.evolveworkoutlogger.R.id.next_exercise);
-        int numExercises = dataHolder.getRoutineSession().getExerciseCount();
+        int numExercises = routineSessionDataHolder.getRoutineSession().getExerciseSessionCount();
         if (mExercisePosition == 0) {
             previous.setVisible(false);
         }

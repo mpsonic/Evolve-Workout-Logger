@@ -1,11 +1,16 @@
 package edu.umn.paull011.evolveworkoutlogger.helper_classes;
 
+import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 
 /**
  * A RecyclerView adapter that lists Exercises gotten from a database Cursor
@@ -13,15 +18,19 @@ import android.widget.TextView;
  * Created by Mitchell on 5/31/2016.
  */
 public class ExerciseCursorAdapter
-        extends RecyclerView.Adapter<ExerciseCursorAdapter.ViewHolder>{
+        extends RecyclerView.Adapter<ExerciseCursorAdapter.ViewHolder>
+        implements ItemTouchHelperAdapter {
 
     private Cursor mCursor;
+    private Context mContext;
+    private int mPosition;
+    private String mExerciseName;
     private static final String TAG = ExerciseCursorAdapter.class.getSimpleName();
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RemovableViewHolder{
         public TextView text;
 
         public ViewHolder(View v){
@@ -31,14 +40,18 @@ public class ExerciseCursorAdapter
     }
 
     // Constructor sets the adapter data
-    public ExerciseCursorAdapter(Cursor cursor){
-        setCursor(cursor);
+    public ExerciseCursorAdapter(Context context){
+        mContext = context;
+        refreshCursor();
     }
 
-    public void setCursor(Cursor cursor) {
-        mCursor = cursor;
+    public void refreshCursor() {
+        if (mCursor != null) {
+            mCursor.close();
+        }
+        DatabaseHelper db = DatabaseHelper.getInstance(mContext);
+        mCursor = db.getExercisesCursor(null);
     }
-
 
     // Create new views (Invoked by the layout manager)
     @Override
@@ -71,4 +84,43 @@ public class ExerciseCursorAdapter
         mCursor.close();
     }
 
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        return false;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        Log.d(TAG,"onItemDismiss (" + position + ")");
+        mCursor.moveToPosition(position);
+        String exerciseName = mCursor.getString(0);
+        mPosition = position;
+        mExerciseName = exerciseName;
+        AreYouSureDialog dialog = AreYouSureDialog.newInstance(
+                "Delete exercise \"" + exerciseName + "\"? All data related to this exercise " +
+                        "will be deleted."
+        );
+        dialog.show(((Activity) mContext).getFragmentManager(), "AreYouSureDialog");
+    }
+
+
+    public void deleteSwipedExercise() {
+        DatabaseHelper db = DatabaseHelper.getInstance(mContext);
+        db.deleteExercise(mExerciseName);
+        refreshCursor();
+        notifyItemRemoved(mPosition);
+    }
+
+    public void unDismissSwipedExercise() {
+        notifyItemChanged(mPosition);
+    }
+
+    public String getExerciseNameAtPosition(int position) {
+        mCursor.moveToPosition(position);
+        return mCursor.getString(0);
+    }
+
+    public boolean isEmpty() {
+        return (mCursor.getCount() == 0);
+    }
 }

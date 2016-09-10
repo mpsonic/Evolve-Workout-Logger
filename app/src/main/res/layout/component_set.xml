@@ -1,132 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_height="wrap_content"
-android:layout_width="match_parent">
-
-<LinearLayout
-    android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:baselineAligned="false"
-    android:focusableInTouchMode="true"
-    android:id="@+id/set_layout">
+    android:layout_width="match_parent"
+    android:background="@drawable/delete_swipe_view">
 
     <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="center_vertical|center_horizontal">
-        <ImageView
-            android:src="@drawable/orange_circle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:id="@+id/removable">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_centerInParent="true"
-            android:id="@+id/current_set_circle"
-            android:visibility="gone"
-            android:contentDescription="@string/description_current_set"/>
-        <TextView
-            android:id="@+id/set_number"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/placeholder_number"
-            android:textSize="24sp"
-            android:textAppearance="?attr/textAppearanceLargePopupMenu" />
-        <View
-            style="@style/Divider.Vertical"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:focusableInTouchMode="true"
+            android:id="@+id/set_layout">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical|center_horizontal">
+                <ImageView
+                    android:src="@drawable/orange_circle"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/current_set_circle"
+                    android:visibility="gone"
+                    android:contentDescription="@string/description_current_set"/>
+                <TextView
+                    android:id="@+id/set_number"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/placeholder_number"
+                    android:textSize="24sp"
+                    android:textAppearance="?attr/textAppearanceLargePopupMenu" />
+                <View
+                    style="@style/Divider.Vertical"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/reps_layout">
+                    <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        app:increment="1"
+                        app:mode="integer"
+                        app:activated="false"
+                        app:default_number="5"
+                        app:always_positive="true"
+                        android:id="@+id/reps_button_edittext">
+                    </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/weight_layout">
+                    <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        app:increment="1"
+                        app:mode="decimal"
+                        app:activated="false"
+                        app:default_number="0"
+                        app:always_positive="true"
+                        android:id="@+id/weight_button_edittext">
+                    </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/distance_layout">
+                    <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        app:increment="1"
+                        app:mode="decimal"
+                        app:activated="false"
+                        app:default_number="0"
+                        app:always_positive="true"
+                        android:id="@+id/distance_button_edittext">
+                    </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/time_layout">
+                    <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        app:increment="15"
+                        app:mode="time"
+                        app:default_number="300"
+                        app:always_positive="true"
+                        android:id="@+id/time_button_edittext">
+                    </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
+                </FrameLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <View style="@style/Divider.Horizontal"
+            android:layout_below="@id/set_layout"/>
+
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:layout_gravity="center_vertical"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/reps_layout">
-            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                app:increment="1"
-                app:mode="integer"
-                app:activated="false"
-                app:default_number="5"
-                app:always_positive="true"
-                android:id="@+id/reps_button_edittext">
-            </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/weight_layout">
-            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                app:increment="1"
-                app:mode="decimal"
-                app:activated="false"
-                app:default_number="0"
-                app:always_positive="true"
-                android:id="@+id/weight_button_edittext">
-            </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/distance_layout">
-            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                app:increment="1"
-                app:mode="decimal"
-                app:activated="false"
-                app:default_number="0"
-                app:always_positive="true"
-                android:id="@+id/distance_button_edittext">
-            </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/time_layout">
-            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                app:increment="15"
-                app:mode="time"
-                app:default_number="300"
-                app:always_positive="true"
-                android:id="@+id/time_button_edittext">
-            </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
-        </FrameLayout>
-
-    </LinearLayout>
-</LinearLayout>
-
-<View style="@style/Divider.Horizontal"
-    android:layout_below="@id/set_layout"/>
-
-</RelativeLayout>
-
+</FrameLayout>

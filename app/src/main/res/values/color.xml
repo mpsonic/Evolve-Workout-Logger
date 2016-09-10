@@ -12,6 +12,9 @@
     <color name="accent_green">#76ff03</color>
     <color name="accent_dark_green">#64dd17</color>
 
+    <!--Reds-->
+    <color name="delete_red"> #f44336</color>
+
     <!-- Greys -->
     <color name="white">#ffffff</color>
     <color name="light_shade_1">#fafafa</color>

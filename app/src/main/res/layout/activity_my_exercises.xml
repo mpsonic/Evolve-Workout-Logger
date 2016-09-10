@@ -20,7 +20,7 @@
             android:layout_below="@id/app_bar_layout">
 
             <fragment
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:name="edu.umn.paull011.evolveworkoutlogger.fragments.SavedExercisesFragment"
                 android:id="@+id/fragment_saved_exercises"

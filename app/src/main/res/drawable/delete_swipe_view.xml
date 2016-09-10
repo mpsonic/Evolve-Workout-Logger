@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="rectangle">
+            <solid
+                android:color="@color/delete_red"/>
+        </shape>
+    </item>
+    <item>
+        <bitmap
+            android:src="@drawable/ic_delete_sweep_white_24dp"
+            android:gravity="center">
+        </bitmap>
+    </item>
+</layer-list>

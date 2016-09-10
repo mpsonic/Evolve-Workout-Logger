@@ -10,5 +10,6 @@
         </attr>
         <attr name="always_positive" format="boolean"/>
         <attr name="hint" format="string"/>
+        <attr name="unit" format="string"/>
     </declare-styleable>
 </resources>

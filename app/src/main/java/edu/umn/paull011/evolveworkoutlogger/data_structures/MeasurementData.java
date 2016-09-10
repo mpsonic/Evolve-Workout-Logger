@@ -1,5 +1,7 @@
 package edu.umn.paull011.evolveworkoutlogger.data_structures;
 
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.TimeStringHelper;
+
 /**
  * Created by Mitchell on 12/16/2015.
  *
@@ -59,12 +61,17 @@ public class MeasurementData{
     public String display() {
         String unit = mUnit.getDisplayName();
         String number = getDisplayNumber();
-        return number + " " + unit;
+        if (mCategory == MeasurementCategory.TIME) {
+            return number;
+        }
+        else {
+            return number + " " + unit;
+        }
     }
 
     private String getDisplayNumber() {
         if (mCategory == MeasurementCategory.TIME) {
-            return getTimeDisplayNumber();
+            return TimeStringHelper.createTimeString((int) mMeasurement);
         }
         if (isInteger()) {
             return String.valueOf((int) mMeasurement);

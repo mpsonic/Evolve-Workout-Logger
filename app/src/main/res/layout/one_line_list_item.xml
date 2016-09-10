@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="@dimen/single_line_list_height">
-
-    <TextView
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/single_line_list_height"
+    android:background="@drawable/delete_swipe_view">
+    <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/text_line"
-        android:layout_centerInParent="true"
-        style="@style/SingleLineListText"
-        />
+        android:layout_height="match_parent"
+        android:id="@+id/removable"
+        android:background="@color/white">
 
-    <View style="@style/Divider.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/text_line"
+            android:layout_centerInParent="true"
+            style="@style/SingleLineListText"
+            />
 
-</RelativeLayout>
+        <View style="@style/Divider.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+</FrameLayout>

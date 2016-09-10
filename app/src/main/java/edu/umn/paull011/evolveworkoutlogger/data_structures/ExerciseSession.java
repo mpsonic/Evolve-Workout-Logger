@@ -235,7 +235,9 @@ public class ExerciseSession {
             oldSet = template.getSet(i);
             Set newSet = new Set();
             newSet.copyMeasurementInfo(oldSet);
-            mSetList.add(newSet);
+            if (oldSet.isCompleted()) {
+                mSetList.add(newSet);
+            }
         }
         refreshCurrentSetIndex();
         mUpdateListener.onExerciseSessionUpdate();

@@ -73,12 +73,14 @@ public class ExerciseStats {
     public double getAvg(MeasurementCategory category) {
         int index = category.value();
         double total = mTotals[index];
-        if (category == MeasurementCategory.REPS) {
+        /*if (category == MeasurementCategory.REPS) {
             return total / mSetData.size();
         } else {
             int count = mCounts[index];
             return total / count;
-        }
+        }*/
+        int count = mCounts[index];
+        return total / count;
     }
 
     public double getMax(MeasurementCategory category) {

@@ -1,6 +1,7 @@
 package edu.umn.paull011.evolveworkoutlogger.activities;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,15 +11,18 @@ import android.view.View;
 
 import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 import edu.umn.paull011.evolveworkoutlogger.fragments.SavedExercisesFragment;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.AreYouSureDialog;
 
 public class MyExercises extends AppCompatActivity
-        implements SavedExercisesFragment.OnFragmentInteractionListener {
+        implements SavedExercisesFragment.OnFragmentInteractionListener,
+        AreYouSureDialog.DialogChooserListener{
 
     private SavedExercisesFragment mFragment;
     private static final String TAG = MyExercises.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(edu.umn.paull011.evolveworkoutlogger.R.layout.activity_my_exercises);
         Toolbar toolbar = (Toolbar) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.toolbar);
@@ -38,6 +42,11 @@ public class MyExercises extends AppCompatActivity
         startActivity(i);
     }
 
+    @Override
+    public boolean exercisesDeletable() {
+        return true;
+    }
+
     public void handleButtonClick(View view) {
         int id = view.getId();
         Intent i;
@@ -46,6 +55,16 @@ public class MyExercises extends AppCompatActivity
                 i = new Intent(this, CreateExercise.class);
                 startActivityForResult(i, ResponseCodes.NEW_EXERCISE.getValue());
         }
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        mFragment.deleteSwipedExerciseFromAdapter();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        mFragment.unDismissSwipedExerciseFromAdapter();
     }
 
     @Override

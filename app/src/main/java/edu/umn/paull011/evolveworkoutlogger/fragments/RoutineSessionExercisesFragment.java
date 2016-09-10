@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import edu.umn.paull011.evolveworkoutlogger.data_structures.RoutineSession;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.ItemTouchHelperCallback;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RecyclerViewItemClickListener;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RoutineSessionAdapter;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.TestItemTouchHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,8 +81,13 @@ public class RoutineSessionExercisesFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        mAdapter = new RoutineSessionAdapter(mRoutineSession);
+        mAdapter = new RoutineSessionAdapter(this.getActivity(), mRoutineSession);
         mRecyclerView.setAdapter(mAdapter);
+
+        // add ItemTouchHelperCallBack to RecyclerView
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mAdapter);
+        ItemTouchHelper touchHelper = new TestItemTouchHelper(callback); //Prints log messages
+        touchHelper.attachToRecyclerView(mRecyclerView);
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewItemClickListener(getActivity(),
@@ -93,7 +101,7 @@ public class RoutineSessionExercisesFragment extends Fragment {
 
         // Display the empty view if there are no exercises in the Routine Session
         TextView emptyView = (TextView) view.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.empty_view_active_exercise_sessions);
-        if (mRoutineSession == null || mRoutineSession.getExerciseCount() == 0){
+        if (mRoutineSession == null || mRoutineSession.getExerciseSessionCount() == 0){
             mRecyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         }
