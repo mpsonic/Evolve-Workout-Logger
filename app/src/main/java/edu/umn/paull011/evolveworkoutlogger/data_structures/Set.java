@@ -114,6 +114,9 @@ public class Set {
         }
     }
 
+    public boolean hasCategory(MeasurementCategory category) {
+        return mMeasurements.containsKey(category);
+    }
 
     @Override
     public boolean equals(Object obj) {

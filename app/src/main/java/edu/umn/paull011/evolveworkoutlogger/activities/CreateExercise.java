@@ -2,6 +2,7 @@ package edu.umn.paull011.evolveworkoutlogger.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -48,6 +49,9 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
     private ToggleButton metricToggle;
 
     private FloatingActionButton fab;
+
+    private boolean mEditingMode;
+    private String mExerciseName;
     private static final String TAG = CreateExercise.class.getSimpleName();
 
     @Override
@@ -62,8 +66,6 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_exercise);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         // Get content layouts
         contentLayout = (ScrollView) findViewById(R.id.createExerciseContent);
@@ -112,12 +114,12 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         // Set up spinners
         // TODO: Set up a unit arrayAdapter
         distanceImperialUnits = new ArrayList<>(2);
-        distanceImperialUnits.add("feet");
-        distanceImperialUnits.add("miles");
+        distanceImperialUnits.add("ft");
+        distanceImperialUnits.add("mi");
 
         distanceMetricUnits = new ArrayList<>(2);
-        distanceMetricUnits.add("meters");
-        distanceMetricUnits.add("kilometers");
+        distanceMetricUnits.add("m");
+        distanceMetricUnits.add("km");
 
         // TODO: Set up a category arrayAdapter
         exerciseCategories = new ArrayList<>();
@@ -150,7 +152,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         categorySpinner.setSelection(0);
 
 
-        // Initialize starting measurement rows, target toggle buttons, and increase per session views to gone
+        // Initialize Form
         for (int unitViewIndex = 1; unitViewIndex<=3; unitViewIndex++) {
             for (int unit = 0; unit <=3; unit++) {
                 unitViews.get(unit).get(unitViewIndex).setVisibility(View.GONE);
@@ -171,6 +173,113 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
             }
         });
         fab.hide();
+
+        Intent intent = getIntent();
+        if (intent.getBooleanExtra("Edit", false)) { // Editing an existing exercise
+            mEditingMode = true;
+            mExerciseName = intent.getStringExtra(DatabaseHelper.KEY_EXERCISE_NAME);
+            DatabaseHelper db = DatabaseHelper.getInstance(this);
+            Exercise exercise = db.getExercise(mExerciseName);
+
+            // Populate title edit text
+            EditText titleEdit = (EditText) findViewById(R.id.edit_title);
+            titleEdit.setText(mExerciseName);
+
+            // Set unit system
+            if (exercise.isImperial()) {
+                handleButtonClick(imperialToggle);
+            }
+            else {
+                handleButtonClick(metricToggle);
+            }
+
+            // Set tracked measurements and starting measurements
+            for (MeasurementCategory category: MeasurementCategory.values()) {
+                if (exercise.isTracked(category)) {
+                    // Click tracked toggle button
+                    ToggleButton trackedToggle = (ToggleButton) unitViews.get(category.value()).get(0);
+                    trackedToggle.setChecked(true);
+                    handleButtonClick(trackedToggle);
+
+                    // Set up starting measurement views
+                    Unit unit = exercise.getUnit(category);
+                    String unitDisplay = unit.getDisplayName();
+                    ButtonEditText bet;
+                    Float initialMeasurement = exercise.getInitialMeasurementValue(category);
+                    switch (category) {
+                        case REPS:
+                            bet = (ButtonEditText) findViewById(R.id.bet_reps_starting_measurement);
+                            bet.setNumber(initialMeasurement);
+                            break;
+                        case WEIGHT:
+                            bet = (ButtonEditText) findViewById(R.id.bet_weight_starting_measurement);
+                            bet.setNumber(initialMeasurement);
+                            TextView weightUnit = (TextView) findViewById(R.id.weightUnitText);
+                            weightUnit.setText(unitDisplay);
+                            break;
+                        case DISTANCE:
+                            bet = (ButtonEditText) findViewById(R.id.bet_distance_starting_measurement);
+                            bet.setNumber(initialMeasurement);
+                            dSpinner.setSelection(distanceArrayAdapter.getPosition(unitDisplay));
+                            break;
+                        case TIME:
+                            bet = (ButtonEditText) findViewById(R.id.bet_time_hours_starting_measurement);
+                            bet.setNumber(initialMeasurement/3600);
+                            bet = (ButtonEditText) findViewById(R.id.bet_time_minutes_starting_measurement);
+                            bet.setNumber((initialMeasurement % 3600) / 60);
+                            bet = (ButtonEditText) findViewById(R.id.bet_time_seconds_starting_measurement);
+                            bet.setNumber(initialMeasurement % 60);
+                            break;
+                    }
+
+                    if (exercise.getCategoryToIncrement() == category) {
+                        // Click target toggle button
+                        handleButtonClick(unitViews.get(category.value()).get(2));
+
+                        // Set up measurement increment views
+                        float increment = exercise.getIncrement();
+                        switch (category) {
+                            case REPS:
+                                bet = (ButtonEditText) findViewById(R.id.create_exercise_bet_increase_reps);
+                                bet.setNumber(increment);
+                                break;
+                            case WEIGHT:
+                                bet = (ButtonEditText) findViewById(R.id.create_exercise_bet_increase_weight);
+                                bet.setNumber(increment);
+                                TextView weightUnit = (TextView) findViewById(R.id.weightIncreaseUnitText);
+                                weightUnit.setText(unitDisplay);
+                                break;
+                            case DISTANCE:
+                                bet = (ButtonEditText) findViewById(R.id.create_exercise_bet_increase_distance);
+                                bet.setNumber(increment);
+                                dIncreaseSpinner.setSelection(distanceArrayAdapter.getPosition(unitDisplay));
+                                break;
+                            case TIME:
+                                bet = (ButtonEditText) findViewById(R.id.create_exercise_bet_increase_time_minutes);
+                                bet.setNumber((int) increment / 60);
+                                bet = (ButtonEditText) findViewById(R.id.create_exercise_bet_increase_time_seconds);
+                                bet.setNumber((int) increment % 60);
+                        }
+                    }
+                }
+            }
+
+            // Set the category spinner
+            String category = exercise.getExerciseCategory();
+            categorySpinner.setSelection(categoryArrayAdapter.getPosition(category));
+        }
+        else { // Creating a new exercise
+            mEditingMode = false;
+        }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mEditingMode) {
+            toolbar.setTitle("Edit Exercise");
+        }
+        else {
+            toolbar.setTitle("Create Exercise");
+        }
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -210,16 +319,18 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         ToggleButton targetToggle = (ToggleButton) unitViews.get(category.value()).get(2);
         TableRow row = (TableRow) unitViews.get(category.value()).get(1);
         if (hasMeasurementsTracked()) {
-            startingMeasurementsLayout.setVisibility(View.VISIBLE);
+            if (!mEditingMode) {
+                startingMeasurementsLayout.setVisibility(View.VISIBLE);
+            }
             targetIncreaseLayout.setVisibility(View.VISIBLE);
             categoryLayout.setVisibility(View.VISIBLE);
-            fab.show();
+            showFab();
         }
         else {
             startingMeasurementsLayout.setVisibility(View.GONE);
             targetIncreaseLayout.setVisibility(View.GONE);
             categoryLayout.setVisibility(View.GONE);
-            fab.hide();
+            hideFab();
         }
         if (trackedToggle.isChecked()) {
             targetToggle.setVisibility(View.VISIBLE);
@@ -476,7 +587,13 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
     private String persistExercise(boolean permanent) {
         Exercise exercise = createExerciseFromFormData();
         DatabaseHelper db = DatabaseHelper.getInstance(this);
-        return db.insertExercise(exercise, permanent);
+        if (mEditingMode && !(mExerciseName.equals(exercise.getName()))) {
+            db.replaceExercise(mExerciseName, exercise);
+        }
+        else {
+            db.insertExercise(exercise, permanent);
+        }
+        return exercise.getName();
     }
 
     public void persistExerciseAndFinish() {
@@ -485,5 +602,21 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         returnIntent.putExtra(DatabaseHelper.KEY_EXERCISE_NAME, exerciseName);
         setResult(RESULT_OK, returnIntent);
         finish();
+    }
+
+    private void hideFab() {
+        /*CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        p.setBehavior(null); //should disable default animations
+        p.setAnchorId(View.NO_ID); //should let you set visibility
+        fab.setLayoutParams(p);*/
+        fab.setActivated(false);
+    }
+
+    private void showFab() {
+        CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        p.setBehavior(new FloatingActionButton.Behavior());
+        p.setAnchorId(R.id.app_bar_layout);
+        fab.setLayoutParams(p);
+        fab.show();
     }
 }

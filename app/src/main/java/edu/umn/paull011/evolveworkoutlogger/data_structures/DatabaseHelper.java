@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import edu.umn.paull011.evolveworkoutlogger.BuildConfig;
 
@@ -190,6 +191,43 @@ public class DatabaseHelper extends SQLiteAssetHelper {
             throw new AssertionError("This exerciseName = " + exerciseName +", DB exerciseName = " + exercise.getName());
         }
         return exerciseName;
+    }
+
+    /***
+     * Replaces the old exercise with the new one while retaining all old records associated with
+     * the exercise.
+     * @param oldExerciseName The name of the exercise to be replaced
+     * @param newExercise Replaces the old exercise
+     * @return name of the new exercise
+     */
+    public String replaceExercise(String oldExerciseName, Exercise newExercise) {
+        Log.d(TAG,"replaceExercise");
+        insertExercise(newExercise, true);
+        String newExerciseName = newExercise.getName();
+        ContentValues exerciseNameUpdate = new ContentValues();
+        exerciseNameUpdate.put(KEY_EXERCISE_NAME, newExerciseName);
+        // Exercise Sessions
+        writableDB.update(
+                TABLE_EXERCISE_SESSIONS,
+                exerciseNameUpdate,
+                KEY_EXERCISE_NAME + "=?",
+                new String[] {oldExerciseName}
+        );
+        // Routine Exercises
+        writableDB.update(
+                TABLE_ROUTINE_EXERCISES,
+                exerciseNameUpdate,
+                KEY_EXERCISE_NAME + "=?",
+                new String[] {oldExerciseName}
+        );
+        // Sets
+        writableDB.update(
+                TABLE_SETS,
+                exerciseNameUpdate,
+                KEY_EXERCISE_NAME + "=?",
+                new String[] {oldExerciseName}
+        );
+        return newExerciseName;
     }
 
     public Exercise getExercise(String exerciseName){
@@ -564,6 +602,28 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         
         exerciseSessionCursor.close();
         return exerciseSession;
+    }
+
+    public int getDaysSinceLastRoutineSession() {
+        Cursor routineSessionCursor = readableDB.query(
+                TABLE_ROUTINE_SESSIONS,
+                new String[] {KEY_DATE},
+                null,
+                null,
+                null,
+                null,
+                KEY_DATE + " ASC",
+                "1"
+        );
+        long daysSince = -1;
+        if (routineSessionCursor.moveToFirst()) {
+            Date routineSessionDate = Date.valueOf(routineSessionCursor.getString(0));
+            Date now = new Date(Calendar.getInstance().getTimeInMillis());
+            long diff = now.getTime() - routineSessionDate.getTime();
+            daysSince = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        }
+        routineSessionCursor.close();
+        return (int) daysSince;
     }
 
     private ContentValues extractExerciseSessionData(ExerciseSession session) {

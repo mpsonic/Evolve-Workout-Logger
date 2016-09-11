@@ -39,6 +39,7 @@ public class ExerciseSessionSetsFragment extends Fragment{
     private OnFragmentInteractionListener mFragmentInteractionListener;
     private ExerciseSessionDataHolder dataHolder = ExerciseSessionDataHolder.getInstance();
     private ExerciseSession mExerciseSession;
+    private TextView mEmptyView;
 
     private static final String TAG = ExerciseSessionSetsFragment.class.getSimpleName();
 
@@ -132,16 +133,8 @@ public class ExerciseSessionSetsFragment extends Fragment{
             }
         }
 
-        // Display the empty view if there are no exercises in the Routine Session
-        TextView emptyView = (TextView) view.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.empty_view_active_exercise_sessions);
-        if (mExerciseSession == null || mExerciseSession.getNumSets() == 0){
-            mRecyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        }
-        else{
-            mRecyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-        }
+        mEmptyView = (TextView) view.findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.empty_view_active_exercise_sessions);
+        hideOrShowEmptyView();
         return view;
     }
 
@@ -186,6 +179,7 @@ public class ExerciseSessionSetsFragment extends Fragment{
     public void refreshSetAdded() {
         Log.d(TAG,"refreshSetAdded");
         mAdapter.notifyItemInserted(mExerciseSession.getNumSets() - 1);
+        hideOrShowEmptyView();
     }
 
     public void refreshNextSet(int currentSetPosition) {
@@ -199,6 +193,19 @@ public class ExerciseSessionSetsFragment extends Fragment{
     public void refresh() {
         Log.d(TAG,"refresh");
         mAdapter.notifyDataSetChanged();
+        hideOrShowEmptyView();
+    }
+
+    private void hideOrShowEmptyView() {
+        // Display the empty view if there are no exercises in the Routine Session
+        if (mExerciseSession == null || mExerciseSession.getNumSets() == 0){
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+        else{
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }
     }
 
     /**

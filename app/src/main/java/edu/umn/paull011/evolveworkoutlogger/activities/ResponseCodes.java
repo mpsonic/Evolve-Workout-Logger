@@ -8,7 +8,8 @@ package edu.umn.paull011.evolveworkoutlogger.activities;
 public enum ResponseCodes {
 
     NEW_ROUTINE(1),
-    NEW_EXERCISE(2);
+    NEW_EXERCISE(2),
+    EDIT_EXERCISE(3);
 
     ResponseCodes(int value) {
         mValue = value;

@@ -126,6 +126,7 @@ public class ActiveExerciseSession extends AppCompatActivity implements
             case R.id.fab_add:
                 addSet();
         }
+        refreshFab();
     }
 
     private void moveToNextSet() {
@@ -154,13 +155,21 @@ public class ActiveExerciseSession extends AppCompatActivity implements
         Log.d(TAG,"refreshFab");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
-        if (mExerciseSession.isCompleted()) {
-            fab.setImageResource(R.drawable.ic_done_all_white_36dp);
+        if (mExerciseSession.getNumSets() == 0) {
             fabAdd.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.GONE);
         }
         else {
-            fab.setImageResource(R.drawable.ic_done_white_36dp);
-            fabAdd.setVisibility(View.GONE);
+            if (mExerciseSession.isCompleted()) {
+                fab.setImageResource(R.drawable.ic_done_all_white_36dp);
+                fab.setVisibility(View.VISIBLE);
+                fabAdd.setVisibility(View.VISIBLE);
+            }
+            else {
+                fab.setImageResource(R.drawable.ic_done_white_36dp);
+                fab.setVisibility(View.VISIBLE);
+                fabAdd.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -185,7 +194,6 @@ public class ActiveExerciseSession extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG,"onOptionsItemSelected");
         int id = item.getItemId();
-        Intent i;
         switch (id) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);

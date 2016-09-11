@@ -209,10 +209,18 @@ public class ExerciseSession {
     // finish the current set and move pointer to the next set
     public void completeCurrentSetAndMoveToNext(){
         Log.d(TAG,"completeCurrentSetAndMoveToNext");
+
         if (!this.isCompleted() && this.getNumSets() > 0) {
             Set currentSet = this.getSet(mCurrentSetIndex);
             if (!currentSet.isCompleted()){
                 currentSet.finish();
+                if (mCurrentSetIndex == 0) {
+                    for (MeasurementCategory category: MeasurementCategory.values()) {
+                        if (currentSet.hasCategory(category)) {
+                            mExercise.addInitialMeasurementData(currentSet.getMeasurementData(category));
+                        }
+                    }
+                }
             }
             if (mCurrentSetIndex != getNumSets() - 1){
                 mCurrentSetIndex++;

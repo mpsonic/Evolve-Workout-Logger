@@ -8,7 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 
 public class StartPage extends AppCompatActivity {
@@ -21,6 +23,7 @@ public class StartPage extends AppCompatActivity {
         setContentView(edu.umn.paull011.evolveworkoutlogger.R.layout.activity_start_page);
         Toolbar toolbar = (Toolbar) findViewById(edu.umn.paull011.evolveworkoutlogger.R.id.toolbar);
         setSupportActionBar(toolbar);
+        DatabaseHelper db = DatabaseHelper.getInstance(getBaseContext());
 
         Runnable cleanDatabases = new Runnable() {
             @Override
@@ -30,6 +33,26 @@ public class StartPage extends AppCompatActivity {
             }
         };
         cleanDatabases.run();
+
+        int daysSinceLastRoutineSession = db.getDaysSinceLastRoutineSession();
+        TextView welcomeText = (TextView) findViewById(R.id.welcome_message);
+        String welcomeMessage;
+        if (daysSinceLastRoutineSession == -1) {
+            welcomeMessage = "Welcome to Evolve Workout Logger!" +
+                    " Start your first routine by pressing the button below";
+        }
+        else if (daysSinceLastRoutineSession == 0) {
+            welcomeMessage = "Congrats! You've done your workout for today. Time to chill ";
+                    //new String(Character.toChars(0x1f60e)); (sunglasses face)
+        }
+        else {
+            welcomeMessage = "It's been " + daysSinceLastRoutineSession + " days since your last workout";
+            if (daysSinceLastRoutineSession > 3) {
+                welcomeMessage += " :'(";
+            }
+        }
+        welcomeText.setText(welcomeMessage);
+
     }
 
     @Override
