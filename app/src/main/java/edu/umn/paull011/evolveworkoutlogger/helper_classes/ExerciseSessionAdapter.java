@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
     private ExerciseSession mExerciseSession;
     private Exercise mExercise;
     private int mCompletedColor;
+    private int mIncompletedColor;
     private Context mContext;
     private ExerciseSessionDataHolder dataHolder = ExerciseSessionDataHolder.getInstance();
     private static final String TAG = ExerciseSessionAdapter.class.getSimpleName();
@@ -59,7 +61,7 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
     }
 
     public class ViewHolder extends RemovableViewHolder{
-        public ViewGroup mViewGroup;
+        public RelativeLayout mRelativeLayout;
         public TextView mSetNumber;
         public ImageView mCurrentSetCircle;
         public List<FrameLayout> mMeasurementLayouts;
@@ -69,7 +71,7 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
         public ViewHolder(View v){
             super(v);
             Log.d(TAG,"ViewHolder");
-            mViewGroup = (ViewGroup) this.getSwipableView();
+            mRelativeLayout = (RelativeLayout) this.getSwipableView();
             mSetNumber = (TextView) v.findViewById(R.id.set_number);
             mCurrentSetCircle = (ImageView) v.findViewById(R.id.current_set_circle);
             mMeasurementLayouts = new ArrayList<>(4);
@@ -103,6 +105,7 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
         mExercise = dataHolder.getExercise();
         mExerciseSession = dataHolder.getExerciseSession();
         mCompletedColor = ContextCompat.getColor(context, R.color.accent_green);
+        mIncompletedColor = ContextCompat.getColor(context, R.color.white);
     }
 
     @Override
@@ -119,7 +122,6 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
     public void onViewDetachedFromWindow(ViewHolder holder) {
         int position = holder.getAdapterPosition();
         Log.d(TAG, "onViewDetachedFromWindow (" + position + ")");
-        holder.mViewGroup.clearFocus();
         super.onViewDetachedFromWindow(holder);
     }
 
@@ -129,6 +131,7 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
         Set set = mExerciseSession.getSet(position);
         TextView setNumberText = holder.mSetNumber;
         setNumberText.setText(String.valueOf(position + 1));
+        holder.mRelativeLayout.setBackgroundColor(mIncompletedColor);
         if (mExerciseSession.getCurrentSetIndex() == position && !mExerciseSession.isCompleted()) {
             holder.mCurrentSetCircle.setVisibility(View.VISIBLE);
         }
@@ -155,7 +158,7 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
             }
         }
         if (set.isCompleted()) {
-            holder.mViewGroup.setBackgroundColor(mCompletedColor);
+            holder.mRelativeLayout.setBackgroundColor(mCompletedColor);
         }
     }
 
@@ -175,13 +178,28 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(RecyclerView.ViewHolder viewHolder) {
+        ExerciseSessionAdapter.ViewHolder vh = (ExerciseSessionAdapter.ViewHolder) viewHolder;
+        int position = vh.getAdapterPosition();
         Log.d(TAG,"onItemDismiss (" + position + ")");
+
+        List<ButtonEditText> bets = vh.mButtonEditTexts;
+        for (ButtonEditText bet: bets) {
+            bet.clearFocus();
+        }
+
         mExerciseSession.removeSet(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mExerciseSession.getNumSets() - position);
+        if (position != 0) {
+            notifyItemRangeChanged(position, mExerciseSession.getNumSets() - position);
+        }
+        else {
+            notifyDataSetChanged();
+        }
     }
 
+
+    // Methods below overridden to provide log messages
     @Override
     public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
@@ -250,4 +268,5 @@ public class ExerciseSessionAdapter extends RecyclerView.Adapter<ExerciseSession
         super.onDetachedFromRecyclerView(recyclerView);
         Log.d(TAG, "onDetachedFromRecyclerView");
     }
+
 }

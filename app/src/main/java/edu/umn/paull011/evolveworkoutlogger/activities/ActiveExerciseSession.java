@@ -90,6 +90,7 @@ public class ActiveExerciseSession extends AppCompatActivity implements
     public void onExerciseSessionUpdate() {
         Log.d(TAG,"onExerciseSessionUpdate");
         refreshFab();
+        mSetsFragment.hideOrShowEmptyView();
     }
 
     @Override
@@ -111,16 +112,21 @@ public class ActiveExerciseSession extends AppCompatActivity implements
         int id = view.getId();
         switch (id) {
             case R.id.fab:
-                if (mExerciseSession.isCompleted()) {
-                    if (mExercisePosition == mRoutineSession.getExerciseSessionCount() - 1) {
-                        NavUtils.navigateUpFromSameTask(this);
-                    }
-                    else {
-                        moveToNextExerciseSession();
-                    }
+                if (mExerciseSession.getNumSets() == 0) {
+                    addSet();
                 }
                 else {
-                    moveToNextSet();
+                    if (mExerciseSession.isCompleted()) {
+                        if (mExercisePosition == mRoutineSession.getExerciseSessionCount() - 1) {
+                            NavUtils.navigateUpFromSameTask(this);
+                        }
+                        else {
+                            moveToNextExerciseSession();
+                        }
+                    }
+                    else {
+                        moveToNextSet();
+                    }
                 }
                 break;
             case R.id.fab_add:
@@ -135,7 +141,7 @@ public class ActiveExerciseSession extends AppCompatActivity implements
         Set completedSet = mExerciseSession.getCurrentSet();
         int completedSetIndex = mExerciseSession.getCurrentSetIndex();
         mExerciseSession.completeCurrentSetAndMoveToNext();
-        mSetsFragment.refreshNextSet(mCurrentSetIndex);
+        mSetsFragment.refreshNextSet(completedSetIndex);
         mCurrentSetIndex = mExerciseSession.getCurrentSetIndex();
         db.insertSet(mExerciseSession, completedSetIndex, completedSet);
     }
@@ -155,20 +161,28 @@ public class ActiveExerciseSession extends AppCompatActivity implements
         Log.d(TAG,"refreshFab");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+        float density = getResources().getDisplayMetrics().density;
         if (mExerciseSession.getNumSets() == 0) {
-            fabAdd.setVisibility(View.VISIBLE);
-            fab.setVisibility(View.GONE);
+            /*CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+            params.setAnchorId(View.NO_ID);
+            params.bottomMargin = ((int) density * 16);
+            fabAdd.setLayoutParams(params);*/
+            fab.setImageResource(R.drawable.ic_add_white_36dp);
+            fabAdd.hide();
         }
         else {
             if (mExerciseSession.isCompleted()) {
                 fab.setImageResource(R.drawable.ic_done_all_white_36dp);
-                fab.setVisibility(View.VISIBLE);
-                fabAdd.setVisibility(View.VISIBLE);
+                fab.show();
+                /*CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+                params.bottomMargin = ((int) density * 96);
+                fabAdd.setLayoutParams(params);*/
+                fabAdd.show();
             }
             else {
                 fab.setImageResource(R.drawable.ic_done_white_36dp);
-                fab.setVisibility(View.VISIBLE);
-                fabAdd.setVisibility(View.GONE);
+                fab.show();
+                fabAdd.hide();
             }
         }
     }

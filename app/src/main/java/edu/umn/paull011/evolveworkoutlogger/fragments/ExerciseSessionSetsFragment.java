@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -43,7 +42,7 @@ public class ExerciseSessionSetsFragment extends Fragment{
 
     private static final String TAG = ExerciseSessionSetsFragment.class.getSimpleName();
 
-    public class ClearFocusTouchListener implements RecyclerView.OnTouchListener{
+    /*public class ClearFocusTouchListener implements RecyclerView.OnTouchListener{
 
         private final String TAG = ClearFocusTouchListener.class.getSimpleName();
         @Override
@@ -58,7 +57,7 @@ public class ExerciseSessionSetsFragment extends Fragment{
             }
             return false;
         }
-    }
+    }*/
 
     public ExerciseSessionSetsFragment() {
         Log.d(TAG,"ExerciseSessionSetsFragment");
@@ -179,7 +178,6 @@ public class ExerciseSessionSetsFragment extends Fragment{
     public void refreshSetAdded() {
         Log.d(TAG,"refreshSetAdded");
         mAdapter.notifyItemInserted(mExerciseSession.getNumSets() - 1);
-        hideOrShowEmptyView();
     }
 
     public void refreshNextSet(int currentSetPosition) {
@@ -193,10 +191,9 @@ public class ExerciseSessionSetsFragment extends Fragment{
     public void refresh() {
         Log.d(TAG,"refresh");
         mAdapter.notifyDataSetChanged();
-        hideOrShowEmptyView();
     }
 
-    private void hideOrShowEmptyView() {
+    public void hideOrShowEmptyView() {
         // Display the empty view if there are no exercises in the Routine Session
         if (mExerciseSession == null || mExerciseSession.getNumSets() == 0){
             mRecyclerView.setVisibility(View.GONE);

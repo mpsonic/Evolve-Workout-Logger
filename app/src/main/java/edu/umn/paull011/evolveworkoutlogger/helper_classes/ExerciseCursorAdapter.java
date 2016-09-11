@@ -90,7 +90,8 @@ public class ExerciseCursorAdapter
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(RecyclerView.ViewHolder viewHolder) {
+        int position = viewHolder.getAdapterPosition();
         Log.d(TAG,"onItemDismiss (" + position + ")");
         mCursor.moveToPosition(position);
         String exerciseName = mCursor.getString(0);

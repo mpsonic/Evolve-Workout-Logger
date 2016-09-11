@@ -37,7 +37,7 @@
         app:layout_anchor="@id/fab"
         app:layout_anchorGravity="top"
         android:id="@+id/fab_add"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

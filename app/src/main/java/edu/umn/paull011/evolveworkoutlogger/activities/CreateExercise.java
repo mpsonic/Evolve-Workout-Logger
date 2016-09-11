@@ -609,7 +609,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         p.setBehavior(null); //should disable default animations
         p.setAnchorId(View.NO_ID); //should let you set visibility
         fab.setLayoutParams(p);*/
-        fab.setActivated(false);
+        fab.setVisibility(View.GONE);
     }
 
     private void showFab() {

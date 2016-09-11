@@ -91,7 +91,8 @@ public class RoutineCursorAdapter
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(RecyclerView.ViewHolder viewHolder) {
+        int position = viewHolder.getAdapterPosition();
         Log.d(TAG,"onItemDismiss (" + position + ")");
         String routineName = getRoutineNameFromPosition(position);
         mPosition = position;

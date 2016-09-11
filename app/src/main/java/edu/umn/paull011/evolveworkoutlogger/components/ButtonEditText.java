@@ -346,4 +346,12 @@ public class ButtonEditText extends LinearLayout {
             }
         }
     }
+
+    @Override
+    public void clearFocus() {
+        super.clearFocus();
+        mEditText.clearFocus();
+        mLessButton.clearFocus();
+        mMoreButton.clearFocus();
+    }
 }

@@ -92,7 +92,8 @@ public class RoutineSessionAdapter
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(RecyclerView.ViewHolder viewHolder) {
+        int position = viewHolder.getAdapterPosition();
         Log.d(TAG,"onItemDismiss (" + position + ")");
 //        DatabaseHelper db = DatabaseHelper.getInstance(mContext);
         mRoutineSession.getRoutine().removeExercise(position);
