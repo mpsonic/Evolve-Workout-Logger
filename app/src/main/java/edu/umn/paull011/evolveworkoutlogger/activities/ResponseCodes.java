@@ -9,7 +9,8 @@ public enum ResponseCodes {
 
     NEW_ROUTINE(1),
     NEW_EXERCISE(2),
-    EDIT_EXERCISE(3);
+    EDIT_ROUTINE(3),
+    EDIT_EXERCISE(4);
 
     ResponseCodes(int value) {
         mValue = value;

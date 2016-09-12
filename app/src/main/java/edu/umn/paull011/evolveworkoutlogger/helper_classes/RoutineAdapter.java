@@ -19,12 +19,13 @@ import edu.umn.paull011.evolveworkoutlogger.data_structures.Routine;
  */
 
 public class RoutineAdapter
-        extends RecyclerView.Adapter<RoutineAdapter.ViewHolder> {
+        extends RecyclerView.Adapter<RoutineAdapter.ViewHolder>
+        implements ItemTouchHelperAdapter{
 
     private Routine mRoutine;
     private static final String TAG = RoutineAdapter.class.getSimpleName();
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RemovableViewHolder{
         public TextView exerciseName;
 
         public ViewHolder(View v) {
@@ -65,4 +66,15 @@ public class RoutineAdapter
         return mRoutine.getNumExercises();
     }
 
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        return false;
+    }
+
+    @Override
+    public void onItemDismiss(RecyclerView.ViewHolder viewHolder) {
+        int position = viewHolder.getAdapterPosition();
+        mRoutine.removeExercise(position);
+        notifyItemRemoved(position);
+    }
 }

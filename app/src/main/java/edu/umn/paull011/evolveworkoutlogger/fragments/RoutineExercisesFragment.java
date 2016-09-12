@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,10 @@ import android.view.ViewGroup;
 
 import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Routine;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.ItemTouchHelperCallback;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RecyclerViewItemClickListener;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.RoutineAdapter;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.TestItemTouchHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -114,6 +117,10 @@ public class RoutineExercisesFragment extends Fragment {
         // specify an adapter
         mAdapter = new RoutineAdapter(mRoutine);
         mRecyclerView.setAdapter(mAdapter);
+
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mAdapter);
+        ItemTouchHelper touchHelper = new TestItemTouchHelper(callback); //Prints log messages
+        touchHelper.attachToRecyclerView(mRecyclerView);
 
         // Make recyclerView invisible if there are no exercises in the routine
         if(mRoutine.getNumExercises() == 0){

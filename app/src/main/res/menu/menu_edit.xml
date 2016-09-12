@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/edit_exercise"
+        android:id="@+id/action_edit"
         android:icon="@drawable/ic_edit_white_24dp"
-        android:title="Edit Exercise"
+        android:title="Edit"
         app:showAsAction="always"/>
 
 </menu>

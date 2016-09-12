@@ -35,6 +35,12 @@ public class MyRoutines extends AppCompatActivity
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        mFragment.refresh();
+    }
+
+    @Override
     public void routineSelected(String routineName) {
         Intent i = new Intent(this, ViewRoutine.class);
         i.putExtra(DatabaseHelper.KEY_ROUTINE_NAME, routineName);

@@ -1,10 +1,13 @@
 package edu.umn.paull011.evolveworkoutlogger.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import edu.umn.paull011.evolveworkoutlogger.R;
@@ -67,5 +70,38 @@ public class ViewRoutine extends AppCompatActivity
         Intent i = new Intent(this, ViewExercise.class);
         i.putExtra(DatabaseHelper.KEY_EXERCISE_NAME, exerciseName);
         startActivity(i);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        Intent i;
+        switch (id) {
+            case R.id.action_edit:
+                // Start Edit routine activity
+                i = new Intent(this, CreateRoutine.class);
+                i.putExtra("Edit", true);
+                i.putExtra(DatabaseHelper.KEY_ROUTINE_NAME, mRoutine.getName());
+                startActivityForResult(i, ResponseCodes.EDIT_ROUTINE.getValue());
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ResponseCodes.EDIT_ROUTINE.getValue()) {
+            if (resultCode == Activity.RESULT_OK) {
+                setIntent(data);
+                recreate();
+            }
+        }
     }
 }

@@ -935,6 +935,30 @@ public class DatabaseHelper extends SQLiteAssetHelper {
 
         return routineName;
     }    // Routine Exercises table column names
+
+    /***
+     * Replaces the old routine with the new one while retaining all old records associated with
+     * the routine.
+     * @param oldRoutineName The name of the routine to be replaced
+     * @param newRoutine Replaces the old routine
+     * @return name of the new routine
+     */
+    public String replaceRoutine(String oldRoutineName, Routine newRoutine) {
+        Log.d(TAG,"replaceRoutine");
+        deleteRoutine(oldRoutineName);
+        String newRoutineName = insertRoutine(newRoutine, true);
+        ContentValues routineNameUpdate = new ContentValues();
+        routineNameUpdate.put(KEY_ROUTINE_NAME, newRoutineName);
+        // Routine Sessions
+        writableDB.update(
+                TABLE_ROUTINE_SESSIONS,
+                routineNameUpdate,
+                KEY_ROUTINE_NAME + "=?",
+                new String[] {oldRoutineName}
+        );
+        return newRoutineName;
+    }
+
     /**
      * @param routine The routine to update in the database
      * @return the name of the successfully updated routine

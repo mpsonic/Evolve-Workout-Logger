@@ -29,6 +29,7 @@ public class CreateRoutine extends AppCompatActivity
     private RoutineExercisesFragment mFragment;
     private FloatingActionButton fab;
 
+    private boolean mEditingMode;
     private static final String TITLE_STRING = "Title";
     private static final String DESCRIPTION_STRING = "Description";
     private static final String TAG = CreateRoutine.class.getSimpleName();
@@ -39,8 +40,8 @@ public class CreateRoutine extends AppCompatActivity
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_routine);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        mEditingMode = getIntent().getBooleanExtra("Edit", false);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +56,7 @@ public class CreateRoutine extends AppCompatActivity
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
 
         // Load the routine that is currently being created
+
         if (savedInstanceState != null) {
             char[] temp = savedInstanceState.getCharArray(DatabaseHelper.KEY_ROUTINE_NAME);
             if (temp != null) {
@@ -62,13 +64,21 @@ public class CreateRoutine extends AppCompatActivity
                 mRoutine = databaseHelper.getRoutine(routineName);
                 mTitle = savedInstanceState.getString(TITLE_STRING);
                 mDescription = savedInstanceState.getString(DESCRIPTION_STRING);
-                mEditTitle.setText(mTitle);
-                mEditDescription.setText(mDescription);
             }
-        } else {
-            mRoutine = new Routine();
-            databaseHelper.insertRoutine(mRoutine, false);
         }
+        else {
+            if (mEditingMode) {
+                String routineName = getIntent().getStringExtra(DatabaseHelper.KEY_ROUTINE_NAME);
+                mRoutine = databaseHelper.getRoutine(routineName);
+                mTitle = mRoutine.getName();
+                mDescription = mRoutine.getDescription();
+            }
+            else {
+                mRoutine = new Routine();
+            }
+        }
+        mEditTitle.setText(mTitle);
+        mEditDescription.setText(mDescription);
 
         FragmentManager fm = getSupportFragmentManager();
         mFragment = (RoutineExercisesFragment) fm.findFragmentById(R.id.fragment_create_routine);
@@ -77,6 +87,15 @@ public class CreateRoutine extends AppCompatActivity
         if (mRoutine.getNumExercises() == 0) {
             fab.hide();
         }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mEditingMode) {
+            toolbar.setTitle("Edit Routine");
+        }
+        else {
+            toolbar.setTitle("Create Routine");
+        }
+        setSupportActionBar(toolbar);
     }
 
 
@@ -144,8 +163,14 @@ public class CreateRoutine extends AppCompatActivity
 
         extractRoutineDataFromActivity();
 
+        String routineName;
         DatabaseHelper db = DatabaseHelper.getInstance(this);
-        String routineName = db.insertRoutine(mRoutine, true);
+        if (mEditingMode && mTitle != mRoutine.getName()) {
+            routineName = db.replaceRoutine(mTitle, mRoutine);
+        }
+        else {
+            routineName = db.insertRoutine(mRoutine, true);
+        }
         db.close();
         return routineName.equals(mRoutine.getName());
     }

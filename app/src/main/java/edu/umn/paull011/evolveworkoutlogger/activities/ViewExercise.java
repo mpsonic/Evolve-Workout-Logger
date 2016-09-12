@@ -77,8 +77,7 @@ public class ViewExercise extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_view_exercise, menu);
-        MenuItem edit = menu.findItem(R.id.edit_exercise);
+        inflater.inflate(R.menu.menu_edit, menu);
         return true;
     }
 
@@ -86,7 +85,7 @@ public class ViewExercise extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.edit_exercise:
+            case R.id.action_edit:
                 launchEditExerciseActivity();
                 return true;
         }
