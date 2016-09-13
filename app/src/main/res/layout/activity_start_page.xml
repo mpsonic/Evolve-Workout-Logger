@@ -7,65 +7,85 @@
     tools:context="edu.umn.paull011.evolveworkoutlogger.activities.MyRoutines"
     android:background="@drawable/start_page_background_gradient">
 
-    <include layout="@layout/appbar"/>
-
-    <RelativeLayout
-        android:layout_height="match_parent"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin" tools:context="edu.umn.paull011.evolveworkoutlogger.activities.StartPage">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/evolve_logo"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
-            android:id="@+id/icon"
-            android:layout_marginTop="100dp"
-            android:contentDescription="Evolve Icon"/>
+        <include layout="@layout/appbar"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/welcome_message"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:layout_below="@id/icon"
-            android:layout_marginTop="32dp"/>
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin" tools:context="edu.umn.paull011.evolveworkoutlogger.activities.StartPage"
+            android:orientation="vertical">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/component_testing_button_text"
-            android:id="@+id/button_test_components"
-            android:layout_alignParentBottom="false"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@+id/button_start_routine"
-            android:onClick="handleButtonClick" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/evolve_logo"
+                    android:id="@+id/icon"
+                    android:layout_gravity="center"
+                    android:contentDescription="Evolve Icon"/>
+            </FrameLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_clear_data"
-            android:id="@+id/button_clear_data"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@id/button_test_components"
-            android:onClick="handleButtonClick" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/welcome_message"
+                    android:gravity="center_horizontal"
+                    android:text="This is some placeholder Note text. Pay no attention to this text"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/font_size_notes"/>
+            </FrameLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_a_routine_button_text"
-            android:id="@+id/button_start_routine"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="100dp"
-            android:onClick="handleButtonClick" />
 
-    </RelativeLayout>
+            <!--<Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/component_testing_button_text"
+                android:id="@+id/button_test_components"
+                android:layout_alignParentBottom="false"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/button_start_routine"
+                android:onClick="handleButtonClick" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_clear_data"
+                android:id="@+id/button_clear_data"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@id/button_test_components"
+                android:onClick="handleButtonClick" />-->
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_a_routine_button_text"
+                    android:id="@+id/button_start_routine"
+                    android:onClick="handleButtonClick"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

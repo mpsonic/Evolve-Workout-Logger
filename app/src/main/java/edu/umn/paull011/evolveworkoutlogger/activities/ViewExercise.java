@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -19,9 +21,12 @@ import edu.umn.paull011.evolveworkoutlogger.R;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.DatabaseHelper;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.Exercise;
 import edu.umn.paull011.evolveworkoutlogger.data_structures.ExerciseStats;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.MeasurementCategory;
+import edu.umn.paull011.evolveworkoutlogger.data_structures.Unit;
 import edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseHistoryFragment;
 import edu.umn.paull011.evolveworkoutlogger.fragments.ExerciseStatsFragment;
 import edu.umn.paull011.evolveworkoutlogger.helper_classes.ExerciseStatsDataHolder;
+import edu.umn.paull011.evolveworkoutlogger.helper_classes.TimeStringHelper;
 
 public class ViewExercise extends AppCompatActivity
         implements ExerciseStatsFragment.OnFragmentInteractionListener,
@@ -47,10 +52,13 @@ public class ViewExercise extends AppCompatActivity
 
         setContentView(R.layout.activity_view_exercise);
 
+        // Set up views displaying times performed, date last performed, and increase per session
         TextView timesPerformed = (TextView) findViewById(R.id.number_times_performed);
         TextView lastDatePerformed = (TextView) findViewById(R.id.date_last_performed);
+        TextView increasePerSession = (TextView) findViewById(R.id.increasePerSessionAmount);
         assert timesPerformed != null;
         assert lastDatePerformed != null;
+        assert increasePerSession != null;
         timesPerformed.setText(String.valueOf(exerciseStats.getTimesPerformed()));
         DateFormat format = new SimpleDateFormat("MM/dd/yy", Locale.US);
         String dateString = exerciseStats.getLastPerformedDateString();
@@ -60,13 +68,37 @@ public class ViewExercise extends AppCompatActivity
         else {
             lastDatePerformed.setText(R.string.text_never);
         }
+        MeasurementCategory incrementCategory = exercise.getCategoryToIncrement();
+        String incrementString = "";
+        if (incrementCategory != null) {
+            float incrementNum = exercise.getIncrement();
+            Unit incrementUnit = exercise.getUnit(incrementCategory);
+            String unitString = incrementUnit.getDisplayName();
+            String incrementNumString;
+            if (incrementCategory != MeasurementCategory.TIME) {
+                incrementNumString = String.valueOf(incrementNum);
+                incrementString = incrementNumString + " " + unitString;
+            }
+            else {
+                incrementNumString = TimeStringHelper.createTimeString((int) incrementNum);
+                incrementString = incrementNumString;
+            }
 
+        }
+        increasePerSession.setText(incrementString);
+        if (incrementString.equals("")) {
+            LinearLayout incrementLayout = (LinearLayout) findViewById(R.id.increasePerSessionLayout);
+            incrementLayout.setVisibility(View.GONE);
+        }
+
+        // Set up toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(exerciseName);
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Get activity fragments
         mStatsFragment = (ExerciseStatsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_exercise_stats);
         mHistoryFragment = (ExerciseHistoryFragment)

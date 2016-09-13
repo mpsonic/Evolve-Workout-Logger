@@ -2,7 +2,6 @@ package edu.umn.paull011.evolveworkoutlogger.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +17,7 @@ import edu.umn.paull011.evolveworkoutlogger.helper_classes.RoutineStatsDataHolde
 /**
  *
  */
-public class RoutineHistoryFragment extends Fragment {
+public class RoutineHistoryFragment extends BaseFragment {
 
     private OnFragmentInteractionListener mListener;
     private RoutineStatsDataHolder mDataHolder = RoutineStatsDataHolder.getInstance();

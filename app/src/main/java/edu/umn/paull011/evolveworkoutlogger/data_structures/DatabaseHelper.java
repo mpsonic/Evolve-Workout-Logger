@@ -747,6 +747,25 @@ public class DatabaseHelper extends SQLiteAssetHelper {
             }
         }
         setsCursor.close();
+        Cursor routineSessionCursor = readableDB.query(
+                TABLE_ROUTINE_SESSIONS,
+                new String[] {KEY_DATE, KEY_NOTES},
+                KEY_ROUTINE_NAME + "=?",
+                new String[]{routine.getName()},
+                null,
+                null,
+                null
+        );
+        String notes;
+        if (routineSessionCursor.moveToFirst()) {
+            while (!routineSessionCursor.isAfterLast()) {
+                date = Date.valueOf(routineSessionCursor.getString(0));
+                notes = routineSessionCursor.getString(1);
+                stats.addNote(date, notes);
+                routineSessionCursor.moveToNext();
+            }
+        }
+        routineSessionCursor.close();
         return stats;
     }
 

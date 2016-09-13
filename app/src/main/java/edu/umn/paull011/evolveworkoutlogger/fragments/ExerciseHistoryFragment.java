@@ -25,7 +25,7 @@ import edu.umn.paull011.evolveworkoutlogger.helper_classes.ExerciseStatsDataHold
  * Use the {@link ExerciseHistoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExerciseHistoryFragment extends Fragment {
+public class ExerciseHistoryFragment extends BaseFragment {
     private static final String TAG = ExerciseHistoryFragment.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private ExerciseHistoryAdapter mAdapter;

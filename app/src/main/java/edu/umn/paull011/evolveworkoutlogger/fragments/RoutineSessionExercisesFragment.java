@@ -27,7 +27,7 @@ import edu.umn.paull011.evolveworkoutlogger.helper_classes.TestItemTouchHelper;
  * Use the {@link RoutineSessionExercisesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RoutineSessionExercisesFragment extends Fragment {
+public class RoutineSessionExercisesFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
     private RoutineSessionAdapter mAdapter;

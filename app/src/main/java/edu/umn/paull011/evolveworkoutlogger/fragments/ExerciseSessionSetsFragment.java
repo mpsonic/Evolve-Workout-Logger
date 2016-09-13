@@ -3,7 +3,6 @@ package edu.umn.paull011.evolveworkoutlogger.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -30,7 +29,7 @@ import edu.umn.paull011.evolveworkoutlogger.helper_classes.TestItemTouchHelper;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class ExerciseSessionSetsFragment extends Fragment{
+public class ExerciseSessionSetsFragment extends BaseFragment{
 
     private RecyclerView mRecyclerView;
     private ExerciseSessionAdapter mAdapter;

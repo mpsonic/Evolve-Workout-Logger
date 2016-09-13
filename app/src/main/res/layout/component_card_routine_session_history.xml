@@ -18,6 +18,15 @@
             android:layout_height="wrap_content"
             android:text="@string/placeholder_text"/>
 
+        <TextView
+            android:id="@+id/text_card_routine_session_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_text"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_horizontal"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_card_routine_session_history"
             android:name="edu.umn.paull011.evolveworkoutlogger.fragments.RoutineHistoryFragment"

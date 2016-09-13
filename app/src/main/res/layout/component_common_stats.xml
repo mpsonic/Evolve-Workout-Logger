@@ -47,7 +47,6 @@
         android:id="@+id/times_performed_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/single_line_list_tb_padding"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -74,6 +73,46 @@
 
             <TextView
                 android:id="@+id/number_times_performed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/single_line_list_tb_padding"
+                android:layout_marginTop="@dimen/single_line_list_tb_padding"
+                android:text="@string/placeholder_number"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/increasePerSessionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/single_line_list_tb_padding"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3">
+
+            <TextView
+                android:id="@+id/increasePerSessionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/single_line_list_tb_padding"
+                android:layout_marginLeft="@dimen/single_line_list_lr_padding"
+                android:layout_marginStart="@dimen/single_line_list_lr_padding"
+                android:layout_marginTop="@dimen/single_line_list_tb_padding"
+                android:text="@string/text_increase_per_session"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/increasePerSessionAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

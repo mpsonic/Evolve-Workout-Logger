@@ -25,7 +25,7 @@ import edu.umn.paull011.evolveworkoutlogger.helper_classes.ExerciseStatsDataHold
  * Use the {@link ExerciseStatsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExerciseStatsFragment extends Fragment {
+public class ExerciseStatsFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
     private ExerciseStatsAdapter mAdapter;

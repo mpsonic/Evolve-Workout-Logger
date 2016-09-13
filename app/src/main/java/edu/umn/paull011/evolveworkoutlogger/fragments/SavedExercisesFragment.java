@@ -4,7 +4,6 @@ import android.app.ListFragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -27,7 +26,7 @@ import edu.umn.paull011.evolveworkoutlogger.helper_classes.TestItemTouchHelper;
  * Use the {@link SavedExercisesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SavedExercisesFragment extends Fragment {
+public class SavedExercisesFragment extends BaseFragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 

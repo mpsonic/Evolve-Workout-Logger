@@ -237,6 +237,7 @@ public class ActiveExerciseSession extends AppCompatActivity implements
         i.putExtra(DatabaseHelper.KEY_POSITION, mExercisePosition + 1);
         startActivity(i);
         finish();
+        /*overridePendingTransition(R.anim.slide_in_up, R.anim.nothing);*/
     }
 
     public void setSelected(int position) {
@@ -252,4 +253,23 @@ public class ActiveExerciseSession extends AppCompatActivity implements
                 fragmentManager.findFragmentById(edu.umn.paull011.evolveworkoutlogger.R.id.fragment_exercise_session_sets);
         mSetsFragment.setExerciseSession(mExerciseSession);
     }
+
+    // Removes focus from EditTexts when any other area of the activity is touched
+    // Doesn't allow ButtonEditText buttons to work
+    /*@Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }*/
 }

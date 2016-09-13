@@ -35,6 +35,7 @@ public class RoutineExercisesFragment extends Fragment {
 
     private Routine mRoutine;
     private OnFragmentInteractionListener mListener;
+    private boolean mExercisesDeletable;
     private static final String TAG = RoutineExercisesFragment.class.getSimpleName();
 
 
@@ -59,6 +60,7 @@ public class RoutineExercisesFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
+            mExercisesDeletable = mListener.exercisesDeletable();
 
         } else {
             throw new RuntimeException(context.toString()
@@ -118,9 +120,11 @@ public class RoutineExercisesFragment extends Fragment {
         mAdapter = new RoutineAdapter(mRoutine);
         mRecyclerView.setAdapter(mAdapter);
 
-        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mAdapter);
-        ItemTouchHelper touchHelper = new TestItemTouchHelper(callback); //Prints log messages
-        touchHelper.attachToRecyclerView(mRecyclerView);
+        if (mExercisesDeletable) {
+            ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mAdapter);
+            ItemTouchHelper touchHelper = new TestItemTouchHelper(callback); //Prints log messages
+            touchHelper.attachToRecyclerView(mRecyclerView);
+        }
 
         // Make recyclerView invisible if there are no exercises in the routine
         if(mRoutine.getNumExercises() == 0){
@@ -161,5 +165,6 @@ public class RoutineExercisesFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void exerciseSelected(String exerciseName);
+        boolean exercisesDeletable();
     }
 }

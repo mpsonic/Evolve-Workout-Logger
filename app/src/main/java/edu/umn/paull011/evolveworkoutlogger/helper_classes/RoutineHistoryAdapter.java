@@ -46,11 +46,13 @@ public class RoutineHistoryAdapter extends RecyclerView.Adapter<RoutineHistoryAd
         Log.d(TAG, "onBindViewHolder");
         RecyclerView recyclerView = holder.mSessionRecyclerView;
         TextView dateText = holder.mDateText;
+        TextView notesText = holder.mNotes;
         String dateString = mRoutineStats.getDateString(position);
         final List<Pair<String, Integer>> exerciseCountList = mRoutineStats.getExerciseSetCounts(position);
         RoutineHistoryCardAdapter cardAdapter = new RoutineHistoryCardAdapter(exerciseCountList);
 
         dateText.setText(dateString);
+        notesText.setText(mRoutineStats.getNote(position));
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager((Context) mListener);
         recyclerView.setLayoutManager(layoutManager);
@@ -77,12 +79,15 @@ public class RoutineHistoryAdapter extends RecyclerView.Adapter<RoutineHistoryAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mDateText;
+        public TextView mNotes;
         public RecyclerView mSessionRecyclerView;
 
         public ViewHolder(View v) {
             super(v);
             mDateText = (TextView)
                     v.findViewById(R.id.text_card_routine_session_history_date);
+            mNotes = (TextView)
+                    v.findViewById(R.id.text_card_routine_session_notes);
             mSessionRecyclerView = (RecyclerView)
                     v.findViewById(R.id.recycler_view_card_routine_session_history);
         }

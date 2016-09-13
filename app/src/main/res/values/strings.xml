@@ -95,5 +95,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_empty_view_routine_history">No Routine History</string>
     <string name="text_view_routine_exercises_banner">Exercises</string>
+    <string name="text_increase_per_session">Increase Per Session</string>
 
 </resources>

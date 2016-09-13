@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import edu.umn.paull011.evolveworkoutlogger.R;
@@ -41,6 +43,8 @@ public class ViewRoutine extends AppCompatActivity
 
         TextView lastPerformedDate = (TextView) findViewById(R.id.date_last_performed);
         TextView numTimesPerformed = (TextView) findViewById(R.id.number_times_performed);
+        LinearLayout increasePerSession = (LinearLayout) findViewById(R.id.increasePerSessionLayout);
+        increasePerSession.setVisibility(View.GONE);
 
         String lpdString = mRoutineStats.getLastPerformedDateString();
         if (lpdString != null) {
@@ -103,5 +107,10 @@ public class ViewRoutine extends AppCompatActivity
                 recreate();
             }
         }
+    }
+
+    @Override
+    public boolean exercisesDeletable() {
+        return false;
     }
 }

@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -234,7 +233,11 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
 
                     if (exercise.getCategoryToIncrement() == category) {
                         // Click target toggle button
-                        handleButtonClick(unitViews.get(category.value()).get(2));
+                        ToggleButton incrementToggle = (ToggleButton)
+                                unitViews.get(category.value()).get(2);
+                        incrementToggle.setChecked(true);
+                        handleButtonClick(incrementToggle);
+
 
                         // Set up measurement increment views
                         float increment = exercise.getIncrement();
@@ -317,7 +320,7 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
     private void trackedMeasurementToggleClicked(MeasurementCategory category) {
         ToggleButton trackedToggle = (ToggleButton) unitViews.get(category.value()).get(0);
         ToggleButton targetToggle = (ToggleButton) unitViews.get(category.value()).get(2);
-        TableRow row = (TableRow) unitViews.get(category.value()).get(1);
+        LinearLayout row = (LinearLayout) unitViews.get(category.value()).get(1);
         if (hasMeasurementsTracked()) {
             if (!mEditingMode) {
                 startingMeasurementsLayout.setVisibility(View.VISIBLE);
@@ -619,4 +622,23 @@ public class CreateExercise extends AppCompatActivity implements AdapterView.OnI
         fab.setLayoutParams(p);
         fab.show();
     }
+
+    // Removes focus from EditTexts when any other area of the activity is touched
+    // Doesn't allow ButtonEditText buttons to work
+    /*@Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }*/
 }

@@ -114,13 +114,19 @@ public class StartPage extends AppCompatActivity {
                 intent = new Intent(this, StartRoutine.class);
                 startActivity(intent);
                 break;
-            case edu.umn.paull011.evolveworkoutlogger.R.id.button_test_components:
+            /*case edu.umn.paull011.evolveworkoutlogger.R.id.button_test_components:
                 intent = new Intent(this, ComponentTesting.class);
                 startActivity(intent);
                 break;
             case edu.umn.paull011.evolveworkoutlogger.R.id.button_clear_data:
                 DatabaseHelper db = DatabaseHelper.getInstance(this);
-                db.makeFresh(this);
+                db.makeFresh(this);*/
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        recreate();
     }
 }

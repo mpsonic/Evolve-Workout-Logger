@@ -20,11 +20,13 @@ import edu.umn.paull011.evolveworkoutlogger.helper_classes.SortedDateStringList;
 public class RoutineStats {
 
     private HashMap<String, ArrayList<Pair<String, Integer>>> mRoutineData;
+    private HashMap<String, String> mNotes;
     private SortedDateStringList mSortedDates;
     private DateFormat mDateFormat;
 
     public RoutineStats() {
         mRoutineData = new HashMap<>(4);
+        mNotes = new HashMap<>(4);
         mDateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
         mSortedDates = new SortedDateStringList(mDateFormat);
     }
@@ -46,6 +48,11 @@ public class RoutineStats {
         }
     }
 
+    public void addNote(Date date, String note) {
+        String dateString = mDateFormat.format(date);
+        mNotes.put(dateString, note);
+    }
+
     public int getNumDates() {
         return mRoutineData.size();
     }
@@ -53,6 +60,11 @@ public class RoutineStats {
     public List<Pair<String, Integer>> getExerciseSetCounts(int position) {
         String dateString = mSortedDates.getDateString(position);
         return mRoutineData.get(dateString);
+    }
+
+    public String getNote(int position) {
+        String dateString = mSortedDates.getDateString(position);
+        return mNotes.get(dateString);
     }
 
     public String getDateString(int position) {

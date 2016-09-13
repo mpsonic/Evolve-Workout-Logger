@@ -25,7 +25,6 @@
             android:id="@+id/unitsLayout"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,8 +62,8 @@
                     android:onClick="handleButtonClick" />
 
             </LinearLayout>
-
         </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -83,58 +82,47 @@
                 android:layout_marginBottom="8dp" />
 
             <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/trackedMeasurementsButtonLayout"
                 android:layout_below="@+id/trackedMeasurementsText"
                 android:layout_centerHorizontal="true">
 
-                <LinearLayout
-                    android:orientation="horizontal"
+                <ToggleButton
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/repsToggleButton"
-                        android:textOff="@string/reps_toggle_button_text"
-                        android:textOn="@string/reps_toggle_button_text"
-                        android:onClick="handleButtonClick" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/repsToggleButton"
+                    android:textOff="@string/reps_toggle_button_text"
+                    android:textOn="@string/reps_toggle_button_text"
+                    android:onClick="handleButtonClick" />
 
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/weightToggleButton"
-                        android:textOn="@string/weight_toggle_button_text"
-                        android:textOff="@string/weight_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
+                <ToggleButton
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/distanceToggleButton"
-                        android:textOff="@string/distance_toggle_button_text"
-                        android:textOn="@string/distance_toggle_button_text"
-                        android:onClick="handleButtonClick" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/weightToggleButton"
+                    android:textOn="@string/weight_toggle_button_text"
+                    android:textOff="@string/weight_toggle_button_text"
+                    android:onClick="handleButtonClick" />
 
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/timeToggleButton"
-                        android:textOff="@string/time_toggle_button_text"
-                        android:textOn="@string/time_toggle_button_text"
-                        android:onClick="handleButtonClick" />
-                </LinearLayout>
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/distanceToggleButton"
+                    android:textOff="@string/distance_toggle_button_text"
+                    android:textOn="@string/distance_toggle_button_text"
+                    android:onClick="handleButtonClick" />
 
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/timeToggleButton"
+                    android:textOff="@string/time_toggle_button_text"
+                    android:textOn="@string/time_toggle_button_text"
+                    android:onClick="handleButtonClick" />
             </LinearLayout>
-
         </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -229,106 +217,93 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/distanceRow">
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/distance_layout_title"
-                        android:id="@+id/distanceText" />
+                        android:id="@+id/distanceText"
+                        android:layout_weight="1" />
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:orientation="horizontal"
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2">
+                        <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                            android:id="@+id/bet_distance_starting_measurement"
+                            android:layout_width="@dimen/button_edit_text_width"
+                            android:layout_height="wrap_content"
+                            app:default_number="0"
+                            app:mode="decimal"
+                            app:increment="1"
+                            app:always_positive="true"
+                            app:activated="false"/>
+                        <Spinner
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center">
-                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                                android:id="@+id/bet_distance_starting_measurement"
-                                android:layout_width="@dimen/button_edit_text_width"
-                                android:layout_height="wrap_content"
-                                app:default_number="0"
-                                app:mode="decimal"
-                                app:increment="1"
-                                app:always_positive="true"
-                                app:activated="false"/>
-                            <Spinner
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:id="@+id/distanceUnitSpinner"
-                                />
-                        </LinearLayout>
-                    </FrameLayout>
+                            android:layout_gravity="center"
+                            android:id="@+id/distanceUnitSpinner"
+                            />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/timeRow">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/time_layout_title"
-                        android:id="@+id/timeText" />
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
+                        android:id="@+id/timeText"
+                        android:layout_weight="1" />
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal">
+                        android:layout_weight="2">
 
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                                android:id="@+id/bet_time_hours_starting_measurement"
-                                android:layout_width="72dp"
-                                android:layout_height="wrap_content"
-                                app:default_number="0"
-                                app:mode="integer"
-                                app:increment="1"
-                                app:always_positive="true"
-                                app:activated="false"
-                                app:unit="h"/>
-                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                                android:id="@+id/bet_time_minutes_starting_measurement"
-                                android:layout_width="72dp"
-                                android:layout_height="wrap_content"
-                                app:default_number="0"
-                                app:mode="integer"
-                                app:increment="1"
-                                app:always_positive="true"
-                                app:activated="false"
-                                app:unit="m"/>
-                            <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
-                                android:id="@+id/bet_time_seconds_starting_measurement"
-                                android:layout_width="72dp"
-                                android:layout_height="wrap_content"
-                                app:default_number="0"
-                                app:mode="integer"
-                                app:increment="1"
-                                app:always_positive="true"
-                                app:activated="false"
-                                app:unit="s"/>
-                        </LinearLayout>
-
-                    </FrameLayout>
-
+                        <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                            android:id="@+id/bet_time_hours_starting_measurement"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            app:default_number="0"
+                            app:mode="integer"
+                            app:increment="1"
+                            app:always_positive="true"
+                            app:activated="false"
+                            app:unit="h"/>
+                        <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                            android:id="@+id/bet_time_minutes_starting_measurement"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            app:default_number="0"
+                            app:mode="integer"
+                            app:increment="1"
+                            app:always_positive="true"
+                            app:activated="false"
+                            app:unit="m"/>
+                        <edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText
+                            android:id="@+id/bet_time_seconds_starting_measurement"
+                            android:layout_width="72dp"
+                            android:layout_height="wrap_content"
+                            app:default_number="0"
+                            app:mode="integer"
+                            app:increment="1"
+                            app:always_positive="true"
+                            app:activated="false"
+                            app:unit="s"/>
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
-
         </LinearLayout>
 
         <RelativeLayout
@@ -386,8 +361,8 @@
                     android:textOn="@string/time_toggle_button_text"
                     android:onClick="handleButtonClick" />
             </LinearLayout>
-
         </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -511,7 +486,6 @@
                         app:unit="s">
                     </edu.umn.paull011.evolveworkoutlogger.components.ButtonEditText>
                 </LinearLayout>
-
             </LinearLayout>
 
         </RelativeLayout>
@@ -541,9 +515,7 @@
                 android:layout_alignParentStart="true" />
 
         </RelativeLayout>
-
     </LinearLayout>
-
 </ScrollView>
 
 
