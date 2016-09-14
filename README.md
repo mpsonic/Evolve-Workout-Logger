@@ -1,5 +1,31 @@
-# Evolve-Workout-Logger
-An android fitness app that automatically logs and tracks a user's workout progress over time.
+# Evolve Workout Logger
+The official repository of Evolve Workout Logger, an android app that helps you stay on track with your fitness goals. 
+
+# Feedback
+Head over to the <a href="https://groups.google.com/forum/#!forum/evolve-workout-logger">Evolve Workout Logger</a> google group for discussions about the app.
+
+If you'd like to give valuable feedback, please take my <a href="https://www.surveymonkey.com/r/XK599MZ">alpha test survey</a>!
+
+# Contributing - Project Setup
+## Importing Project into Android Studio
+1. On Android Studio's welcome page, select "Check out project from Version Control"
+2. Select "GitHub"
+3. Next to "Git Repository URL", type this repository's URL.
+4. Next to "Parent Directory", browse to your desired parent directory for the project
+5. Next to "Directory Name", type the name that you want for this project's folder
+6. Click "Clone".
+
+## Project Structure
+The guts of the project are in the app/src/main directory. Classes under java/edu/umn/paull011/evolveworkoutlogger
+are separated into folders by category:
+
+1. Activities
+2. Components
+3. Data_Structures
+4. Fragments
+5. Helper_Classes
+
+The resource files (including drawables and activity layouts) are in the /res directory
 
 ## Demo Images
 <table>
@@ -37,23 +63,3 @@ An android fitness app that automatically logs and tracks a user's workout progr
     </td>
   </tr>
 </table>
-
-## Importing Project into Android Studio
-1. On Android Studio's welcome page, select "Check out project from Version Control"
-2. Select "GitHub"
-3. Next to "Git Repository URL", type this repository's URL.
-4. Next to "Parent Directory", browse to your desired parent directory for the project
-5. Next to "Directory Name", type the name that you want for this project's folder
-6. Click "Clone".
-
-## Project Structure
-The guts of the project are in the app/src/main directory. Classes under java/edu/umn/paull011/evolvefitnesslogger
-are separated into folders by category:
-
-1. Activities
-2. Components
-3. Data_Structures
-4. Fragments
-5. Helper_Classes
-
-The resource files (including drawables and activity layouts) are in the /res directory
