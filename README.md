@@ -7,7 +7,6 @@ An android fitness app that automatically logs and tracks a user's workout progr
     <th>Start Page</th>
     <th>Create Routines</th>
     <th>Create Exercises</th>
-    
   </tr>
   <tr>
     <td>
@@ -27,8 +26,6 @@ An android fitness app that automatically logs and tracks a user's workout progr
     <th>Exercise History</th>
   </tr>
   <tr>
-    
-    https://cloud.githubusercontent.com/assets/6969508/18517675/b77daa9c-7a62-11e6-9855-29a5bbca6efd.png  
     <td>
       <img src="https://cloud.githubusercontent.com/assets/6969508/16715261/47597570-46a0-11e6-9cae-78f2a8bb481d.png" alt="View Your Workout Progress" width="270" height="480" border="1px solid black">
     </td>
