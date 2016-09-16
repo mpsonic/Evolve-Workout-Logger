@@ -1,5 +1,7 @@
 # Evolve Workout Logger
-The official repository of Evolve Workout Logger, an android app that helps you stay on track with your fitness goals. 
+The official repository of Evolve Workout Logger, an android app that helps you stay on track with your fitness goals. The app is currently in alpha testing.
+
+<a href='https://play.google.com/apps/testing/edu.umn.paull011.evolveworkoutlogger?utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="30%" height="30%"/></a>
 
 # Feedback
 Head over to the <a href="https://groups.google.com/forum/#!forum/evolve-workout-logger">Evolve Workout Logger</a> google group for discussions about the app.
