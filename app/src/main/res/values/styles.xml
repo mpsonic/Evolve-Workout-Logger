@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme.Base"/>
+    <style name="AppTheme" parent="AppTheme.Base" />
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -23,7 +23,8 @@
         <item name="actionBarSize">@dimen/app_bar_height</item>
     </style>
 
-    <style name="LargeDisplayText" parent="TextAppearance.AppCompat.Display1"/>
+    <style name="LargeDisplayText" parent="TextAppearance.AppCompat.Display1" />
+
     <style name="MediumDisplayText">
         <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
         <item name="android:textColor">?android:textColorSecondary</item>
@@ -40,7 +41,7 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
     </style>
 
-    <style name="TwoLineListPrimaryText" parent="SingleLineListText"/>
+    <style name="TwoLineListPrimaryText" parent="SingleLineListText" />
 
     <style name="TwoLineListSecondaryText">
         <item name="android:textSize">@dimen/two_line_list_secondary_text_size</item>

@@ -96,5 +96,11 @@
     <string name="text_empty_view_routine_history">No Routine History</string>
     <string name="text_view_routine_exercises_banner">Exercises</string>
     <string name="text_increase_per_session">Increase Per Session</string>
+    <string name="title_activity_feedback_page">FeedbackPage</string>
+    <string name="give_feedback_message">Thanks for downloading Evolve Workout Logger. If you\'d like to give feedback to help improve the app, please take the alpha test survey:</string>
+    <string name="survey_button_text">Go to survey</string>
+    <string name="action_give_feedback">Give Feedback</string>
+    <string name="survey_taken_message">Thanks for your feedback!</string>
+    <string name="survey_url">"https://www.surveymonkey.com/r/XK599MZ"</string>
 
 </resources>

@@ -604,11 +604,11 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         return exerciseSession;
     }
 
-    public int getDaysSinceLastRoutineSession() {
+    public int getDaysSinceLastCompletedRoutineSession() {
         Cursor routineSessionCursor = readableDB.query(
                 TABLE_ROUTINE_SESSIONS,
                 new String[] {KEY_DATE},
-                null,
+                KEY_COMPLETED + "=1",
                 null,
                 null,
                 null,

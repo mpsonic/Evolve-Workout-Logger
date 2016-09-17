@@ -3,11 +3,11 @@
     package="edu.umn.paull011.evolveworkoutlogger">
 
     <application
+        android:name=".EvolveApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".EvolveApplication">
+        android:theme="@style/AppTheme">
 
         <!-- Start Page -->
         <activity
@@ -15,20 +15,20 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="start_page"
                     android:scheme="evolve" />
             </intent-filter>
-
         </activity>
 
         <!-- My Routines -->
@@ -58,7 +58,7 @@
             android:name=".activities.StartRoutine"
             android:label="@string/title_activity_start_routine"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <!-- Create Routine -->
         <activity
@@ -66,8 +66,8 @@
             android:label="@string/title_activity_create_routine"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.StartRoutine"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.umn.paull011.evolveworkoutlogger.activities.StartRoutine" />
@@ -78,16 +78,16 @@
             android:name=".activities.AddExercise"
             android:label="@string/title_activity_add_exercise"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <!-- Create Exercise -->
         <activity
             android:name=".activities.CreateExercise"
             android:label="@string/title_activity_create_exercise"
             android:parentActivityName=".activities.AddExercise"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:screenOrientation="portrait">
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.umn.paull011.evolveworkoutlogger.activities.AddExercise" />
@@ -99,8 +99,8 @@
             android:label="@string/title_activity_active_routine_session"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.ActiveRoutineSession"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.umn.paull011.evolveworkoutlogger.activities.ActiveRoutineSession" />
@@ -110,8 +110,8 @@
         <activity
             android:name=".activities.ActiveExerciseSession"
             android:parentActivityName=".activities.ActiveRoutineSession"
-            android:windowSoftInputMode="adjustNothing|stateHidden"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.umn.paull011.evolveworkoutlogger.activities.ActiveRoutineSession" />
@@ -128,21 +128,32 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities.ViewExercise"
+        <activity
+            android:name=".activities.ViewExercise"
             android:parentActivityName=".activities.MyExercises"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.umn.paull011.evolveworkoutlogger.activities.MyExercises"/>
+                android:value="edu.umn.paull011.evolveworkoutlogger.activities.MyExercises" />
         </activity>
 
         <!-- View Routine -->
-        <activity android:name=".activities.ViewRoutine"
+        <activity
+            android:name=".activities.ViewRoutine"
             android:parentActivityName=".activities.MyRoutines"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.umn.paull011.evolveworkoutlogger.activities.MyRoutines"/>
+                android:value="edu.umn.paull011.evolveworkoutlogger.activities.MyRoutines" />
+        </activity>
+        <activity
+            android:name=".activities.FeedbackPage"
+            android:label="@string/title_activity_feedback_page"
+            android:parentActivityName=".activities.StartPage"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.StartPage" />
         </activity>
     </application>
 

@@ -10,6 +10,10 @@
         android:title="@string/action_my_exercises"
         app:showAsAction="never" />
 
+    <item android:id="@+id/action_give_feedback"
+        android:title="@string/action_give_feedback"
+        app:showAsAction="never" />
+
     <!--
 
     <item android:id="@+id/action_settings"

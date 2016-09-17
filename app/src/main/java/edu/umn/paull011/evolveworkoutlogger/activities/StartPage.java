@@ -34,19 +34,19 @@ public class StartPage extends AppCompatActivity {
         };
         cleanDatabases.run();
 
-        int daysSinceLastRoutineSession = db.getDaysSinceLastRoutineSession();
+        int daysSinceLastRoutineSession = db.getDaysSinceLastCompletedRoutineSession();
         TextView welcomeText = (TextView) findViewById(R.id.welcome_message);
         String welcomeMessage;
         if (daysSinceLastRoutineSession == -1) {
             welcomeMessage = "Welcome to Evolve Workout Logger!" +
-                    " Start your first routine by pressing the button below";
+                    " Start your first routine by pressing the button below.";
         }
         else if (daysSinceLastRoutineSession == 0) {
-            welcomeMessage = "Congrats! You've done your workout for today. Time to chill ";
+            welcomeMessage = "Congrats! You've done your workout for today. Time to chill. ";
                     //new String(Character.toChars(0x1f60e)); (sunglasses face)
         }
         else {
-            welcomeMessage = "It's been " + daysSinceLastRoutineSession + " days since your last workout";
+            welcomeMessage = "It's been " + daysSinceLastRoutineSession + " days since your last workout.";
             if (daysSinceLastRoutineSession > 3) {
                 welcomeMessage += " :'(";
             }
@@ -70,22 +70,20 @@ public class StartPage extends AppCompatActivity {
         int id = item.getItemId();
         Intent i;
         switch (id) {
-//            case R.id.action_settings:
-//                // Start settings activity
-//                break;
-            case edu.umn.paull011.evolveworkoutlogger.R.id.action_my_exercises:
+            case R.id.action_my_exercises:
                 // Start my exercises activity
                 i = new Intent(this, MyExercises.class);
                 startActivity(i);
                 break;
-            case edu.umn.paull011.evolveworkoutlogger.R.id.action_my_routines:
+            case R.id.action_my_routines:
                 // Start my routines activity
                 i = new Intent(this, MyRoutines.class);
                 startActivity(i);
                 break;
-//            case R.id.action_stats:
-//                // Start stats activity
-//                break;
+            case R.id.action_give_feedback:
+                // Start FeedbackPage activity
+                i = new Intent(this, FeedbackPage.class);
+                startActivity(i);
             default:
                 return false;
         }
